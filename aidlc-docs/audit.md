@@ -373,3 +373,19 @@
 **User Input**: "commit"（回答反映のコミット承認）
 **AI Response**: "Step 6としてnfr-design-patterns.md（Performance/Security Patterns: ログインAPI実装パターン、トークン配布パターン[アクセストークンはメモリ、リフレッシュトークンはHttpOnly Cookie]、JWTクレーム設計、漏洩パスワード照合、トークン生成、監査ログ記録）とlogical-components.md（AuthController/RegistrationController/PasswordController/AdminUserController、UserAccountService、JwtTokenProvider/JwtTokenValidatorImpl[Nimbus JOSE+JWT、NoopJwtTokenValidator置換]/RefreshTokenService/PasswordHasher/BreachedPasswordChecker/SecureTokenGenerator/AuthCookieSupport、AuditLogService、依存関係図)を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 2 - NFR Design Step 6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 2 - NFR Design 承認
+**Timestamp**: 2026-08-22T00:45:00Z
+**User Input**: "承認します、Infrastructure Designに進めてください。"
+**AI Response**: "Unit 2のNFR Design成果物（nfr-design-patterns.md、logical-components.md）を承認として記録。Infrastructure Design（Unit 2）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - NFR Design Step 9 完了、Infrastructure Designへ
+
+---
+
+## CONSTRUCTION - Unit 2 - Infrastructure Design Plan 作成
+**Timestamp**: 2026-08-22T00:50:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit2-user-management-infrastructure-design-plan.mdを作成した。Unit1で確定済みの基盤（クラウド不使用、eclipse-temurin:25-jre、H2ファイルベース）を踏襲し、カテゴリ評価（Deployment/Compute/Messaging/Shared=N/A、Storage=該当、Networking/Monitoring=一部該当）を明記した上で計4問（Flywayマイグレーションのバージョニング、期限切れトークンのクリーンアップ方針、Secure Cookie属性とローカル開発環境の両立、セキュリティイベントのログベース検知）を作成した。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Infrastructure Design Step 2〜4 完了、ユーザー回答待ち
