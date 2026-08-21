@@ -5,10 +5,10 @@ Gradle dependencyLocking）を、具体的な設計パターン・論理コン�
 
 ## 実行チェックリスト
 
-- [ ] Step A: nfr-requirements.md・tech-stack-decisions.mdを分析する
-- [ ] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
-- [ ] Step C: `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/nfr-design-patterns.md` を生成する
-- [ ] Step D: `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/logical-components.md` を生成する
+- [x] Step A: nfr-requirements.md・tech-stack-decisions.mdを分析する
+- [x] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
+- [x] Step C: `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/nfr-design-patterns.md` を生成する
+- [x] Step D: `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/logical-components.md` を生成する
 
 ## 既にN/A判定（回答不要、根拠を明記）
 
@@ -90,5 +90,5 @@ C) Other (please describe after [Answer]: tag below)
 
 ## Mandatory Artifacts
 
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/nfr-design-patterns.md`
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/logical-components.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/nfr-design-patterns.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/nfr-design/logical-components.md`
