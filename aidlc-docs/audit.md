@@ -199,3 +199,9 @@
 **Context**: CONSTRUCTION PHASE - Unit 1 - NFR Design Step 1〜4 完了、Step 5 GATE待ち（コミット後に提示）
 
 ---
+
+## CONSTRUCTION - Unit 1 - NFR Design 回答
+**Timestamp**: 2026-08-21T15:20:00Z
+**User Input**: "推奨の通りとする。"
+**AI Response**: "4問すべてAI推奨(A)を反映(bucket4j=IP単位・1分10リクエスト共通閾値、CSP=default-src 'self'のみ、相関ID=バックエンド生成、エラーレスポンス=統一JSON構造+i18n)。矛盾・あいまいさなしと判定。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - NFR Design Step 5 完了

@@ -39,7 +39,7 @@ B) IPアドレス単位だが、エンドポイントごとに異なる閾値を
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: CSP（Content-Security-Policy）の具体的な許可ソース
 SECURITY-04のCSPポリシーについて、`default-src 'self'`を基本としつつ、追加で許可すべき
@@ -55,7 +55,7 @@ B) 追加の許可ソースがある（Other欄に詳細を記述してくださ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: 相関ID（Correlation ID）の生成・伝播方式
 構造化ログ（SECURITY-03）に含める相関IDは、どのように生成・伝播しますか？
@@ -71,7 +71,7 @@ B) フロントエンドがリクエストごとに相関IDを生成し、専用
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: グローバル例外ハンドラのエラーレスポンス形式
 SECURITY-15のグローバル例外ハンドラが返すエラーレスポンスの形式はどうしますか？
@@ -86,7 +86,7 @@ B) HTTPステータスコードのみで表現し、レスポンスボディは�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ## Mandatory Artifacts
 
