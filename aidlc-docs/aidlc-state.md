@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: INCEPTION - Units Generation
+- **Current Stage**: CONSTRUCTION - Unit 1（デザインシステム基盤）- Functional Design要否判定
 
 ## Workspace State
 - **Existing Code**: No
@@ -41,15 +41,21 @@
 - [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
 - [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認済み
 - [x] Application Design — components.md/component-methods.md/services.md/component-dependency.md/application-design.md作成完了（10コンポーネント）、ユーザー承認済み
-- [x] Units Generation — unit-of-work.md/unit-of-work-dependency.md/unit-of-work-story-map.md作成完了（6 Unit）、ユーザー承認待ち
+- [x] Units Generation — unit-of-work.md/unit-of-work-dependency.md/unit-of-work-story-map.md作成完了（6 Unit）、ユーザー承認済み
 
 ### 🟢 CONSTRUCTION PHASE
-- [ ] Functional Design - EXECUTE（ユニットごとに再判定）
-- [ ] NFR Requirements - EXECUTE（ユニットごとに再判定）
-- [ ] NFR Design - EXECUTE（ユニットごとに再判定）
-- [ ] Infrastructure Design - EXECUTE（ユニットごとに再判定、軽量）
-- [ ] Code Generation - EXECUTE
-- [ ] Build and Test - EXECUTE
+**Per-Unit Loop 進捗**（開発順序: Unit1→2→3→4→5、Unit6はUnit3完了後に着手可能）
+
+| Unit | Functional Design | NFR Requirements | NFR Design | Infrastructure Design | Code Generation |
+|---|---|---|---|---|---|
+| 1. デザインシステム基盤 | 進行中 | - | - | - | - |
+| 2. ユーザ管理 | - | - | - | - | - |
+| 3. 対象RDBMSセットアップ | - | - | - | - | - |
+| 4. アクセス制御 | - | - | - | - | - |
+| 5. データ表示 | - | - | - | - | - |
+| 6. その他機能 | - | - | - | - | - |
+
+- [ ] Build and Test - EXECUTE（全Unit完了後）
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER

@@ -141,3 +141,13 @@
 **User Input**: (前段の計画承認を受けた継続作業。ユーザーからの新規入力なし)
 **AI Response**: "承認された方針(00-project-overview.mdの優先順位通り6Unit、基盤コンポーネントを最初に必要となる機能Unitに同梱、ハイブリッドパッケージ構成)に従い、unit-of-work.md(6Unit定義+コード構成方針)、unit-of-work-dependency.md(依存マトリクス・開発順序図)、unit-of-work-story-map.md(全32ストーリーの割当確認)を生成した。検証の過程でPlatformInfrastructureComponentにアプリ全体テーマ設定(ブランドカラー・フォント)の責務が未割当だったことを検出し、components.md/component-methods.mdに軽微な追記を行い解消した。"
 **Context**: INCEPTION PHASE - Units Generation - Step 12〜16 完了、Step 17 承認プロンプト提示前
+
+---
+
+## Units Generation - 承認
+**Timestamp**: 2026-08-21T14:45:00Z
+**User Input**: "承認します、CONSTRUCTION PHASEに進めてください"
+**AI Response**: "Units Generationステージの完了を承認として記録。INCEPTION PHASE完了。CONSTRUCTION PHASEのPer-Unit Loopを開始し、Unit 1(デザインシステム基盤)から着手する。"
+**Context**: INCEPTION PHASE 完了 → CONSTRUCTION PHASE（Unit 1: デザインシステム基盤）へ遷移
+
+---
