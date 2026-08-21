@@ -293,3 +293,19 @@
 **User Input**: "確認。bootWarすると、make-you-chic-uiのnpm installとnpm run buildも実行する？"
 **AI Response**: "実際にlibs/make-you-chic-ui/packages/make-you-chic-ui/distを削除しbootWarを実行して検証した結果、実行されずビルド失敗することを確認した(npmのfile:参照は依存先のビルドを自動実行しないため)。backend/build.gradle.ktsにnpmInstallMakeYouChicUi・npmBuildMakeYouChicUiタスクを追加し、npmBuildFrontendの前提として実行されるよう配線した。再度distを削除してbootWarを実行し、1コマンドでmake-you-chic-uiのビルドから単一WAR生成まで完結することを確認した。README.mdも実態に合わせて更新した。"
 **Context**: CONSTRUCTION PHASE - Unit 1 - Code Generation 追加検証完了、修正一式をコミット前
+
+---
+
+## CONSTRUCTION - Unit 1 完了、Unit 2 着手確認
+**Timestamp**: 2026-08-21T23:30:00Z
+**User Input**: "ok"（"Unit 1（デザインシステム基盤）は検証・修正込みで完了しています。次はUnit 2（User Management）の Per-Unit Loop（Functional Design → NFR Requirements → NFR Design → Infrastructure Design → Code Generation）に進めますが、進めてよろしいですか。"に対する回答）
+**AI Response**: "Unit 1のCode Generation完了・承認として記録し、Unit 2（ユーザ管理）のPer-Unit Loopに着手。construction/functional-design.mdをロードし、unit-of-work.md・stories.md（US-1.0〜US-1.10）・components.md・component-methods.md・requirements.md 4.1・security-baseline.mdを分析した。"
+**Context**: CONSTRUCTION PHASE - Unit 1 Code Generation 承認、Unit 2 Functional Design Step 1（ユニットコンテキスト分析）完了
+
+---
+
+## CONSTRUCTION - Unit 2 - Functional Design Plan 作成
+**Timestamp**: 2026-08-21T23:31:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit2-user-management-functional-design-plan.mdを作成した。requirements.md/stories.mdで明示的に「Functional Designで確定する」とされているUS-1.4（無効化ユーザの既存トークン即時失効可否）・US-1.9（パスワードリセットトークン有効期限デフォルト値、無効化ユーザへのリセット可否）に加え、ステートレスJWT設計との整合上必要なユーザ状態モデル・ロール変更反映タイミング・トークンファミリ識別方式・初期管理者冪等性・ログイン失敗カウント単位・招待メール送信失敗時の挙動・本登録時の入力項目について、計10問を作成した。各質問には推奨案を（推奨）として明示し、[Answer]:タグは空欄とした。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Functional Design Step 2〜4 完了、ユーザー回答待ち
