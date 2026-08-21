@@ -37,7 +37,7 @@ B) 再有効化は提供しない（無効化は一方向、物理削除がな�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 接続登録時のRDBMS種別・対象データベース/スキーマの指定粒度
 
@@ -54,7 +54,8 @@ PostgreSQLの複数スキーマ対応は将来拡張とする）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A（追加: 接続登録時に対象スキーマ名をオプション項目として指定可能にする。指定時は
+スキーマ取込をその1件に絞り込む。未指定時はA案通り自動発見する）
 
 ### Question 3: 「対象スキーマの許可リスト」の実体
 
@@ -69,7 +70,7 @@ Unit 3で用意する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: スキーマ取込で読み取る制約情報の範囲
 
@@ -83,7 +84,7 @@ B) UNIQUE制約・デフォルト値も含め、JDBCで取得可能な制約情�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 5: 複数RDBMS対応のためのスキーマメタデータ取得方式
 
@@ -96,7 +97,7 @@ RDBMS種別ごとの実装が必要になる）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: 接続登録時の接続確認（テスト接続）
 
@@ -108,7 +109,7 @@ B) 登録時に接続確認は行わない（接続情報をそのまま保存�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 7: JDBCドライバの追加
 
@@ -120,7 +121,7 @@ B) MariaDB専用に`org.mariadb.jdbc:mariadb-java-client`も別途追加する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 8: コネクションプールの構成方針
 
@@ -132,7 +133,7 @@ B) 接続ごとの専用プールは持たず、必要な都度DataSourceを生�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
