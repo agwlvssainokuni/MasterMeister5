@@ -5,11 +5,11 @@ Unit 1はFunctional Designをスキップしたため、requirements.md（3章 �
 
 ## 実行チェックリスト
 
-- [ ] Step A: requirements.md 3章・5章、application-design.mdを分析し、Unit 1で確定すべき
+- [x] Step A: requirements.md 3章・5章、application-design.mdを分析し、Unit 1で確定すべき
       技術選定・非機能要件を洗い出す
-- [ ] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
-- [ ] Step C: `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/nfr-requirements.md` を生成する
-- [ ] Step D: `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/tech-stack-decisions.md` を生成する
+- [x] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
+- [x] Step C: `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/nfr-requirements.md` を生成する
+- [x] Step D: `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/tech-stack-decisions.md` を生成する
 
 ## 既に確定済み・N/A判定（回答不要、根拠を明記）
 
@@ -103,5 +103,5 @@ C) Other (please describe after [Answer]: tag below)
 
 ## Mandatory Artifacts
 
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/nfr-requirements.md`
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/tech-stack-decisions.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/nfr-requirements.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/nfr-requirements/tech-stack-decisions.md`
