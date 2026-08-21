@@ -397,3 +397,19 @@
 **User Input**: "推奨の通りとする。"（続けて"commit"で回答反映をコミット承認）
 **AI Response**: "unit2-user-management-infrastructure-design-plan.mdの全4問に推奨案(A)を記入した。矛盾・曖昧性は検出されなかった。Step 6としてinfrastructure-design.md（Flywayマイグレーション連番継続、トークンクリーンアップ不導入、Secure Cookie常時付与とlocalhost準セキュアコンテキスト、セキュリティイベントの構造化ログ併記）とdeployment-architecture.md（開発環境・本番相当構成図にアクセストークン/リフレッシュトークンの経路とMailPit実利用を反映）を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 2 - Infrastructure Design Step 5〜6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 2 - Infrastructure Design 承認
+**Timestamp**: 2026-08-22T01:00:00Z
+**User Input**: "承認します、Code Generationに進めてください。"
+**AI Response**: "Unit 2のInfrastructure Design成果物（infrastructure-design.md、deployment-architecture.md）を承認として記録。Code Generation（Unit 2）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Infrastructure Design Step 9 完了、Code Generationへ
+
+---
+
+## CONSTRUCTION - Unit 2 - Code Generation Plan（Part 1: Planning）作成
+**Timestamp**: 2026-08-22T01:05:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit2-user-management-code-generation-plan.mdを作成した。Unit Context、追加技術選定（リポジトリ層はSpring Data JPA直接利用、AuditEventのJSON詳細列はAttributeConverter、Nimbus JOSE+JWTの具体的利用方法、既知漏洩パスワードリストの実体、フロントエンドのサイレントリフレッシュ方式）、REST APIエンドポイント一覧、Step1〜16（依存関係追加、ビジネスロジック生成・テスト・サマリ、APIレイヤ生成・テスト・サマリ、リポジトリレイヤ生成・テスト・サマリ、フロントエンド生成・テスト・サマリ、DBマイグレーション、ドキュメント、デプロイ成果物）を含む計画を作成した。ユーザーの承認を求める。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Code Generation Part 1 Step 5〜6 完了、承認プロンプト提示
