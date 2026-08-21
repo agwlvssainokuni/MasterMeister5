@@ -341,3 +341,19 @@
 **User Input**: "B A A A A A A A"
 **AI Response**: "unit2-user-management-nfr-requirements-plan.mdの全8問に回答を記入した（Q1:B[BCrypt、推奨のArgon2idとは異なる選択]、Q2〜Q8:A）。矛盾・曖昧性は検出されなかった。Step 6としてnfr-requirements.md（Scalability/Performance/Availability、Security[SECURITY-03/08/09/11/12/13/14対応]、Reliability、Maintainability、Usability）とtech-stack-decisions.md（Unit 2で新たに確定した8項目、Unit 3以降への申し送り）を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 2 - NFR Requirements Step 5〜6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 2 - NFR Requirements 承認
+**Timestamp**: 2026-08-22T00:20:00Z
+**User Input**: "承認します、NFR Designに進めてください。"
+**AI Response**: "Unit 2のNFR Requirements成果物（nfr-requirements.md、tech-stack-decisions.md）を承認として記録。NFR Design（Unit 2）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - NFR Requirements Step 9 完了、NFR Designへ
+
+---
+
+## CONSTRUCTION - Unit 2 - NFR Design Plan 作成
+**Timestamp**: 2026-08-22T00:25:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit2-user-management-nfr-design-plan.mdを作成した。Unit1のnfr-design-plan.mdと同様の形式でカテゴリ評価（Resilience/Scalability=N/A、Performance=一部該当、Security/Logical Components=該当）を明記し、計6問（BCryptコストパラメータ、ログインAPIの実装方式、フロントエンドのトークン保存方式[functional-design/frontend-components.mdでNFR Design送りとした項目]、JWTライブラリ選定、招待/リセットトークン生成方式、監査ログ記録の実装パターン）を作成した。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - NFR Design Step 2〜4 完了、ユーザー回答待ち
