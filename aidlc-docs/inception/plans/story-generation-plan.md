@@ -5,17 +5,17 @@
 
 ## 実行チェックリスト
 
-- [ ] Step A: `aidlc-docs/inception/requirements/requirements.md` 4章（機能要件）・6章
+- [x] Step A: `aidlc-docs/inception/requirements/requirements.md` 4章（機能要件）・6章
       （ロール・ペルソナ・用語集）を機能ブロック単位（4.1〜4.5）で読み直し、各ブロックの
       主体（管理者／一般ユーザ）を洗い出す
-- [ ] Step B: `personas.md` を生成する（requirements.md 6章のペルソナ定義を土台に、
+- [x] Step B: `personas.md` を生成する（requirements.md 6章のペルソナ定義を土台に、
       User Stories向けに動機・ゴール・課題を明記した形へ拡充する）
-- [ ] Step C: 承認された内訳方式（下記「ストーリー内訳方式の選択」参照）に従い、機能ブロック
+- [x] Step C: 承認された内訳方式（下記「ストーリー内訳方式の選択」参照）に従い、機能ブロック
       ごとにストーリーを起票する
-- [ ] Step D: 各ストーリーにINVEST基準（独立・交渉可能・価値がある・見積可能・小さい・
+- [x] Step D: 各ストーリーにINVEST基準（独立・交渉可能・価値がある・見積可能・小さい・
       テスト可能）を満たす受け入れ基準（Acceptance Criteria）を、承認されたフォーマットで付与する
-- [ ] Step E: `stories.md` を生成する（ペルソナへのマッピングを含む）
-- [ ] Step F: 生成した `stories.md`・`personas.md` を requirements.md と突き合わせ、
+- [x] Step E: `stories.md` を生成する（ペルソナへのマッピングを含む）
+- [x] Step F: 生成した `stories.md`・`personas.md` を requirements.md と突き合わせ、
       抜け漏れ（4.1〜4.5の各要件がいずれかのストーリーでカバーされているか）を確認する
 
 ## 対象ペルソナ（requirements.md 6章より）
@@ -58,7 +58,7 @@ C) Feature-Basedのみ（ペルソナで分割しない、機能単位の一本�
 
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: ストーリーの粒度
 1機能ブロック（例: 4.1 ユーザ登録・認証）あたり、どの程度の粒度でストーリーを分割しますか？
@@ -73,7 +73,7 @@ B) 粗い粒度（例: 「ユーザ登録・認証」全体を管理者視点・
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 受け入れ基準のフォーマット
 各ストーリーの受け入れ基準（Acceptance Criteria）はどの形式で記述しますか？
@@ -86,7 +86,7 @@ B) 箇条書き形式（「〜できる」「〜の場合は〜となる」等�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: ペルソナの過不足確認
 requirements.md 6章で定義済みの「管理者」「一般ユーザ」の2ペルソナに加えて、追加のペルソナ
@@ -100,10 +100,10 @@ B) 必要。追加のペルソナがある（Other欄に詳細を記述してく
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Mandatory Story Artifacts
 
-- [ ] `aidlc-docs/inception/user-stories/stories.md` — INVEST基準を満たすユーザーストーリー
+- [x] `aidlc-docs/inception/user-stories/stories.md` — INVEST基準を満たすユーザーストーリー
       一式（受け入れ基準・ペルソナへのマッピングを含む）
-- [ ] `aidlc-docs/inception/user-stories/personas.md` — ユーザーアーキタイプと特性
+- [x] `aidlc-docs/inception/user-stories/personas.md` — ユーザーアーキタイプと特性
