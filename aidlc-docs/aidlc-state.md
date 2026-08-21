@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: INCEPTION - Application Design
+- **Current Stage**: INCEPTION - Units Generation
 
 ## Workspace State
 - **Existing Code**: No
@@ -40,8 +40,8 @@
 - [x] Requirements Analysis — requirements.md作成完了、ユーザー承認済み
 - [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
 - [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認済み
-- [x] Application Design — components.md/component-methods.md/services.md/component-dependency.md/application-design.md作成完了（10コンポーネント）、ユーザー承認待ち
-- [ ] Units Generation - EXECUTE
+- [x] Application Design — components.md/component-methods.md/services.md/component-dependency.md/application-design.md作成完了（10コンポーネント）、ユーザー承認済み
+- [ ] Units Generation - EXECUTE（進行中）
 
 ### 🟢 CONSTRUCTION PHASE
 - [ ] Functional Design - EXECUTE（ユニットごとに再判定）
