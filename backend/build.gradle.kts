@@ -106,6 +106,20 @@ val npmBuildFrontend =
     tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmBuildFrontend") {
         dependsOn(tasks.named("npmInstall"), npmBuildMakeYouChicUi)
         npmCommand = listOf("run", "build")
+        // Unit 2 build verification found this task had no declared inputs, so
+        // Gradle treated it as UP-TO-DATE forever once the output existed —
+        // frontend source changes were silently never rebuilt. Declaring the
+        // actual inputs (source tree, config files, and make-you-chic-ui's
+        // build output that Vite bundles in) fixes that.
+        inputs.dir(file("${rootDir}/frontend/src"))
+        inputs.files(
+            file("${rootDir}/frontend/package.json"),
+            file("${rootDir}/frontend/package-lock.json"),
+            file("${rootDir}/frontend/vite.config.ts"),
+            file("${rootDir}/frontend/tsconfig.json"),
+            file("${rootDir}/frontend/index.html"),
+        )
+        inputs.dir(makeYouChicUiDir.resolve("packages/make-you-chic-ui/dist"))
         // vite.config.ts outputs directly into src/main/resources/static (requirements.md
         // §3: single WAR build). Declared as outputs so Gradle can skip this task when
         // nothing changed.

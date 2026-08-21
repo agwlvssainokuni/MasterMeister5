@@ -39,7 +39,7 @@ public class BreachedPasswordChecker {
     private final Set<String> knownPasswords = new HashSet<>();
 
     @PostConstruct
-    void loadList() {
+    public void loadList() {
         var resource = new ClassPathResource(RESOURCE_PATH);
         try (var reader =
                 new BufferedReader(

@@ -28,7 +28,6 @@ import cherry.mastermeister5.useraccount.service.UserAccountService;
 import cherry.mastermeister5.useraccount.service.UserSummary;
 import java.time.Instant;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -66,17 +64,13 @@ class AdminUserControllerTest {
     @MockitoBean private UserAccountService userAccountService;
     @MockitoBean private ErrorResponseFactory errorResponseFactory;
 
+    private UsernamePasswordAuthenticationToken adminAuthentication;
+
     @BeforeEach
     void authenticateAsAdmin() {
-        SecurityContextHolder.getContext()
-                .setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                "1", null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-    }
-
-    @AfterEach
-    void clearSecurityContext() {
-        SecurityContextHolder.clearContext();
+        adminAuthentication =
+                new UsernamePasswordAuthenticationToken(
+                        "1", null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
     }
 
     @Test
@@ -102,6 +96,7 @@ class AdminUserControllerTest {
     void inviteUserPassesTheAuthenticatedAdminAsActor() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/admin/users/invitations")
+                                .principal(adminAuthentication)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"email\":\"new@example.com\",\"role\":\"GENERAL\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -128,6 +123,7 @@ class AdminUserControllerTest {
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/admin/users/invitations")
+                                .principal(adminAuthentication)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"email\":\"taken@example.com\",\"role\":\"GENERAL\"}"))
                 .andExpect(MockMvcResultMatchers.status().isConflict());
@@ -135,7 +131,9 @@ class AdminUserControllerTest {
 
     @Test
     void deactivateUserPassesTheAuthenticatedAdminAsActor() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/users/2/deactivate"))
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/api/admin/users/2/deactivate")
+                                .principal(adminAuthentication))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         verify(userAccountService).deactivateUser(2L, 1L);
@@ -145,6 +143,7 @@ class AdminUserControllerTest {
     void changeRolePassesTheAuthenticatedAdminAsActor() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.put("/api/admin/users/2/role")
+                                .principal(adminAuthentication)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"role\":\"ADMIN\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());

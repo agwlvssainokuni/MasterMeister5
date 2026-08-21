@@ -49,7 +49,7 @@
 | Unit | Functional Design | NFR Requirements | NFR Design | Infrastructure Design | Code Generation |
 |---|---|---|---|---|---|
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
-| 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 計画中 |
+| 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認待ち |
 | 3. 対象RDBMSセットアップ | - | - | - | - | - |
 | 4. アクセス制御 | - | - | - | - | - |
 | 5. データ表示 | - | - | - | - | - |
@@ -62,6 +62,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 2（ユーザ管理）- Infrastructure Design 成果物生成完了
-- **Next Stage**: Code Generation（Unit 2）
-- **Status**: ユーザー承認待ち（`aidlc-docs/construction/unit2-user-management/infrastructure-design/`）
+- **Current Stage**: Unit 2（ユーザ管理）- Code Generation 完了・実動作検証済み
+- **Next Stage**: Unit 3（対象RDBMSセットアップ）の Functional Design、または全Unit完了後の Build and Test
+- **Status**: ユーザー承認待ち（`backend/`, `frontend/`, `aidlc-docs/construction/unit2-user-management/code/`）

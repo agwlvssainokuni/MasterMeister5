@@ -19,6 +19,8 @@ package cherry.mastermeister5.platform.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -84,7 +86,7 @@ class RefreshTokenServiceTest {
         assertThatThrownBy(() -> service.rotate(rawToken))
                 .isInstanceOf(RefreshTokenReuseDetectedException.class);
 
-        verify(repository).revokeFamily(org.mockito.eq("family-1"), any(Instant.class));
+        verify(repository).revokeFamily(eq("family-1"), any(Instant.class));
     }
 
     @Test
@@ -111,7 +113,6 @@ class RefreshTokenServiceTest {
         service.detectReuseAndRevokeFamily("family-1");
         service.detectReuseAndRevokeFamily("family-1");
 
-        verify(repository, org.mockito.Mockito.times(2))
-                .revokeFamily(org.mockito.eq("family-1"), any(Instant.class));
+        verify(repository, times(2)).revokeFamily(eq("family-1"), any(Instant.class));
     }
 }

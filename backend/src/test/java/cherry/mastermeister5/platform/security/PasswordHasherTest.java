@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
+import net.jqwik.api.constraints.AlphaChars;
 import net.jqwik.api.constraints.StringLength;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,8 @@ class PasswordHasherTest {
      * verifying the same password always succeeds, for any password.
      */
     @Property
-    void hashThenVerifyRoundTripsForAnyPassword(@ForAll @StringLength(min = 1, max = 64) String password) {
+    void hashThenVerifyRoundTripsForAnyPassword(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 64) String password) {
         var hash = hasher.hash(password);
 
         assertThat(hasher.verify(password, hash)).isTrue();

@@ -27,13 +27,13 @@ public interface RefreshTokenJpaRepository extends JpaRepository<RefreshToken, L
 
     Optional<RefreshToken> findByTokenHash(String tokenHash);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(
             "update RefreshToken t set t.revokedAt = :now"
                     + " where t.familyId = :familyId and t.revokedAt is null")
     void revokeFamily(@Param("familyId") String familyId, @Param("now") Instant now);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(
             "update RefreshToken t set t.revokedAt = :now"
                     + " where t.userId = :userId and t.revokedAt is null")

@@ -19,6 +19,7 @@ package cherry.mastermeister5.useraccount.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -45,46 +46,50 @@ import java.util.Optional;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+/**
+ * Mocks and {@code service} are plain field initializers rather than
+ * {@code @Mock}/{@code @BeforeEach} (which rely on JUnit Jupiter's
+ * MockitoExtension/lifecycle — jqwik's {@code @Property} methods run on a
+ * separate test engine that does not process Jupiter extensions, so
+ * Jupiter-only setup silently leaves those fields {@code null}). Field
+ * initializers run for both engines since they fire at instance
+ * construction.
+ */
 class UserAccountServiceImplTest {
 
-    @Mock private UserJpaRepository userRepository;
-    @Mock private PasswordResetTokenJpaRepository passwordResetTokenRepository;
-    @Mock private NotificationService notificationService;
-    @Mock private AuditLogService auditLogService;
-    @Mock private RefreshTokenService refreshTokenService;
+    private final UserJpaRepository userRepository = mock(UserJpaRepository.class);
+    private final PasswordResetTokenJpaRepository passwordResetTokenRepository =
+            mock(PasswordResetTokenJpaRepository.class);
+    private final NotificationService notificationService = mock(NotificationService.class);
+    private final AuditLogService auditLogService = mock(AuditLogService.class);
+    private final RefreshTokenService refreshTokenService = mock(RefreshTokenService.class);
 
     private final PasswordHasher passwordHasher = new PasswordHasher();
     private final BreachedPasswordChecker breachedPasswordChecker = new BreachedPasswordChecker();
+
+    {
+        breachedPasswordChecker.loadList();
+    }
+
     private final SecureTokenGenerator tokenGenerator = new SecureTokenGenerator();
     private final UserAccountProperties properties =
             new UserAccountProperties(3, 3, 5, 15, 8, new UserAccountProperties.InitialAdmin("admin@example.com", "initialPassw0rd"));
     private final AppProperties appProperties = new AppProperties("http://localhost:8080");
 
-    private UserAccountServiceImpl service;
-
-    @BeforeEach
-    void setUp() {
-        breachedPasswordChecker.loadList();
-        service =
-                new UserAccountServiceImpl(
-                        userRepository,
-                        passwordResetTokenRepository,
-                        passwordHasher,
-                        breachedPasswordChecker,
-                        tokenGenerator,
-                        notificationService,
-                        auditLogService,
-                        refreshTokenService,
-                        properties,
-                        appProperties);
-    }
+    private final UserAccountServiceImpl service =
+            new UserAccountServiceImpl(
+                    userRepository,
+                    passwordResetTokenRepository,
+                    passwordHasher,
+                    breachedPasswordChecker,
+                    tokenGenerator,
+                    notificationService,
+                    auditLogService,
+                    refreshTokenService,
+                    properties,
+                    appProperties);
 
     // --- inviteUser ---
 

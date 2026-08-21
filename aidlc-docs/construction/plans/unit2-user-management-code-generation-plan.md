@@ -218,3 +218,44 @@
 
 生成する全てのソースファイル冒頭に、著作権者`agwlvssainokuni`・Apache License 2.0の
 ヘッダーコメントを付与する（memory: feedback-copyright-license-header）。
+
+## 完了後の実動作検証（Unit 1と同様、コード生成直後に前倒しで実施）
+
+16ステップ完了後、`./gradlew :backend:test`を実行し以下13件の失敗を検出・修正した:
+
+- **`BreachedPasswordChecker.loadList()`がpackage-private**: 別パッケージのテストから
+  直接呼び出せなかったため`public`に変更
+- **`org.mockito.eq`は存在しないクラス**: `import static org.mockito.ArgumentMatchers.eq`
+  を追加し`eq(...)`に修正（`RefreshTokenServiceTest`）
+- **PBTプロパティがBCryptの72byte上限を超過**: jqwikが生成した長いマルチバイト文字列が
+  BCryptの入力上限（72byte）を超えIllegalArgumentExceptionになった。`@AlphaChars`で
+  生成文字種をASCII英字に制限（`PasswordHasherTest`）
+- **`@Modifying`一括UPDATEとJPA第一階層キャッシュの不整合**: `revokeFamily`/
+  `revokeAllForUser`実行後に同一永続化コンテキスト内で`findById`すると、DBは更新済みでも
+  キャッシュされた古いエンティティが返る（`AssertionError: Expecting actual not to be null`）。
+  `@Modifying(clearAutomatically = true)`を追加して修正（`RefreshTokenJpaRepository`）
+- **`@ExtendWith(MockitoExtension.class)`+`@Mock`とjqwikの`@Property`の混在は動作しない**:
+  `@Property`メソッドはjqwikエンジンで実行されJUnit Jupiter拡張（MockitoExtension）が
+  適用されないため、`@Mock`フィールドがnullのままNullPointerExceptionになった
+  （`UserAccountServiceImplTest`）。`@Mock`/`@BeforeEach`をやめ、モックとサービスを
+  フィールド初期化子（`Mockito.mock(...)`を直接呼び出し）に置き換え、両エンジンで
+  確実に初期化されるようにした
+- **`@WebMvcTest`+`addFilters=false`では`Authentication`引数が解決されない**:
+  `SecurityContextHolder`に直接設定してもコントローラの`Authentication authentication`
+  引数は`HttpServletRequest.getUserPrincipal()`経由で解決され、これはSpring Securityの
+  フィルタ（無効化済み）が本来ブリッジする。`MockMvcRequestBuilders`の`.principal(...)`で
+  直接設定するよう修正（`AdminUserControllerTest`、`PasswordControllerTest`）
+
+修正後、`./gradlew :backend:test`（92件）、`npm test`（frontend、21件）、
+`npx tsc --noEmit`がすべて成功することを確認した。
+
+### 追加検証: `bootWar`がUnit 2のフロントエンド変更を反映するか
+
+`./gradlew :backend:bootWar`を実行したところ`npmBuildFrontend`が`UP-TO-DATE`と判定され
+Viteビルドがスキップされた。生成物（`static/assets/*.js`）にUnit 2の文言が含まれていない
+ことを確認し、`npmBuildFrontend`タスクに入力（`inputs`）が一切宣言されていないため
+Gradleが変更を検知できず、成果物が存在する限り永久にUP-TO-DATE扱いになる不具合と特定した。
+`frontend/src`・設定ファイル・`make-you-chic-ui`のビルド成果物を`inputs`として明示的に
+宣言し修正した。`--rerun`で再ビルドし、生成物にUnit 2のテキスト
+（`admin-users-invite`、`invitation_token_expired`等）が含まれることを確認。さらに
+再度`bootWar`を実行し、変更がない状態では正しく`UP-TO-DATE`になることも確認した。

@@ -79,13 +79,13 @@ class PasswordControllerTest {
 
     @Test
     void changePasswordUsesTheAuthenticatedUserId() throws Exception {
-        SecurityContextHolder.getContext()
-                .setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                "42", null, List.of(new SimpleGrantedAuthority("ROLE_GENERAL"))));
+        var authentication =
+                new UsernamePasswordAuthenticationToken(
+                        "42", null, List.of(new SimpleGrantedAuthority("ROLE_GENERAL")));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.put("/api/account/password")
+                                .principal(authentication)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
                                         "{\"currentPassword\":\"old\",\"newPassword\":\"correctHorseBattery1\"}"))
@@ -96,10 +96,9 @@ class PasswordControllerTest {
 
     @Test
     void changePasswordRejectsAWrongCurrentPassword() throws Exception {
-        SecurityContextHolder.getContext()
-                .setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                "42", null, List.of(new SimpleGrantedAuthority("ROLE_GENERAL"))));
+        var authentication =
+                new UsernamePasswordAuthenticationToken(
+                        "42", null, List.of(new SimpleGrantedAuthority("ROLE_GENERAL")));
         org.mockito.BDDMockito.willThrow(UserAccountException.currentPasswordMismatch())
                 .given(userAccountService)
                 .changePassword(42L, "wrong", "correctHorseBattery1");
@@ -110,6 +109,7 @@ class PasswordControllerTest {
 
         mockMvc.perform(
                         MockMvcRequestBuilders.put("/api/account/password")
+                                .principal(authentication)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
                                         "{\"currentPassword\":\"wrong\",\"newPassword\":\"correctHorseBattery1\"}"))
