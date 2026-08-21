@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: mastermeister5
+  datasource:
+    url: jdbc:h2:file:${MM5_INTERNAL_DB_PATH:./data/mastermeister5};AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: ${MM5_INTERNAL_DB_USERNAME:sa}
+    password: ${MM5_INTERNAL_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+
+mastermeister5:
+  security:
+    rate-limit:
+      capacity: 10
+      refill-tokens: 10
+      refill-period-seconds: 60
+
+logging:
+  config: classpath:logback-spring.xml

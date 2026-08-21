@@ -1,0 +1,6 @@
+[submodule "libs/make-you-chic-ui"]
+	path = libs/make-you-chic-ui
+	url = https://github.com/agwlvssainokuni/make-you-chic-ui.git
+[submodule "libs/java-mustache-processor"]
+	path = libs/java-mustache-processor
+	url = https://github.com/agwlvssainokuni/java-mustache-processor.git

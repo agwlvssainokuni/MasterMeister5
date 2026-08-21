@@ -1,0 +1,14 @@
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+node_modules/
+dist/
+
+data/
+*.mv.db
+*.trace.db
+
+.env
+
+*.log

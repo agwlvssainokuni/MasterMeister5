@@ -32,68 +32,76 @@
 ## 実行ステップ
 
 ### Step 1: プロジェクト構造セットアップ（Greenfield）
-- [ ] 1.1 ルート`settings.gradle.kts`（`backend`、`frontend`、`libs/java-mustache-processor/core`
-      をサブプロジェクトとして定義）
-- [ ] 1.2 ルート`build.gradle.kts`（共通プラグイン・リポジトリ設定、`dependencyLocking`有効化）
-- [ ] 1.3 `backend/build.gradle.kts`（Spring Boot 4.1、依存関係: web, security, data-jpa,
+- [x] 1.1 ルート`settings.gradle.kts`（`backend`、`frontend`、
+      `libs/java-mustache-processor/cherry-mustache-core`をサブプロジェクトとして定義。
+      実際のsubmodule構造確認により`core`から`cherry-mustache-core`へパスを修正した）
+- [x] 1.2 ルート`build.gradle.kts`（共通プラグイン・リポジトリ設定、`dependencyLocking`有効化）
+- [x] 1.3 `backend/build.gradle.kts`（Spring Boot 4.1、依存関係: web, security, data-jpa,
       h2, validation, flyway-core, logstash-logback-encoder, bucket4j-core, springdoc-openapi,
       jqwik、テスト: JUnit5, Mockito）
-- [ ] 1.4 `backend/src/main/resources/application.yml`（環境変数プレースホルダ、H2ファイル
+- [x] 1.4 `backend/src/main/resources/application.yml`（環境変数プレースホルダ、H2ファイル
       ベース永続化設定、Flyway設定）
-- [ ] 1.5 `frontend/package.json`・`vite.config.ts`・`tsconfig.json`（React 19、
-      react-router-dom、react-i18next、Vitest + React Testing Library）
-- [ ] 1.6 git submodule追加: `libs/make-you-chic-ui`、`libs/java-mustache-processor`
-      （**ユーザー確認**: 外部リポジトリを取得するsubmodule追加は実行前に確認を取る）
-- [ ] 1.7 `devenv/docker-compose.yml`（MailPit常時起動、MySQL/MariaDB/PostgreSQLは
+- [x] 1.5 `frontend/package.json`・`vite.config.ts`・`tsconfig.json`（React 19、
+      react-router-dom、react-i18next、Vitest + React Testing Library。make-you-chic-uiへの
+      参照は実際のnpm workspaceパッケージ位置`packages/make-you-chic-ui`に合わせて修正した）
+- [x] 1.6 git submodule追加: `libs/make-you-chic-ui`、`libs/java-mustache-processor`
+      （ユーザー確認済み、実行完了）
+- [x] 1.7 `devenv/docker-compose.yml`（MailPit常時起動、MySQL/MariaDB/PostgreSQLは
       Composeプロファイルで選択起動）
-- [ ] 1.8 ルート`.gitignore`更新（ビルド成果物、H2データファイル、`node_modules`等）
+- [x] 1.8 ルート`.gitignore`更新（ビルド成果物、H2データファイル、`node_modules`等）
 
 ### Step 2: Business Logic Generation
-- [ ] 2.1 `AppTheme`ドメインモデル（ブランドカラー・フォントの値オブジェクト、フォントは
-      `sans`/`serif`の2値に制約）
-- [ ] 2.2 `AppThemeService`（`getAppTheme`/`setAppTheme`のビジネスロジック、管理者権限検証）
-- [ ] 2.3 `MessageResolver`（`resolveMessage`の実装、`MessageSource`をラップ）
+- [x] 2.1 `AppTheme`ドメインモデル（ブランドカラー・フォントの値オブジェクト。実際の
+      `make-you-chic-ui`ソース調査によりブランドカラー値をBLUE/GREEN/PURPLE/ORANGE、
+      フォントを`sans`/`serif`の2値に確定した）
+- [x] 2.2 `AppThemeService`（`getAppTheme`/`setAppTheme`のビジネスロジック、`setAppTheme`に
+      `@PreAuthorize("hasRole('ADMIN')")`を付与）
+- [x] 2.3 `MessageResolver`（`resolveMessage`の実装、`MessageSource`をラップ）＋
+      `MessageSourceConfig`、日英メッセージリソース
 
 ### Step 3: Business Logic Unit Testing
-- [ ] 3.1 `AppThemeService`の例1基テスト（正常系・不正フォント値の拒否）
-- [ ] 3.2 PBT対象の識別: フォント制約（許可された2値以外を拒否）は境界値が明確な単純な
-      バリデーションのため、property-based-testing拡張のPBT-01評価により「No PBT properties
-      identified」と判定し、例示ベーステストのみとする（rationale: 入力候補が有限2値の
-      allowlist検証であり、ランダム入力生成による性質テストの価値が低いため）
+- [x] 3.1 `AppThemeServiceImplTest`（JUnit5 + Mockito、正常系2件）
+- [x] 3.2 PBT対象の識別: 「No PBT properties identified」と判定（business-logic-summary.md
+      参照）
 
 ### Step 4: Business Logic Summary
-- [ ] 4.1 `aidlc-docs/construction/unit1-design-system-foundation/code/business-logic-summary.md`
+- [x] 4.1 `aidlc-docs/construction/unit1-design-system-foundation/code/business-logic-summary.md`
       を生成する
 
 ### Step 5: API Layer Generation
-- [ ] 5.1 `SecurityConfig`（FilterChain定義、ステートレスセッション、公開エンドポイントの
-      ホワイトリスト、セキュリティヘッダ、CORS設定）
-- [ ] 5.2 `CorrelationIdFilter`
-- [ ] 5.3 `RateLimitFilter`（bucket4j、IPアドレス単位、1分10リクエスト）
-- [ ] 5.4 `JwtAuthenticationFilter`（骨組みのみ。トークン検証の具体実装はUnit 2で追加する
-      拡張ポイントとして、検証ロジックをインターフェース化しておく）
-- [ ] 5.5 `GlobalExceptionHandler`（`@RestControllerAdvice`、統一エラーレスポンス構造）
-- [ ] 5.6 `AppThemeController`（`GET`/`PUT /api/admin/theme`、管理者限定）
-- [ ] 5.7 springdoc-openapiの設定（Swagger UI有効化）
+- [x] 5.1 `SecurityConfig`（FilterChain定義、ステートレスセッション、セキュリティヘッダ。
+      Unit 1時点では公開エンドポイントがないため`anyRequest().authenticated()`のみ。CORSは
+      同一オリジン配信のため未設定＝ワイルドカード許可も一切発行されない）
+- [x] 5.2 `CorrelationIdFilter`
+- [x] 5.3 `RateLimitFilter`（bucket4j、IPアドレス単位、1分10リクエスト）
+- [x] 5.4 `JwtAuthenticationFilter`（骨組みのみ。`JwtTokenValidator`インターフェース＋
+      `NoopJwtTokenValidator`（`@ConditionalOnMissingBean`）でUnit 2の実装差し替えに対応）
+- [x] 5.5 `GlobalExceptionHandler`（`@RestControllerAdvice`、統一エラーレスポンス構造）＋
+      `RestAuthenticationEntryPoint`・`RestAccessDeniedHandler`（フィルタ層での401/403）
+- [x] 5.6 `AppThemeController`（`GET`/`PUT /api/theme`。GETは全認証ユーザー、PUTは
+      サービス層の`@PreAuthorize`で管理者限定）
+- [x] 5.7 springdoc-openapiの設定（`OpenApiConfig`、Swagger UI有効化）
 
 ### Step 6: API Layer Unit Testing
-- [ ] 6.1 `AppThemeController`のコントローラテスト（MockMvc、正常系・権限なしエラー）
-- [ ] 6.2 `GlobalExceptionHandler`のテスト（各例外種別に対するレスポンス形式検証）
-- [ ] 6.3 `RateLimitFilter`のテスト（閾値超過時に429を返すことを検証）
+- [x] 6.1 `AppThemeControllerTest`（`@WebMvcTest`、正常系・バリデーションエラー）
+- [x] 6.2 `GlobalExceptionHandlerTest`（内部詳細を漏らさないことを検証）
+- [x] 6.3 `RateLimitFilterTest`（閾値超過時に429を返すことを検証）
 
 ### Step 7: API Layer Summary
-- [ ] 7.1 `aidlc-docs/construction/unit1-design-system-foundation/code/api-layer-summary.md`
+- [x] 7.1 `aidlc-docs/construction/unit1-design-system-foundation/code/api-layer-summary.md`
       を生成する
 
 ### Step 8: Repository Layer Generation
-- [ ] 8.1 `AppThemeEntity`（JPA、単一レコード想定）
-- [ ] 8.2 `AppThemeRepository`（Spring Data JPA）
+- [x] 8.1 `AppThemeEntity`（JPA、単一レコード想定、id固定値1）
+- [x] 8.2 `AppThemeJpaRepository`（Spring Data JPA）＋`AppThemeRepositoryImpl`
+      （`AppThemeRepository`ポートのアダプタ）
 
 ### Step 9: Repository Layer Unit Testing
-- [ ] 9.1 `AppThemeRepository`の統合テスト（`@DataJpaTest`、H2）
+- [x] 9.1 `AppThemeRepositoryImplTest`（`@DataJpaTest`、既定値フォールバック・ラウンド
+       トリップ・更新時の非重複挿入を検証）
 
 ### Step 10: Repository Layer Summary
-- [ ] 10.1 `aidlc-docs/construction/unit1-design-system-foundation/code/repository-layer-summary.md`
+- [x] 10.1 `aidlc-docs/construction/unit1-design-system-foundation/code/repository-layer-summary.md`
        を生成する
 
 ### Step 11: Frontend Components Generation
@@ -114,7 +122,8 @@
        を生成する
 
 ### Step 14: Database Migration Scripts
-- [ ] 14.1 Flywayマイグレーションスクリプト（`V1__create_app_theme.sql`）
+- [x] 14.1 Flywayマイグレーションスクリプト（`V1__create_app_theme.sql`。Repository Layer
+       Unit Testingの前提として、Step 8-9と合わせて先行生成した）
 
 ### Step 15: Documentation Generation
 - [ ] 15.1 ルート`README.md`の新規作成（プロジェクト概要、開発環境セットアップ手順、
