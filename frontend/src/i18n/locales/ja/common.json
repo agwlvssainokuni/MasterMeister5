@@ -3,9 +3,87 @@
     "name": "MasterMeister5"
   },
   "nav": {
-    "home": "ホーム"
+    "home": "ホーム",
+    "users": "ユーザー管理",
+    "changePassword": "パスワード変更",
+    "logout": "ログアウト"
   },
   "theme": {
     "settingsTitle": "テーマ設定"
+  },
+  "common": {
+    "loading": "読み込み中..."
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "newPassword": "新しいパスワード",
+    "currentPassword": "現在のパスワード",
+    "passwordConfirm": "パスワード（確認）",
+    "passwordMismatch": "パスワードが一致しません。",
+    "name": "氏名",
+    "login": {
+      "title": "ログイン",
+      "submit": "ログイン",
+      "forgotPassword": "パスワードを忘れた場合",
+      "error": "ログインに失敗しました。"
+    },
+    "register": {
+      "title": "本登録",
+      "submit": "登録する",
+      "completedTitle": "登録が完了しました",
+      "completedMessage": "ログイン画面からログインしてください。",
+      "error": "登録に失敗しました。"
+    },
+    "forgotPassword": {
+      "title": "パスワードをお忘れの場合",
+      "submit": "リセットリンクを送信",
+      "completedMessage": "入力されたメールアドレス宛にメールを送信しました。"
+    },
+    "resetPassword": {
+      "title": "新しいパスワードの設定",
+      "submit": "パスワードを設定する",
+      "completedTitle": "パスワードを更新しました",
+      "error": "パスワードのリセットに失敗しました。"
+    },
+    "changePassword": {
+      "title": "パスワード変更",
+      "submit": "変更する",
+      "success": "パスワードを変更しました。",
+      "error": "パスワードの変更に失敗しました。"
+    }
+  },
+  "admin": {
+    "users": {
+      "title": "ユーザー管理",
+      "inviteButton": "ユーザーを招待",
+      "resendButton": "招待再送",
+      "deactivateButton": "無効化",
+      "reactivateButton": "再有効化",
+      "columns": {
+        "email": "メールアドレス",
+        "name": "氏名",
+        "role": "ロール",
+        "status": "状態",
+        "actions": "操作"
+      },
+      "role": {
+        "admin": "管理者",
+        "general": "一般ユーザー"
+      },
+      "status": {
+        "invited": "招待中",
+        "active": "有効",
+        "deactivated": "無効化済み"
+      },
+      "invite": {
+        "title": "ユーザーを招待",
+        "submit": "招待する",
+        "error": "招待に失敗しました。"
+      }
+    }
+  },
+  "errors": {
+    "invitation_token_expired": "招待の有効期限が切れています。管理者に招待再送を依頼してください。"
   }
 }

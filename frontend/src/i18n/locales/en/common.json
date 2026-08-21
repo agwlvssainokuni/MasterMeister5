@@ -3,9 +3,87 @@
     "name": "MasterMeister5"
   },
   "nav": {
-    "home": "Home"
+    "home": "Home",
+    "users": "User Management",
+    "changePassword": "Change Password",
+    "logout": "Log Out"
   },
   "theme": {
     "settingsTitle": "Theme Settings"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "auth": {
+    "email": "Email Address",
+    "password": "Password",
+    "newPassword": "New Password",
+    "currentPassword": "Current Password",
+    "passwordConfirm": "Confirm Password",
+    "passwordMismatch": "Passwords do not match.",
+    "name": "Name",
+    "login": {
+      "title": "Log In",
+      "submit": "Log In",
+      "forgotPassword": "Forgot your password?",
+      "error": "Login failed."
+    },
+    "register": {
+      "title": "Complete Registration",
+      "submit": "Register",
+      "completedTitle": "Registration complete",
+      "completedMessage": "Please log in from the login screen.",
+      "error": "Registration failed."
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "submit": "Send reset link",
+      "completedMessage": "An email has been sent to the address you entered."
+    },
+    "resetPassword": {
+      "title": "Set a new password",
+      "submit": "Set password",
+      "completedTitle": "Password updated",
+      "error": "Failed to reset the password."
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "submit": "Change",
+      "success": "Password changed.",
+      "error": "Failed to change the password."
+    }
+  },
+  "admin": {
+    "users": {
+      "title": "User Management",
+      "inviteButton": "Invite User",
+      "resendButton": "Resend Invitation",
+      "deactivateButton": "Deactivate",
+      "reactivateButton": "Reactivate",
+      "columns": {
+        "email": "Email Address",
+        "name": "Name",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "role": {
+        "admin": "Administrator",
+        "general": "General User"
+      },
+      "status": {
+        "invited": "Invited",
+        "active": "Active",
+        "deactivated": "Deactivated"
+      },
+      "invite": {
+        "title": "Invite User",
+        "submit": "Invite",
+        "error": "Failed to invite the user."
+      }
+    }
+  },
+  "errors": {
+    "invitation_token_expired": "The invitation link has expired. Please ask an administrator to resend the invitation."
   }
 }

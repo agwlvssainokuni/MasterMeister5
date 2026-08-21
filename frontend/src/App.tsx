@@ -17,16 +17,35 @@
 import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "./layout/AppLayout";
 import { HomePage } from "./routes/HomePage";
+import { LoginScreen } from "./routes/LoginScreen";
+import { RegistrationCompletionScreen } from "./routes/RegistrationCompletionScreen";
+import { ForgotPasswordScreen } from "./routes/ForgotPasswordScreen";
+import { ResetPasswordScreen } from "./routes/ResetPasswordScreen";
+import { ChangePasswordScreen } from "./routes/ChangePasswordScreen";
+import { AdminUserListScreen } from "./routes/admin/AdminUserListScreen";
+import { RequireAuth } from "./auth/RequireAuth";
 
 /**
- * The (future) Unit 2 login screen renders outside <AppLayout> — see
- * integration-guide.md's layout-route pattern.
+ * frontend-components.md: authentication-free screens render outside
+ * <AppLayout> (layout-route pattern, integration-guide.md); every other
+ * screen requires a logged-in user via <RequireAuth>, and "/users" further
+ * requires the ADMIN role.
  */
 export function App(): React.JSX.Element {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="/register/:token" element={<RegistrationCompletionScreen />} />
+      <Route path="/password/forgot" element={<ForgotPasswordScreen />} />
+      <Route path="/password/reset/:token" element={<ResetPasswordScreen />} />
+      <Route element={<RequireAuth />}>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/settings/password" element={<ChangePasswordScreen />} />
+          <Route element={<RequireAuth role="ADMIN" />}>
+            <Route path="/users" element={<AdminUserListScreen />} />
+          </Route>
+        </Route>
       </Route>
     </Routes>
   );

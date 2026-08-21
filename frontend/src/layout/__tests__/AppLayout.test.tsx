@@ -14,26 +14,58 @@
  * limitations under the License.
  */
 
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "../AppLayout";
+import { AuthProvider } from "../../auth/AuthContext";
 import "../../i18n/i18n";
 
 describe("AppLayout", () => {
-  it("renders the AppShell with the outlet content", () => {
+  const originalFetch = globalThis.fetch;
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  it("renders the AppShell with the outlet content", async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 401 }) as unknown as typeof fetch;
+
     render(
       <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<div>page content</div>} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<div>page content</div>} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </MemoryRouter>,
     );
 
-    expect(screen.getByTestId("app-shell")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId("app-shell")).toBeInTheDocument());
     expect(screen.getByText("page content")).toBeInTheDocument();
     expect(screen.getByText("ホーム")).toBeInTheDocument();
+  });
+
+  it("shows the admin-only nav item once an ADMIN user is loaded", async () => {
+    const user = { id: 1, email: "admin@example.com", name: "Admin", role: "ADMIN" };
+    globalThis.fetch = vi
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({ accessToken: "tok", user }) }) as unknown as typeof fetch;
+
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <AuthProvider>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<div>page content</div>} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => expect(screen.getByText("ユーザー管理")).toBeInTheDocument());
   });
 });

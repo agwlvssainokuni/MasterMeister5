@@ -14,23 +14,41 @@
  * limitations under the License.
  */
 
-import { Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { AppShell, type AppShellNavItem } from "make-you-chic-ui";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../auth/AuthContext";
 
 /**
- * Common layout for every screen except the (future, Unit 2) login screen —
- * integration-guide.md's "layout route" pattern via react-router's
- * path-less <Route element={<AppLayout />}>. navItems will grow as later
- * units add screens.
+ * Common layout for every authenticated screen — integration-guide.md's
+ * "layout route" pattern via react-router's path-less
+ * <Route element={<AppLayout />}>. navItems will grow as later units add
+ * screens; "ユーザー管理" is ADMIN-only (frontend-components.md).
  */
 export function AppLayout(): React.JSX.Element {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const navItems: AppShellNavItem[] = [{ label: t("nav.home"), href: "/" }];
+  if (user?.role === "ADMIN") {
+    navItems.push({ label: t("nav.users"), href: "/users" });
+  }
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
-    <AppShell navItems={navItems}>
+    <AppShell
+      navItems={navItems}
+      user={user ? { name: user.name } : undefined}
+      userMenuItems={[
+        { label: t("nav.changePassword"), onClick: () => navigate("/settings/password") },
+        { label: t("nav.logout"), onClick: handleLogout },
+      ]}
+    >
       <Outlet />
     </AppShell>
   );

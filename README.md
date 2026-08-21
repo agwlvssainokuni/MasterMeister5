@@ -53,6 +53,11 @@ Gradleマルチモジュール構成に`cherry-mustache-core`サブプロジェ�
 内部データベース（H2、ファイルベース）は`./data/mastermeister5`に作成される
 （`MM5_INTERNAL_DB_PATH`環境変数で変更可能）。
 
+初回起動時、`MM5_INITIAL_ADMIN_EMAIL`/`MM5_INITIAL_ADMIN_PASSWORD`環境変数で指定した
+初期管理者アカウントが自動作成される（Unit 2、招待フローを経ない）。未設定の場合は
+作成をスキップする。JWT署名鍵（`MM5_JWT_SECRET`、32byte以上）も必須。詳細は
+`.env.example`を参照。
+
 ### 5. フロントエンドの起動
 
 ```bash
@@ -86,8 +91,7 @@ cd frontend && npm test  # フロントエンド（Vitest + React Testing Librar
 ## API仕様書
 
 バックエンド起動後、Swagger UIで確認できる: http://localhost:8080/swagger-ui.html
-（Unit 1時点ではすべてのエンドポイントが認証必須のため、閲覧にはログインが必要。
-ログイン機能はUnit 2で実装される）
+（ログイン等の一部エンドポイントを除き認証が必要。Unit 2でログイン機能が実装済み）
 
 ## ビルド（本番相当）
 

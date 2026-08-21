@@ -29,6 +29,7 @@ import "@fontsource/noto-serif-jp/japanese-600.css";
 import "@fontsource/noto-serif-jp/japanese-700.css";
 import "./i18n/i18n";
 import { AppThemeSync } from "./theme/AppThemeSync";
+import { AuthProvider } from "./auth/AuthContext";
 import { App } from "./App";
 
 createRoot(document.getElementById("root")!).render(
@@ -38,7 +39,9 @@ createRoot(document.getElementById("root")!).render(
         <ToastProvider>
           <ModalStackProvider>
             <BrowserRouter>
-              <App />
+              <AuthProvider>
+                <App />
+              </AuthProvider>
             </BrowserRouter>
           </ModalStackProvider>
         </ToastProvider>

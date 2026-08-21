@@ -170,32 +170,34 @@
        を生成する
 
 ### Step 11: Frontend Components Generation
-- [ ] 11.1 `AuthContext`（アクセストークン・現在ユーザー情報をメモリ保持。マウント時に
+- [x] 11.1 `AuthContext`（アクセストークン・現在ユーザー情報をメモリ保持。マウント時に
        サイレントリフレッシュを試行）
-- [ ] 11.2 `RequireAuth`（未認証時`/login`へリダイレクト）、ロールガード（ADMIN限定ルート用）
-- [ ] 11.3 APIクライアント関数（`api/auth.ts`、`api/admin/users.ts`。fetchラッパーに
+- [x] 11.2 `RequireAuth`（未認証時`/login`へリダイレクト）、ロールガード（ADMIN限定ルート用）
+- [x] 11.3 APIクライアント関数（`api/auth.ts`、`api/adminUsers.ts`。fetchラッパーに
        アクセストークンのAuthorizationヘッダ付与、401時の自動リフレッシュ再試行を含む）
-- [ ] 11.4 `LoginScreen`
-- [ ] 11.5 `RegistrationCompletionScreen`
-- [ ] 11.6 `ForgotPasswordScreen`
-- [ ] 11.7 `ResetPasswordScreen`
-- [ ] 11.8 `AdminUserListScreen`
-- [ ] 11.9 `ChangePasswordScreen`
-- [ ] 11.10 `App.tsx`ルーティング更新（レイアウトルート外に認証前画面、`RequireAuth`配下に
-       認証後画面を追加）、`AppLayout`更新（ADMIN限定navItem「ユーザー管理」、ユーザーメニューに
-       「パスワード変更」「ログアウト」を追加）
-- [ ] 11.11 i18nメッセージ追加（ja/en、Unit 2の全画面文言・エラーメッセージ）
+- [x] 11.4 `LoginScreen`
+- [x] 11.5 `RegistrationCompletionScreen`
+- [x] 11.6 `ForgotPasswordScreen`
+- [x] 11.7 `ResetPasswordScreen`
+- [x] 11.8 `AdminUserListScreen`（make-you-chic-uiのTableコンポーネントは外部ページング等
+       Unit 2では不要な機能を持つため採用せず、素のHTMLテーブルとした）
+- [x] 11.9 `ChangePasswordScreen`
+- [x] 11.10 `App.tsx`ルーティング更新（レイアウトルート外に認証前画面、`RequireAuth`配下に
+       認証後画面を追加）、`AppLayout`更新（ADMIN限定navItem「ユーザー管理」、AppShellの
+       `userMenuItems`に「パスワード変更」「ログアウト」を追加）、`main.tsx`に`AuthProvider`を追加
+- [x] 11.11 i18nメッセージ追加（ja/en、Unit 2の全画面文言・エラーメッセージ）
 
 ### Step 12: Frontend Components Unit Testing
-- [ ] 12.1 `AuthContext`/`RequireAuth`のテスト（未ログイン時リダイレクト、ロールガード）
-- [ ] 12.2 `LoginScreen.test.tsx`（成功、エラー表示）
-- [ ] 12.3 `RegistrationCompletionScreen.test.tsx`（バリデーション、期限切れ表示）
-- [ ] 12.4 `ForgotPasswordScreen.test.tsx`/`ResetPasswordScreen.test.tsx`
-- [ ] 12.5 `AdminUserListScreen.test.tsx`（招待モーダル、各操作ボタンのAPI呼び出し）
-- [ ] 12.6 `ChangePasswordScreen.test.tsx`
+- [x] 12.1 `AuthContext.test.tsx`/`RequireAuth.test.tsx`（未ログイン時リダイレクト、
+       ロールガード）。既存の`AppLayout.test.tsx`も`AuthProvider`必須化に伴い更新した
+- [x] 12.2 `LoginScreen.test.tsx`（成功、エラー表示）
+- [x] 12.3 `RegistrationCompletionScreen.test.tsx`（バリデーション、期限切れ表示）
+- [x] 12.4 `ForgotPasswordScreen.test.tsx`/`ResetPasswordScreen.test.tsx`
+- [x] 12.5 `AdminUserListScreen.test.tsx`（招待モーダル、各操作ボタンのAPI呼び出し）
+- [x] 12.6 `ChangePasswordScreen.test.tsx`
 
 ### Step 13: Frontend Components Summary
-- [ ] 13.1 `aidlc-docs/construction/unit2-user-management/code/frontend-summary.md`を
+- [x] 13.1 `aidlc-docs/construction/unit2-user-management/code/frontend-summary.md`を
        生成する
 
 ### Step 14: Database Migration Scripts
@@ -205,12 +207,12 @@
 - [x] 14.4 `V5__create_audit_event.sql`（同上）
 
 ### Step 15: Documentation Generation
-- [ ] 15.1 `README.md`更新（初期管理者アカウントの環境変数、ログインが必要になった旨）
+- [x] 15.1 `README.md`更新（初期管理者アカウントの環境変数、Swagger UIの認証必須範囲の記述更新）
 
 ### Step 16: Deployment Artifacts Generation
-- [ ] 16.1 `.env.example`更新（JWT署名鍵、初期管理者メールアドレス/パスワード、招待/
+- [x] 16.1 `.env.example`更新（JWT署名鍵、初期管理者メールアドレス/パスワード、招待/
        リセットトークン有効期限、アカウントロック閾値・時間、アクセス/リフレッシュトークン
-       有効期限）
+       有効期限、SMTP設定、アプリベースURL）
 
 ## 著作権・ライセンス表記
 
