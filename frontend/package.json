@@ -16,13 +16,17 @@
     "react-router-dom": "^7.0.0",
     "i18next": "^24.0.0",
     "react-i18next": "^15.0.0",
+    "@fontsource/noto-sans-jp": "^5.1.0",
+    "@fontsource/noto-serif-jp": "^5.1.0",
     "make-you-chic-ui": "file:../libs/make-you-chic-ui/packages/make-you-chic-ui"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^25.0.0",
     "typescript": "^5.6.0",
     "vite": "^6.0.0",
     "vitest": "^2.1.0"

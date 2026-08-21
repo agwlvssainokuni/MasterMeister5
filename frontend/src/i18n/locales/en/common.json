@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "MasterMeister5"
+  },
+  "nav": {
+    "home": "Home"
+  },
+  "theme": {
+    "settingsTitle": "Theme Settings"
+  }
+}

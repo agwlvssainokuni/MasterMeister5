@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "MasterMeister5"
+  },
+  "nav": {
+    "home": "ホーム"
+  },
+  "theme": {
+    "settingsTitle": "テーマ設定"
+  }
+}

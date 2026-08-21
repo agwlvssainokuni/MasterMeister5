@@ -105,20 +105,27 @@
        を生成する
 
 ### Step 11: Frontend Components Generation
-- [ ] 11.1 `frontend/src`ディレクトリ構成（`app/`, `shared/`, `features/`等）
-- [ ] 11.2 `make-you-chic-ui`のAppShell（Sidebar+Topbar+Content）を用いた共通レイアウト
-- [ ] 11.3 テーマプロバイダ（ライト/ダーク・文字サイズ: localStorage、ブランドカラー・
-       フォント: バックエンドAPI `/api/admin/theme`から取得。一般ユーザは読み取りのみ、
-       管理者は変更可能なUIを持つ）
-- [ ] 11.4 react-i18nextセットアップ（日本語・英語のメッセージリソース、Unit 1時点では
-       共通UI文言のみ）
-- [ ] 11.5 react-router-domによるルーティング骨組み（各Unitが後続で画面を追加する土台）
+- [x] 11.1 `frontend/src`ディレクトリ構成（`api/`, `theme/`, `layout/`, `routes/`, `i18n/`）
+- [x] 11.2 `make-you-chic-ui`のAppShell（Sidebar+Topbar+Content）を用いた共通レイアウト
+      （`AppLayout`、react-routerのレイアウトルートパターン）
+- [x] 11.3 テーマプロバイダ（`make-you-chic-ui`の`ThemeProvider`をライト/ダーク・文字
+      サイズの管理にそのまま利用。ブランドカラー・フォントは`AppThemeSync`が
+      `GET /api/theme`の結果で`setBrand`/`setFontFamily`を上書きし、管理者設定を
+      全利用者に反映する。integration-guide.mdの実際のAPI仕様（`ThemeBrand`/
+      `ThemeFontFamily`の値、`resolve.dedupe`要件、Webフォントの自己ホスティング手順）を
+      踏まえて実装した）
+- [x] 11.4 react-i18nextセットアップ（`i18n/i18n.ts`、日本語・英語のメッセージリソース。
+      Unit 1時点では共通UI文言のみ。既定言語は日本語、ユーザ別言語設定との連携はUnit 2で
+      ログイン時に反映する）
+- [x] 11.5 react-router-domによるルーティング骨組み（`App.tsx`、`AppLayout`をレイアウト
+      ルートとする`HomePage`のみのプレースホルダ）
 
 ### Step 12: Frontend Components Unit Testing
-- [ ] 12.1 AppShell・テーマ切り替えのコンポーネントテスト（Vitest + React Testing Library）
+- [x] 12.1 `AppThemeSync.test.tsx`（バックエンド取得値の反映、取得失敗時のフォールバック）
+- [x] 12.2 `AppLayout.test.tsx`（AppShellレンダリングとナビゲーション文言の確認）
 
 ### Step 13: Frontend Components Summary
-- [ ] 13.1 `aidlc-docs/construction/unit1-design-system-foundation/code/frontend-summary.md`
+- [x] 13.1 `aidlc-docs/construction/unit1-design-system-foundation/code/frontend-summary.md`
        を生成する
 
 ### Step 14: Database Migration Scripts
@@ -126,12 +133,17 @@
        Unit Testingの前提として、Step 8-9と合わせて先行生成した）
 
 ### Step 15: Documentation Generation
-- [ ] 15.1 ルート`README.md`の新規作成（プロジェクト概要、開発環境セットアップ手順、
-       git submodule取得手順を含む）
+- [x] 15.1 ルート`README.md`の新規作成（プロジェクト概要、開発環境セットアップ手順、
+       git submodule取得・ビルド手順、devenv・テスト・API仕様書・本番ビルド手順を含む）
+- [x] 15.2（計画外の追加対応）`backend/build.gradle.kts`にGradle Node Pluginを追加し、
+       `bootWar`/`war`実行時にフロントエンドのビルド（`npm run build`）を自動実行するよう
+       配線した（requirements.md 3章「リリースビルド時はGradle Node Pluginでフロントエンドを
+       ビルドし単一WARに内包する」に対応。README作成時に未実装であることに気づき追加した）
 
 ### Step 16: Deployment Artifacts Generation
-- [ ] 16.1 `Dockerfile`（マルチステージビルド、`eclipse-temurin:25-jre`ベース）
-- [ ] 16.2 `.env.example`（環境変数のサンプル）
+- [x] 16.1 `Dockerfile`（マルチステージビルド、`eclipse-temurin:25-jdk`でビルド→
+       `eclipse-temurin:25-jre`で実行。submoduleチェックアウトが前提である旨を明記）
+- [x] 16.2 `.env.example`（内部DB・レート制限の環境変数サンプル）
 
 ## 著作権・ライセンス表記
 

@@ -19,6 +19,12 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    // make-you-chic-ui is linked via file: (submodule) — without dedupe,
+    // Vite can resolve the library's own devDependency copy of react and
+    // double-load React (integration-guide.md).
+    dedupe: ["react", "react-dom"],
+  },
   server: {
     proxy: {
       "/api": "http://localhost:8080",
@@ -31,5 +37,6 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    setupFiles: ["./src/test/setup.ts"],
   },
 });

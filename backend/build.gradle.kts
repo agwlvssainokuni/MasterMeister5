@@ -19,6 +19,7 @@ plugins {
     war
     id("org.springframework.boot") version "4.1.0"
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 group = "cherry"
@@ -53,4 +54,27 @@ tasks.withType<Test> {
     useJUnitPlatform {
         includeEngines("junit-jupiter", "jqwik")
     }
+}
+
+node {
+    version = "24.0.0"
+    download = true
+    nodeProjectDir = file("${rootDir}/frontend")
+}
+
+val npmBuildFrontend by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class) {
+    dependsOn(tasks.named("npmInstall"))
+    npmCommand = listOf("run", "build")
+    // vite.config.ts outputs directly into src/main/resources/static (requirements.md
+    // §3: single WAR build). Declared as outputs so Gradle can skip this task when
+    // nothing changed.
+    outputs.dir(layout.projectDirectory.dir("src/main/resources/static"))
+}
+
+tasks.named("war") {
+    dependsOn(npmBuildFrontend)
+}
+
+tasks.named("bootWar") {
+    dependsOn(npmBuildFrontend)
 }

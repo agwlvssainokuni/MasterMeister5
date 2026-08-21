@@ -1,0 +1,95 @@
+# MasterMeister5
+
+対象RDBMSのマスタデータ管理・アクセス制御・監査を行うWebアプリケーション。詳細な要件は
+`aidlc-docs/inception/requirements/requirements.md` を参照。
+
+## プロジェクト構成
+
+```
+backend/    Spring Boot アプリケーション（フロントエンドのビルド成果物を内包）
+frontend/   React アプリケーション (Vite)
+devenv/     開発環境 (Docker Compose)
+libs/       git submodule配置先（make-you-chic-ui、java-mustache-processor）
+```
+
+## 開発環境セットアップ
+
+### 1. リポジトリの取得（submodule込み）
+
+```bash
+git clone --recurse-submodules <このリポジトリのURL>
+# 既にcloneしている場合
+git submodule update --init --recursive
+```
+
+### 2. `libs/make-you-chic-ui` のビルド
+
+frontendが依存する`make-you-chic-ui`はビルド成果物（`dist/`）を消費する構成のため、
+初回セットアップ時と更新時にビルドが必要（詳細は
+`libs/make-you-chic-ui/docs/integration-guide.md` 参照）。
+
+```bash
+cd libs/make-you-chic-ui
+npm install
+npm run build
+cd ../..
+```
+
+### 3. `libs/java-mustache-processor` の確認
+
+Gradleマルチモジュール構成に`cherry-mustache-core`サブプロジェクトとして直接組み込むため、
+追加のビルド操作は不要（`./gradlew build`実行時に他のサブプロジェクトと同様にビルドされる）。
+
+### 4. バックエンドの起動
+
+```bash
+./gradlew :backend:bootRun
+```
+
+内部データベース（H2、ファイルベース）は`./data/mastermeister5`に作成される
+（`MM5_INTERNAL_DB_PATH`環境変数で変更可能）。
+
+### 5. フロントエンドの起動
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+`/api`へのリクエストは`vite.config.ts`のプロキシ設定によりバックエンド（`localhost:8080`）
+へ転送される。
+
+### 6. 開発用外部サービス（Docker Compose）
+
+```bash
+cd devenv
+docker compose up               # MailPitのみ起動
+docker compose --profile mysql up     # MySQLも起動
+docker compose --profile mariadb up   # MariaDBも起動
+docker compose --profile postgres up  # PostgreSQLも起動
+```
+
+MailPit Web UI: http://localhost:8025
+
+## テスト
+
+```bash
+./gradlew test          # バックエンド（JUnit5 + jqwik）
+cd frontend && npm test  # フロントエンド（Vitest + React Testing Library）
+```
+
+## API仕様書
+
+バックエンド起動後、Swagger UIで確認できる: http://localhost:8080/swagger-ui.html
+（Unit 1時点ではすべてのエンドポイントが認証必須のため、閲覧にはログインが必要。
+ログイン機能はUnit 2で実装される）
+
+## ビルド（本番相当）
+
+```bash
+./gradlew :backend:bootWar
+```
+
+フロントエンドのビルド成果物は`backend/src/main/resources/static`にコピーされ、単一WARに
+内包される。Dockerコンテナ化する場合は`Dockerfile`を参照。
