@@ -151,3 +151,19 @@
 **Context**: INCEPTION PHASE 完了 → CONSTRUCTION PHASE（Unit 1: デザインシステム基盤）へ遷移
 
 ---
+
+## CONSTRUCTION - Unit 1 - Functional Designスキップ確認
+**Timestamp**: 2026-08-21T14:50:00Z
+**User Input**: "commit" / "NFR Requirementsに進めてください"
+**AI Response**: "Functional DesignスキップとNFR Requirements実行の方針にユーザーが同意。NFR Requirementsステージへ進む。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - Functional Design SKIP確定 → NFR Requirementsへ遷移
+
+---
+
+## CONSTRUCTION - Unit 1 - NFR Requirements Planning
+**Timestamp**: 2026-08-21T14:55:00Z
+**User Input**: (前段の同意を受けた継続作業。ユーザーからの新規入力なし)
+**AI Response**: "requirements.md 3章・5章を分析し、Scalability/Performance/Availability・PBTフレームワーク選定・Usabilityは既に確定済みとしN/A判定(根拠明記)。認証基盤(Spring Security)・脆弱性スキャンツール・構造化ログ実装方式・レート制限実装方式の4問を作成し、各問にAI推奨を明記した([Answer]:タグは空欄)。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - NFR Requirements Step 1〜4 完了、Step 5 GATE待ち（コミット後に提示）
+
+---
