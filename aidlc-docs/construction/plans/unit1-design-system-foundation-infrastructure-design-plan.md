@@ -42,7 +42,7 @@ B) 3サービスをすべて常時起動対象として定義する（`docker co
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 本番相当コンテナのベースイメージ
 本番相当のDockerコンテナ化（実行可能WARを実行するコンテナ）のベースイメージをどう選定
@@ -55,7 +55,7 @@ A) `eclipse-temurin:25-jre`をバージョンピン留めして使用する（`l
 
 B) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: 内部DB（H2）の永続化モード
 requirements.mdで内部データベースはH2 Databaseと確定していますが、永続化モードはどうしますか？
@@ -72,7 +72,7 @@ C) 環境ごとに切り替え可能にする（開発はインメモリ、本�
 
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ## Mandatory Artifacts
 
