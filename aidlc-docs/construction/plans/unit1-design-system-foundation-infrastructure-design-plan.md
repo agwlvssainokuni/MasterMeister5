@@ -7,10 +7,10 @@ Infrastructure Designでは、NFR Designの論理コンポーネント（Securit
 
 ## 実行チェックリスト
 
-- [ ] Step A: nfr-design/logical-components.md、requirements.md 3章（デプロイ・開発環境）を分析する
-- [ ] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
-- [ ] Step C: `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/infrastructure-design.md` を生成する
-- [ ] Step D: `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/deployment-architecture.md` を生成する
+- [x] Step A: nfr-design/logical-components.md、requirements.md 3章（デプロイ・開発環境）を分析する
+- [x] Step B: 承認された回答（下記Clarifying Questions参照）を反映する
+- [x] Step C: `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/infrastructure-design.md` を生成する
+- [x] Step D: `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/deployment-architecture.md` を生成する
 
 ## 既にN/A判定（回答不要、根拠を明記）
 
@@ -76,5 +76,5 @@ D) Other (please describe after [Answer]: tag below)
 
 ## Mandatory Artifacts
 
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/infrastructure-design.md`
-- [ ] `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/deployment-architecture.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/infrastructure-design.md`
+- [x] `aidlc-docs/construction/unit1-design-system-foundation/infrastructure-design/deployment-architecture.md`
