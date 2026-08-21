@@ -181,3 +181,21 @@
 **User Input**: (前段のコミット承認を受けた継続作業。ユーザーからの新規入力なし)
 **AI Response**: "nfr-requirements.md(SECURITY-03/04/08/09/10/11/15への対応方針を含む)、tech-stack-decisions.md(Spring Security、GitHub Dependabot、Logback+logstash-logback-encoder、bucket4j、Gradle dependencyLocking)を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 1 - NFR Requirements Step 6 完了、Step 7 承認プロンプト提示前
+
+---
+
+## CONSTRUCTION - Unit 1 - NFR Requirements 承認
+**Timestamp**: 2026-08-21T15:10:00Z
+**User Input**: "承認します、NFR Designに進めてください"
+**AI Response**: "Unit 1のNFR Requirementsステージの完了を承認として記録。NFR Designステージに進む。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - NFR Requirements 完了 → NFR Design ステージへ遷移
+
+---
+
+## CONSTRUCTION - Unit 1 - NFR Design Planning
+**Timestamp**: 2026-08-21T15:15:00Z
+**User Input**: (前段の承認を受けた継続作業。ユーザーからの新規入力なし)
+**AI Response**: "nfr-requirements.md・tech-stack-decisions.mdを分析し、Resilience/Scalability/Performance Patternsは既存方針(resiliency-baseline不適用、単一インスタンス、性能目標値なし)によりN/A判定(根拠明記)。bucket4jのレート制限単位・CSP許可ソース・相関ID生成方式・グローバル例外ハンドラのレスポンス形式の4問を作成し、各問にAI推奨を明記した([Answer]:タグは空欄)。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - NFR Design Step 1〜4 完了、Step 5 GATE待ち（コミット後に提示）
+
+---
