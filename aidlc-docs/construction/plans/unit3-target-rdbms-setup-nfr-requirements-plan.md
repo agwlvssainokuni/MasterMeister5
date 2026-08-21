@@ -35,7 +35,7 @@ B) AES-256-CBC（HMACによる改ざん検知を別途付与）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 接続確認（テスト接続）のタイムアウト
 
@@ -48,7 +48,7 @@ B) 10秒（やや長めに許容し、タイムアウトによる誤判定を減
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: コネクションプール（HikariCP）のサイズ設定
 
@@ -59,7 +59,7 @@ B) 最大プールサイズ10（対象RDBMSごとの負荷に余裕を持たせ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: スキーマ取込のタイムアウト・大規模スキーマへの対応
 
@@ -71,7 +71,7 @@ B) スキーマ取込を非同期処理とし、進捗確認・完了通知の�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 5: JDBCドライバのバージョン管理・脆弱性スキャン
 
@@ -83,7 +83,7 @@ B) JDBCドライバは特別に手動でのバージョン固定・追跡を行�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: 接続エラーメッセージの分類
 
@@ -99,7 +99,7 @@ B) JDBCドライバの例外メッセージをそのまま管理者に表示す�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
