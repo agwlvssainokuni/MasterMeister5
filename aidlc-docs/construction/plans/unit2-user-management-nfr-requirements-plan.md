@@ -37,7 +37,7 @@ B) BCrypt（`BCryptPasswordEncoder`）。Spring Securityのデフォルトであ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 2: 既知漏洩パスワード照合（`checkBreachedPassword`）のデータソース
 
@@ -49,7 +49,7 @@ B) 外部API（Have I Been Pwned等のk-anonymity方式API）にパスワード�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: リフレッシュトークンのハッシュ方式
 
@@ -64,7 +64,7 @@ B) アプリケーション秘密鍵によるHMAC-SHA256（ペッパー付与）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: JWTアクセストークンの署名アルゴリズム・鍵管理
 
@@ -77,7 +77,7 @@ B) 非対称鍵RS256（秘密鍵で署名、公開鍵で検証）。将来的に
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 5: 招待/パスワードリセットメール送信失敗時のリトライ方針
 
@@ -92,7 +92,7 @@ B) 送信失敗時に指数バックオフ等で自動リトライする（例: 
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: 監査ログの改ざん防止の担保レベル（SECURITY-13/14: 改変・削除不可）
 
@@ -105,7 +105,7 @@ UPDATE/DELETE権限を剥奪する（H2の権限設定で追加保証する）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 7: AuditLogComponentのデータモデル方針
 
@@ -121,7 +121,7 @@ B) イベント種別ごとに個別のテーブルを設ける（例: `login_ev
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 8: 機微設定（初期管理者パスワード・JWT署名鍵・パスワードリセット用の
 暗号材料等）の管理方法
@@ -133,7 +133,7 @@ B) このタイミングでHashiCorp Vault等の外部シークレットマネ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
