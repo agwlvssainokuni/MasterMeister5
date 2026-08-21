@@ -182,3 +182,13 @@ Testステージの役割である実行検証を前倒しで実施した。以�
 `npx tsc --noEmit`（型エラーなし）、`./gradlew :backend:bootWar`（フロントエンド自動ビルドを
 含め成功、WAR生成確認）をすべて実行し成功を確認した。これらの修正内容はBuild and Testステージ
 でも参照する。
+
+### 追加検証: `bootWar`が`make-you-chic-ui`自体もビルドするか（ユーザーからの再確認）
+
+ユーザーから「`bootWar`は`make-you-chic-ui`の`npm install`/`npm run build`も実行するか」と
+問われ、実際に`libs/make-you-chic-ui/packages/make-you-chic-ui/dist`を削除して`bootWar`を
+実行したところ、**実行しておらずビルド失敗**することを確認した（npmの`file:`参照は依存先の
+ビルドを自動実行しないため）。`backend/build.gradle.kts`に`npmInstallMakeYouChicUi`・
+`npmBuildMakeYouChicUi`タスクを追加し、`npmBuildFrontend`の前提として実行されるよう配線した。
+再度`dist`を削除して`bootWar`を実行し、`make-you-chic-ui`のビルドから単一WAR生成までが
+1コマンドで完結することを確認した。

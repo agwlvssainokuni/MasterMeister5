@@ -28,6 +28,10 @@ frontendが依存する`make-you-chic-ui`はビルド成果物（`dist/`）を�
 初回セットアップ時と更新時にビルドが必要（詳細は
 `libs/make-you-chic-ui/docs/integration-guide.md` 参照）。
 
+`./gradlew :backend:bootWar`／`:backend:war`実行時はGradle（`npmBuildMakeYouChicUi`タスク）
+が自動的にビルドするため、本番相当ビルドではこの手順は不要。フロントエンドを`npm run dev`
+（Vite開発サーバ）で個別に起動する場合はGradleを介さないため、以下を手動で実行しておくこと。
+
 ```bash
 cd libs/make-you-chic-ui
 npm install
@@ -91,5 +95,6 @@ cd frontend && npm test  # フロントエンド（Vitest + React Testing Librar
 ./gradlew :backend:bootWar
 ```
 
-フロントエンドのビルド成果物は`backend/src/main/resources/static`にコピーされ、単一WARに
-内包される。Dockerコンテナ化する場合は`Dockerfile`を参照。
+`make-you-chic-ui`のビルド（未実施の場合）→ frontendのビルド → `backend/src/main/resources/static`
+への出力 → 単一WARへの内包、まで1コマンドで完結する。Dockerコンテナ化する場合は`Dockerfile`を
+参照。

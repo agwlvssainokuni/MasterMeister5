@@ -74,9 +74,34 @@ node {
     nodeProjectDir = file("${rootDir}/frontend")
 }
 
+// frontend's `make-you-chic-ui` dependency is a bare file: reference to the
+// submodule (README.md setup step 2) — npm's file: linking does not build
+// the target package itself, so without this, npmBuildFrontend fails to
+// resolve "make-you-chic-ui" the first time (confirmed by deleting
+// libs/make-you-chic-ui/packages/make-you-chic-ui/dist and re-running
+// bootWar). Building it here makes a single `bootWar` self-contained.
+val makeYouChicUiDir = file("${rootDir}/libs/make-you-chic-ui")
+
+val npmInstallMakeYouChicUi =
+    tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmInstallMakeYouChicUi") {
+        workingDir = makeYouChicUiDir
+        npmCommand = listOf("install")
+        inputs.file(makeYouChicUiDir.resolve("package.json"))
+        inputs.file(makeYouChicUiDir.resolve("package-lock.json"))
+        outputs.dir(makeYouChicUiDir.resolve("node_modules"))
+    }
+
+val npmBuildMakeYouChicUi =
+    tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmBuildMakeYouChicUi") {
+        dependsOn(npmInstallMakeYouChicUi)
+        workingDir = makeYouChicUiDir
+        npmCommand = listOf("run", "build", "-w", "make-you-chic-ui")
+        outputs.dir(makeYouChicUiDir.resolve("packages/make-you-chic-ui/dist"))
+    }
+
 val npmBuildFrontend =
     tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmBuildFrontend") {
-        dependsOn(tasks.named("npmInstall"))
+        dependsOn(tasks.named("npmInstall"), npmBuildMakeYouChicUi)
         npmCommand = listOf("run", "build")
         // vite.config.ts outputs directly into src/main/resources/static (requirements.md
         // §3: single WAR build). Declared as outputs so Gradle can skip this task when
