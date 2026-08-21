@@ -46,7 +46,7 @@ B) strength=12等、デフォルトより高いコストパラメータを明示
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: ログインAPIの実装方式
 
@@ -61,7 +61,7 @@ AuthenticationManager経由でログインを処理する（Spring Securityの�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: フロントエンドでのトークン保存方式（functional-design/frontend-components.mdでNFR Design送りとした項目）
 
@@ -77,7 +77,7 @@ B) アクセストークン・リフレッシュトークンの双方をJSONレ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: JWT実装ライブラリ
 
@@ -90,7 +90,7 @@ B) `com.nimbusds:nimbus-jose-jwt`。JOSE仕様への準拠度が高く高機能�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 5: 招待/パスワードリセットトークンの生成方式
 
@@ -102,7 +102,7 @@ B) UUID（v4、約122bitのランダム性）をそのままトークン文字�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: 監査ログ記録（`AuditLogComponent.recordEvent`呼び出し）の実装パターン
 
@@ -116,7 +116,7 @@ B) Spring AOP（`@Around`アドバイス等）でサービスメソッド呼び�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
