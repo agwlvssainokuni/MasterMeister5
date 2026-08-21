@@ -36,17 +36,29 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    // H2 support ships inside flyway-core itself — no separate flyway-database-h2
+    // artifact exists (unlike flyway-mysql / flyway-database-postgresql etc.).
     implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-database-h2")
     implementation("com.h2database:h2")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("com.bucket4j:bucket4j-core:8.10.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation(project(":libs:java-mustache-processor:cherry-mustache-core"))
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    // spring-boot-starter-tomcat (the coarser starter) pulled spring-web out of
+    // the runtime classpath entirely when marked providedRuntime; the finer
+    // -runtime artifact avoids that.
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat-runtime")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    // Spring Boot 4.x split @WebMvcTest / @DataJpaTest out of
+    // spring-boot-starter-test into per-slice starters.
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.security:spring-security-test")
+    // @DataJpaTest does not import Flyway autoconfiguration by default; tests
+    // that need it (AppThemeRepositoryImplTest) add it back explicitly via
+    // @ImportAutoConfiguration, which requires this class on the classpath.
+    testImplementation("org.springframework.boot:spring-boot-flyway")
     testImplementation("net.jqwik:jqwik:1.9.1")
 }
 
@@ -62,13 +74,18 @@ node {
     nodeProjectDir = file("${rootDir}/frontend")
 }
 
-val npmBuildFrontend by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class) {
-    dependsOn(tasks.named("npmInstall"))
-    npmCommand = listOf("run", "build")
-    // vite.config.ts outputs directly into src/main/resources/static (requirements.md
-    // §3: single WAR build). Declared as outputs so Gradle can skip this task when
-    // nothing changed.
-    outputs.dir(layout.projectDirectory.dir("src/main/resources/static"))
+val npmBuildFrontend =
+    tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmBuildFrontend") {
+        dependsOn(tasks.named("npmInstall"))
+        npmCommand = listOf("run", "build")
+        // vite.config.ts outputs directly into src/main/resources/static (requirements.md
+        // §3: single WAR build). Declared as outputs so Gradle can skip this task when
+        // nothing changed.
+        outputs.dir(layout.projectDirectory.dir("src/main/resources/static"))
+    }
+
+tasks.named("processResources") {
+    mustRunAfter(npmBuildFrontend)
 }
 
 tasks.named("war") {

@@ -31,6 +31,7 @@ import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import jakarta.servlet.FilterChain;
 import java.time.Duration;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -55,7 +56,7 @@ class RateLimitFilterTest {
 
         filter.doFilter(request, new MockHttpServletResponse(), filterChain);
         var secondResponse = new MockHttpServletResponse();
-        when(errorResponseFactory.create("RATE_LIMITED", "errors.rate_limited", null))
+        when(errorResponseFactory.create(eq("RATE_LIMITED"), eq("errors.rate_limited"), any(Locale.class)))
                 .thenReturn(new ErrorResponse("RATE_LIMITED", "too many requests", null));
         filter.doFilter(request, secondResponse, filterChain);
 

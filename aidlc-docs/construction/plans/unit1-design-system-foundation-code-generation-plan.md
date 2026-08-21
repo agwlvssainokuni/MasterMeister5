@@ -149,3 +149,36 @@
 
 生成する全てのソースファイル冒頭に、著作権者`agwlvssainokuni`・Apache License 2.0の
 ヘッダーコメントを付与する（memory: feedback-copyright-license-header）。
+
+## 完了後の実動作検証（ユーザーからの確認要求を受けて実施）
+
+Code Generation完了後、ユーザーから「テストは全て通ったか」と問われたため、本来Build and
+Testステージの役割である実行検証を前倒しで実施した。以下の問題を検出・修正した:
+
+- **Gradle wrapper未生成**（Step 1の抜け）: `gradlew`/`gradlew.bat`/`gradle/wrapper/`を
+  Gradle 9.6.1で生成し追加した
+- **`flyway-database-h2`は存在しないアーティファクト**: H2サポートは`flyway-core`に内蔵されて
+  いるため削除した
+- **`providedRuntime("spring-boot-starter-tomcat")`が`spring-web`をランタイムクラスパスから
+  除外する問題**（ユーザーからの直接指摘）: `spring-boot-starter-tomcat-runtime`に変更した
+- **`UsernamePasswordAuthenticationFilter`のimportパッケージ誤り**:
+  `org.springframework.security.web.authentication`に修正
+- **`HttpServletResponse.SC_TOO_MANY_REQUESTS`は存在しない**:
+  `HttpStatus.TOO_MANY_REQUESTS.value()`に置換
+- **Spring Boot 4.1でのテストスライスAPI移動**: `@WebMvcTest`/`@AutoConfigureMockMvc`は
+  `org.springframework.boot.webmvc.test.autoconfigure`、`@DataJpaTest`は
+  `org.springframework.boot.data.jpa.test.autoconfigure`パッケージに移動しており、対応する
+  `spring-boot-starter-webmvc-test`/`spring-boot-starter-data-jpa-test`をtestImplementationに
+  追加した
+- **`@WebMvcTest`が`jakarta.servlet.Filter`実装（`JwtAuthenticationFilter`等）を巻き込む問題**:
+  `cherry.mastermeister5.platform.security`パッケージ全体を`excludeFilters`で除外した
+- **`@DataJpaTest`はFlyway自動設定を含まない**: `@ImportAutoConfiguration(FlywayAutoConfiguration.class)`
+  を明示追加し、`spring-boot-flyway`をtestImplementationに追加した
+- **Mockito厳格スタビング**: `RateLimitFilterTest`の`Locale`引数を`null`固定から`any(Locale.class)`に修正
+- **Gradle Node Pluginのタスク検証エラー**: `npmBuildFrontend`と`processResources`の暗黙的
+  依存関係を`mustRunAfter`で明示した
+
+修正後、`./gradlew :backend:test`（9件全て成功）、`npm test`（frontend、3件全て成功）、
+`npx tsc --noEmit`（型エラーなし）、`./gradlew :backend:bootWar`（フロントエンド自動ビルドを
+含め成功、WAR生成確認）をすべて実行し成功を確認した。これらの修正内容はBuild and Testステージ
+でも参照する。

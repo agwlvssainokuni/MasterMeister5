@@ -24,8 +24,10 @@ import cherry.mastermeister5.platform.web.ErrorResponseFactory;
 import cherry.mastermeister5.platform.web.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,13 +35,24 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
- * Security filters are disabled here (authorization is exercised at the
- * integration-test level, see Build and Test); this test focuses purely on
- * request/response mapping. {@link GlobalExceptionHandler} is picked up
- * automatically by the {@code @WebMvcTest} slice, so its dependency is
- * stubbed rather than left unresolved.
+ * The whole {@code cherry.mastermeister5.platform.security} package is
+ * excluded from this slice: {@code @WebMvcTest}'s scan includes any
+ * {@code jakarta.servlet.Filter} bean (not just controllers), which would
+ * pull in {@code JwtAuthenticationFilter} — and transitively
+ * {@code SecurityConfig}, which needs it — none of which this slice's
+ * restricted context can satisfy. Authorization itself is exercised at the
+ * integration-test level (see Build and Test), so this test focuses purely
+ * on request/response mapping — hence {@code addFilters = false} as well.
+ * {@link GlobalExceptionHandler} is picked up automatically by the
+ * {@code @WebMvcTest} slice, so its dependency is stubbed rather than left
+ * unresolved.
  */
-@WebMvcTest(AppThemeController.class)
+@WebMvcTest(
+        controllers = AppThemeController.class,
+        excludeFilters =
+                @ComponentScan.Filter(
+                        type = FilterType.REGEX,
+                        pattern = "cherry\\.mastermeister5\\.platform\\.security\\..*"))
 @AutoConfigureMockMvc(addFilters = false)
 class AppThemeControllerTest {
 

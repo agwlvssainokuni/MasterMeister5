@@ -277,3 +277,11 @@
 **User Input**: (継続作業。バックエンド分の中間コミット承認「commit」を含む)
 **AI Response**: "16ステップ全てを完了。バックエンド(プロジェクト構造・ビジネスロジック・APIレイヤ・リポジトリレイヤ・DBマイグレーション)に続き、フロントエンド(AppShell/ThemeProvider統合、AppThemeSync、i18n、ルーティング)を実装。make-you-chic-uiのintegration-guide.mdを実際に読み込み、resolve.dedupe設定・Webフォント自己ホスティング・ThemeProviderの実際のAPIに合わせて設計を調整した。README.md、Dockerfile、.env.exampleを生成。README作成時にGradle Node Pluginの配線漏れに気づきbackend/build.gradle.ktsに追加した。"
 **Context**: CONSTRUCTION PHASE - Unit 1 - Code Generation Step 10〜13 完了、Step 14 完了メッセージ提示前
+
+---
+
+## CONSTRUCTION - Unit 1 - Code Generation完了後の実動作検証
+**Timestamp**: 2026-08-21T17:00:00Z
+**User Input**: "確認。テストは全て通った？"
+**AI Response**: "実際に./gradlew :backend:testを実行し検証した。当初4件失敗(flyway-database-h2アーティファクト不在、UsernamePasswordAuthenticationFilterのimportパッケージ誤り、HttpServletResponse.SC_TOO_MANY_REQUESTS不在、Spring Boot 4.1でのテストスライスAPIパッケージ移動、@WebMvcTestがFilter実装を巻き込む問題、@DataJpaTestがFlyway自動設定を含まない問題)。ユーザーから「spring-boot-starter-tomcatをprovidedRuntimeするとspring-webがランタイムパスから除外される、spring-boot-starter-tomcat-runtimeを使うこと」との直接指摘を受け修正。Gradle wrapper未生成(Step 1の抜け)も発見し生成・追加した。最終的にbackend 9件・frontend 3件のテストが全て成功し、tsc型チェック・bootWarによるWAR生成(フロントエンド自動ビルド含む)も成功を確認した。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - Code Generation 実動作検証完了、修正一式をコミット前

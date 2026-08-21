@@ -20,10 +20,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * {@code @DataJpaTest}'s default auto-configuration set only imports
+ * {@code DataJpaRepositoriesAutoConfiguration}/{@code HibernateJpaAutoConfiguration}
+ * — Flyway is not among them, so {@code ddl-auto: validate} (application.yml)
+ * would otherwise fail against an empty schema. Imported explicitly here to
+ * keep validating against the real, Flyway-managed schema rather than
+ * loosening ddl-auto just for tests.
+ */
 @DataJpaTest
+@ImportAutoConfiguration(FlywayAutoConfiguration.class)
 @Import(AppThemeRepositoryImpl.class)
 class AppThemeRepositoryImplTest {
 
