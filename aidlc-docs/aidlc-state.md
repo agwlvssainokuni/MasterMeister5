@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: INCEPTION - User Stories（生成完了、ユーザー承認待ち）
+- **Current Stage**: INCEPTION - Workflow Planning
 
 ## Workspace State
 - **Existing Code**: No
@@ -26,8 +26,36 @@
 | resiliency-baseline | No | Requirements Analysis |
 | property-based-testing | Yes（全面適用。権限判定・合成ロジック、YAML入出力、SQL生成ロジックを重点対象） | Requirements Analysis |
 
+## Execution Plan Summary
+- **Total Stages**: 8（Application Design、Units Generation、Per-UnitループのFunctional
+  Design/NFR Requirements/NFR Design/Infrastructure Design/Code Generation、Build and Test）
+- **Stages to Execute**: Application Design, Units Generation, Functional Design(per-unit),
+  NFR Requirements(per-unit), NFR Design(per-unit), Infrastructure Design(per-unit),
+  Code Generation, Build and Test
+- **Stages to Skip**: なし（Reverse Engineeringはgreenfieldのため対象外）
+
 ## Stage Progress
 ### 🔵 INCEPTION PHASE
 - [x] Workspace Detection (2026-08-21T12:35:19Z)
 - [x] Requirements Analysis — requirements.md作成完了、ユーザー承認済み
-- [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認待ち
+- [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
+- [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認待ち
+- [ ] Application Design - EXECUTE
+- [ ] Units Generation - EXECUTE
+
+### 🟢 CONSTRUCTION PHASE
+- [ ] Functional Design - EXECUTE（ユニットごとに再判定）
+- [ ] NFR Requirements - EXECUTE（ユニットごとに再判定）
+- [ ] NFR Design - EXECUTE（ユニットごとに再判定）
+- [ ] Infrastructure Design - EXECUTE（ユニットごとに再判定、軽量）
+- [ ] Code Generation - EXECUTE
+- [ ] Build and Test - EXECUTE
+
+### 🟡 OPERATIONS PHASE
+- [ ] Operations - PLACEHOLDER
+
+## Current Status
+- **Lifecycle Phase**: INCEPTION
+- **Current Stage**: Workflow Planning Complete
+- **Next Stage**: Application Design
+- **Status**: ユーザー承認待ち
