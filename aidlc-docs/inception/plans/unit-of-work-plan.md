@@ -7,17 +7,19 @@ Application Design（10コンポーネント）とrequirements.md・stories.md�
 
 ## 実行チェックリスト
 
-- [ ] Step A: requirements.md・stories.md・application-design.mdを踏まえ、コンポーネント・
+- [x] Step A: requirements.md・stories.md・application-design.mdを踏まえ、コンポーネント・
       ストーリーの自然なグルーピング候補を洗い出す
-- [ ] Step B: 承認された内訳方針（下記Clarifying Questions参照）に従いUnit境界を確定する
-- [ ] Step C: `aidlc-docs/inception/application-design/unit-of-work.md` を生成する
+- [x] Step B: 承認された内訳方針（下記Clarifying Questions参照）に従いUnit境界を確定する
+- [x] Step C: `aidlc-docs/inception/application-design/unit-of-work.md` を生成する
       （Unit定義・責務・含まれるコンポーネント。greenfieldのためコード構成方針も含める）
-- [ ] Step D: `aidlc-docs/inception/application-design/unit-of-work-dependency.md` を生成する
+- [x] Step D: `aidlc-docs/inception/application-design/unit-of-work-dependency.md` を生成する
       （Unit間の依存関係マトリクス、開発順序）
-- [ ] Step E: `aidlc-docs/inception/application-design/unit-of-work-story-map.md` を生成する
+- [x] Step E: `aidlc-docs/inception/application-design/unit-of-work-story-map.md` を生成する
       （全32ストーリーがいずれかのUnitに割り当てられていることを確認）
-- [ ] Step F: Unit境界・依存関係を検証する（循環依存がないか、全コンポーネント・全ストーリーが
-      カバーされているか）
+- [x] Step F: Unit境界・依存関係を検証する（循環依存がないか、全コンポーネント・全ストーリーが
+      カバーされているか）→ PlatformInfrastructureComponentにアプリ全体テーマ設定
+      （ブランドカラー・フォント）の責務が未割当だったため、components.md/component-methods.md
+      に軽微な追記を行い解消した
 
 ## 前提となる評価（回答不要・根拠を明記した判断）
 
@@ -94,6 +96,6 @@ C) Other (please describe after [Answer]: tag below)
 
 ## Mandatory Unit Artifacts
 
-- [ ] `aidlc-docs/inception/application-design/unit-of-work.md`
-- [ ] `aidlc-docs/inception/application-design/unit-of-work-dependency.md`
-- [ ] `aidlc-docs/inception/application-design/unit-of-work-story-map.md`
+- [x] `aidlc-docs/inception/application-design/unit-of-work.md`
+- [x] `aidlc-docs/inception/application-design/unit-of-work-dependency.md`
+- [x] `aidlc-docs/inception/application-design/unit-of-work-story-map.md`

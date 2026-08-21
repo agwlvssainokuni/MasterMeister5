@@ -41,7 +41,7 @@
 - [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
 - [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認済み
 - [x] Application Design — components.md/component-methods.md/services.md/component-dependency.md/application-design.md作成完了（10コンポーネント）、ユーザー承認済み
-- [ ] Units Generation - EXECUTE（進行中）
+- [x] Units Generation — unit-of-work.md/unit-of-work-dependency.md/unit-of-work-story-map.md作成完了（6 Unit）、ユーザー承認待ち
 
 ### 🟢 CONSTRUCTION PHASE
 - [ ] Functional Design - EXECUTE（ユニットごとに再判定）

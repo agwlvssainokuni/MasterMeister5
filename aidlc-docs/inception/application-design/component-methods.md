@@ -103,6 +103,8 @@ Design（Construction phase、ユニットごと）で定義する。型は概�
 | `resolveMessage` | MessageKey, Locale, Params | LocalizedText | ロケールに応じたメッセージを解決する |
 | `getUserLocale` | UserId | Locale | ユーザのUI表示言語設定を取得する |
 | `setUserLocale` | UserId, Locale | void | ユーザのUI表示言語設定を内部DBへ保存する |
+| `getAppTheme` | — | AppTheme(BrandColor, Font) | アプリ全体のテーマ設定（ブランドカラー・フォント）を取得する |
+| `setAppTheme` | AppTheme(BrandColor, Font) | void | 管理者がアプリ全体のテーマ設定を変更する（Units Generation Step Fで追加） |
 
 ## 10. NotificationComponent
 
