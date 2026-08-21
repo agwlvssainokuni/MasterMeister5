@@ -40,7 +40,7 @@ C) 細粒度: 4.1〜4.5をさらに機能単位（例: 招待管理／ロール�
 
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 接続・スキーマ管理とアクセス権限モデルの分離
 requirements.md 4.2節（対象RDBMSセットアップ・アクセス制御）は、接続登録・スキーマ取込と、
@@ -56,7 +56,7 @@ B) 分離しない（4.2節全体を1つのコンポーネントとする）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: フロントエンドをApplication Designの対象に含めるか
 自前デザインシステムライブラリ`make-you-chic-ui`の組み込みを含むフロントエンド（React）側の
@@ -72,7 +72,7 @@ B) 含めない。このステージはバックエンドのコンポーネン�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 4: 横断的関心事の扱い
 JWT認証基盤、暗号化（接続パスワード等）、実効権限キャッシュ（Caffeine）、構造化ログ出力、
@@ -87,7 +87,7 @@ B) 明示せず、各機能コンポーネントの内部実装詳細として�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ## Mandatory Design Artifacts
 
