@@ -7,19 +7,19 @@
 
 ## 実行チェックリスト
 
-- [ ] Step A: requirements.md 4章（機能要件）とstories.mdのEpic構成から、主要な業務機能領域を
+- [x] Step A: requirements.md 4章（機能要件）とstories.mdのEpic構成から、主要な業務機能領域を
       洗い出す
-- [ ] Step B: 承認された粒度・分離方針（下記Clarifying Questions参照）に従い、コンポーネントの
+- [x] Step B: 承認された粒度・分離方針（下記Clarifying Questions参照）に従い、コンポーネントの
       責務境界を確定する
-- [ ] Step C: `components.md` を生成する（コンポーネント名・目的・責務・インターフェース概要）
-- [ ] Step D: `component-methods.md` を生成する（各コンポーネントのメソッドシグネチャ、
+- [x] Step C: `components.md` を生成する（コンポーネント名・目的・責務・インターフェース概要）
+- [x] Step D: `component-methods.md` を生成する（各コンポーネントのメソッドシグネチャ、
       入出力の型、高レベルな目的。詳細な業務ルールはFunctional Designで扱うため含めない）
-- [ ] Step E: `services.md` を生成する（サービス定義、責務、オーケストレーションパターン）
-- [ ] Step F: `component-dependency.md` を生成する（依存関係マトリクス、コンポーネント間の
+- [x] Step E: `services.md` を生成する（サービス定義、責務、オーケストレーションパターン）
+- [x] Step F: `component-dependency.md` を生成する（依存関係マトリクス、コンポーネント間の
       通信パターン、データフロー）
-- [ ] Step G: 設計の完全性・一貫性を検証する（requirements.md 4.1〜4.5の各要件がいずれかの
+- [x] Step G: 設計の完全性・一貫性を検証する（requirements.md 4.1〜4.5の各要件がいずれかの
       コンポーネントで扱われているか、循環依存がないか）
-- [ ] Step H: 上記4文書を統合した `application-design.md` を生成する
+- [x] Step H: 上記4文書を統合した `application-design.md` を生成する
 
 ## Clarifying Questions
 
@@ -91,8 +91,8 @@ C) Other (please describe after [Answer]: tag below)
 
 ## Mandatory Design Artifacts
 
-- [ ] `aidlc-docs/inception/application-design/components.md`
-- [ ] `aidlc-docs/inception/application-design/component-methods.md`
-- [ ] `aidlc-docs/inception/application-design/services.md`
-- [ ] `aidlc-docs/inception/application-design/component-dependency.md`
-- [ ] `aidlc-docs/inception/application-design/application-design.md`（上記4文書の統合版）
+- [x] `aidlc-docs/inception/application-design/components.md`
+- [x] `aidlc-docs/inception/application-design/component-methods.md`
+- [x] `aidlc-docs/inception/application-design/services.md`
+- [x] `aidlc-docs/inception/application-design/component-dependency.md`
+- [x] `aidlc-docs/inception/application-design/application-design.md`（上記4文書の統合版）

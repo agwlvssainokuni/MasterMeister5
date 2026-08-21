@@ -40,7 +40,7 @@
 - [x] Requirements Analysis — requirements.md作成完了、ユーザー承認済み
 - [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
 - [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認済み
-- [ ] Application Design - EXECUTE（進行中）
+- [x] Application Design — components.md/component-methods.md/services.md/component-dependency.md/application-design.md作成完了（10コンポーネント）、ユーザー承認待ち
 - [ ] Units Generation - EXECUTE
 
 ### 🟢 CONSTRUCTION PHASE
