@@ -245,3 +245,21 @@
 **User Input**: (前段のコミット承認を受けた継続作業。ユーザーからの新規入力なし)
 **AI Response**: "infrastructure-design.md(devenv Docker Compose構成、本番コンテナ化、H2永続化)とdeployment-architecture.md(開発環境・本番環境のデプロイ構成図)を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 1 - Infrastructure Design Step 6 完了、Step 7 承認プロンプト提示前
+
+---
+
+## CONSTRUCTION - Unit 1 - Infrastructure Design 承認
+**Timestamp**: 2026-08-21T15:50:00Z
+**User Input**: "承認します、Code Generationに進めてください"
+**AI Response**: "Unit 1のInfrastructure Designステージの完了を承認として記録。Code Generationステージに進む。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - Infrastructure Design 完了 → Code Generation ステージへ遷移
+
+---
+
+## CONSTRUCTION - Unit 1 - Code Generation Planning
+**Timestamp**: 2026-08-21T15:55:00Z
+**User Input**: (前段の承認を受けた継続作業。ユーザーからの新規入力なし)
+**AI Response**: "Application Design・NFR Requirements/Design・Infrastructure Designを統合し、unit1-design-system-foundation-code-generation-plan.mdを作成した。DBマイグレーションツール(Flyway)・フロントエンドi18n(react-i18next)・ルーティング(react-router-dom)・API仕様生成(springdoc-openapi)を追加確定。16ステップの実行計画とし、UserLocale永続化・JWT検証の具体実装はUnit 2に委ねる旨を明記した。git submodule追加(外部リポジトリ取得)は実行前にユーザー確認を取ることを計画に明記した。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - Code Generation Step 1〜5 完了、Step 6 承認プロンプト提示前（コミット後）
+
+---

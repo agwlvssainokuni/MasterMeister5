@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: CONSTRUCTION - Unit 1（デザインシステム基盤）- Infrastructure Design
+- **Current Stage**: CONSTRUCTION - Unit 1（デザインシステム基盤）- Code Generation
 
 ## Workspace State
 - **Existing Code**: No
@@ -48,7 +48,7 @@
 
 | Unit | Functional Design | NFR Requirements | NFR Design | Infrastructure Design | Code Generation |
 |---|---|---|---|---|---|
-| 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了・承認待ち | - |
+| 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 進行中 |
 | 2. ユーザ管理 | - | - | - | - | - |
 | 3. 対象RDBMSセットアップ | - | - | - | - | - |
 | 4. アクセス制御 | - | - | - | - | - |
