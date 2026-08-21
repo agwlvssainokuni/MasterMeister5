@@ -154,17 +154,19 @@
       生成する
 
 ### Step 8: Repository Layer Generation
-- [ ] 8.1 `UserJpaRepository`（メールアドレスでの検索を含む）
-- [ ] 8.2 `PasswordResetTokenJpaRepository`
-- [ ] 8.3 `RefreshTokenJpaRepository`（familyId単位の一括更新を含む）
-- [ ] 8.4 `AuditEventJpaRepository`
+- [x] 8.1 `UserJpaRepository`（メールアドレスでの検索を含む。Step 2でサービス層と合わせて
+      先行生成済み）
+- [x] 8.2 `PasswordResetTokenJpaRepository`（同上）
+- [x] 8.3 `RefreshTokenJpaRepository`（familyId単位の一括更新を含む。同上）
+- [x] 8.4 `AuditEventJpaRepository`（同上）
 
 ### Step 9: Repository Layer Unit Testing
-- [ ] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ、AuditEventのJSON詳細列の
-      ラウンドトリップ）
+- [x] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ、AuditEventのJSON詳細列の
+      ラウンドトリップ）。Unit 1と同様、テストの前提として`Step 14: Database Migration
+      Scripts`をここで先行生成した
 
 ### Step 10: Repository Layer Summary
-- [ ] 10.1 `aidlc-docs/construction/unit2-user-management/code/repository-layer-summary.md`
+- [x] 10.1 `aidlc-docs/construction/unit2-user-management/code/repository-layer-summary.md`
        を生成する
 
 ### Step 11: Frontend Components Generation
@@ -197,10 +199,10 @@
        生成する
 
 ### Step 14: Database Migration Scripts
-- [ ] 14.1 `V2__create_user.sql`
-- [ ] 14.2 `V3__create_password_reset_token.sql`
-- [ ] 14.3 `V4__create_refresh_token.sql`
-- [ ] 14.4 `V5__create_audit_event.sql`
+- [x] 14.1 `V2__create_user.sql`（Step 9で先行生成済み）
+- [x] 14.2 `V3__create_password_reset_token.sql`（同上）
+- [x] 14.3 `V4__create_refresh_token.sql`（同上）
+- [x] 14.4 `V5__create_audit_event.sql`（同上）
 
 ### Step 15: Documentation Generation
 - [ ] 15.1 `README.md`更新（初期管理者アカウントの環境変数、ログインが必要になった旨）
