@@ -40,7 +40,7 @@ B) `Invitation`エンティティと`User`エンティティを分離する。�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: アカウント無効化時の既存トークンの扱い（US-1.4の未確定事項）
 
@@ -56,7 +56,7 @@ B) アクセストークン検証時に毎回ユーザの無効化状態をDB照
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: ロール変更の反映タイミング
 
@@ -72,7 +72,7 @@ B) （推奨）JWTにロールを含める。ロール変更は次回ログイ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 4: パスワードリセットトークンの有効期限デフォルト値（US-1.9の未確定事項）
 
@@ -82,7 +82,7 @@ B) より短いデフォルト1時間とする（パスワードリセットは�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 5: 無効化ユーザに対するパスワードリセットの可否（US-1.9の未確定事項）
 
@@ -96,7 +96,7 @@ B) 無効化ユーザに対してもリセットを許可し、パスワード�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: リフレッシュトークンの「トークンファミリ」識別方法
 
@@ -110,7 +110,7 @@ B) 最初に発行されたリフレッシュトークンのID自体をファミ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 7: 初期管理者アカウントの冪等性
 
@@ -124,7 +124,7 @@ B) 環境変数で指定されたメールアドレスの管理者ユーザが�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 8: ログイン失敗回数のカウント単位
 
@@ -136,7 +136,7 @@ B) メールアドレス単位に加えて、IPアドレス単位でもログイ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 9: 招待メール送信失敗時の挙動
 
@@ -152,7 +152,7 @@ B) メール送信失敗時は招待レコード自体をロールバックし�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 10: 本登録時のユーザ情報（氏名等）の項目・必須性
 
@@ -166,7 +166,7 @@ Componentが管理）もこのタイミングで設定できるようにする
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
