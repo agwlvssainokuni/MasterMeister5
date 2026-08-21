@@ -50,7 +50,7 @@ C) さらに細分化する（例: クエリ機能と監査ログを別々のUni
 
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 横断的関心事（基盤コンポーネント）の配置
 Application Designで定義した基盤コンポーネント（SecurityInfrastructure、PlatformInfrastructure、
@@ -73,7 +73,7 @@ B) 基盤コンポーネントのみを独立した「Unit 0: 基盤」として
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: バックエンドのパッケージ構成方針
 `backend`モジュール配下のJavaパッケージ構成はどちらの方針としますか？
@@ -90,7 +90,7 @@ B) レイヤー優先: トップレベルを`controller`/`service`/`repository`�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ## Mandatory Unit Artifacts
 
