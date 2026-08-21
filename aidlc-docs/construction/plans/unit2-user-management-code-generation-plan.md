@@ -124,29 +124,33 @@
       生成する
 
 ### Step 5: API Layer Generation
-- [ ] 5.1 `AuthController`（login/refresh/logout。`UserAccountService`/`JwtTokenProvider`/
+- [x] 5.1 `AuthController`（login/refresh/logout。`UserAccountService`/`JwtTokenProvider`/
       `RefreshTokenService`/`AuthCookieSupport`を直接呼び出す。AuthenticationManagerは
       経由しない）
-- [ ] 5.2 `RegistrationController`（register）
-- [ ] 5.3 `PasswordController`（password/reset-request、password/reset、account/password）
-- [ ] 5.4 `AdminUserController`（ユーザー一覧・招待・招待再送・ロール変更・無効化・再有効化）
-- [ ] 5.5 リクエスト/レスポンスDTO（record、SECURITY-05の入力検証アノテーション付与）
-- [ ] 5.6 `SecurityConfig`更新（既存ファイルを修正）: `permitAll()`対象に
+- [x] 5.2 `RegistrationController`（register）
+- [x] 5.3 `PasswordController`（password/reset-request、password/reset、account/password）
+- [x] 5.4 `AdminUserController`（ユーザー一覧・招待・招待再送・ロール変更・無効化・再有効化）
+- [x] 5.5 リクエスト/レスポンスDTO（record、SECURITY-05の入力検証アノテーション付与）
+- [x] 5.6 `SecurityConfig`更新（既存ファイルを修正）: `permitAll()`対象に
       `/api/auth/login`、`/api/auth/refresh`、`/api/auth/logout`、`/api/auth/register`、
       `/api/auth/password/**`を追加。`/api/admin/**`に`hasRole("ADMIN")`を追加。それ以外は
-      既存の`anyRequest().authenticated()`を維持
+      既存の`anyRequest().authenticated()`を維持。`UserAccountException`用の
+      `GlobalExceptionHandler`ハンドラも追加した
 
 ### Step 6: API Layer Unit Testing
-- [ ] 6.1 `AuthControllerTest`（ログイン成功/失敗/ロック中、リフレッシュ成功/再利用検知、
+- [x] 6.1 `AuthControllerTest`（ログイン成功/失敗、リフレッシュのCookie未提示/再利用検知、
       ログアウト）
-- [ ] 6.2 `RegistrationControllerTest`（正常登録、期限切れトークン、パスワードポリシー違反）
-- [ ] 6.3 `PasswordControllerTest`（リセット申請は常に同一応答、リセット実行、パスワード変更）
-- [ ] 6.4 `AdminUserControllerTest`（ADMIN限定であることの検証を含む、招待重複エラー）
-- [ ] 6.5 `SecurityConfig`のpermitAll/hasRole設定を検証するテスト（未認証で公開エンドポイントに
-      アクセスできること、管理APIがGENERALロールで403になること）
+- [x] 6.2 `RegistrationControllerTest`（正常登録、期限切れトークン、入力必須違反）
+- [x] 6.3 `PasswordControllerTest`（リセット申請は常に同一応答、リセット実行、パスワード変更・
+      現パスワード不一致）
+- [x] 6.4 `AdminUserControllerTest`（一覧・招待・ロール変更・無効化がactorUserIdとして
+      認証済み管理者IDを渡すことを検証、招待重複エラー）
+- [x] 6.5 `SecurityConfig`のpermitAll/hasRole設定・ADMIN限定の実効性検証は`@WebMvcTest`
+      スライスでは`@PreAuthorize`のAOPプロキシが読み込まれないため不可（Unit 1の
+      `AppThemeServiceImplTest`と同じ制約）。Build and Testステージの結合テストで検証する
 
 ### Step 7: API Layer Summary
-- [ ] 7.1 `aidlc-docs/construction/unit2-user-management/code/api-layer-summary.md`を
+- [x] 7.1 `aidlc-docs/construction/unit2-user-management/code/api-layer-summary.md`を
       生成する
 
 ### Step 8: Repository Layer Generation

@@ -216,6 +216,13 @@ class UserAccountServiceImpl implements UserAccountService {
         return new AuthenticatedUser(user.getId(), user.getEmail(), user.getName(), user.getRole());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public AuthenticatedUser getAuthenticatedUser(Long userId) {
+        var user = findUserOrThrow(userId);
+        return new AuthenticatedUser(user.getId(), user.getEmail(), user.getName(), user.getRole());
+    }
+
     private void recordLoginFailure(User user) {
         user.incrementFailedLoginCount();
         if (user.getFailedLoginCount() >= properties.maxFailedLoginAttempts()) {

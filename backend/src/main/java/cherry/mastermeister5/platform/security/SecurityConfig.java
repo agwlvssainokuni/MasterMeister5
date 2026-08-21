@@ -29,10 +29,10 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 
 /**
  * nfr-design-patterns.md: deny-by-default (SECURITY-08), stateless JWT
- * sessions, security headers (SECURITY-04). Unit 1 has no public endpoints yet
- * ({@code anyRequest().authenticated()} everywhere) — Unit 2 adds explicit
- * {@code permitAll()} rules for login / invitation acceptance / password
- * reset once those endpoints exist.
+ * sessions, security headers (SECURITY-04). Unit 2 adds explicit
+ * {@code permitAll()} rules for login/refresh/logout/register/password reset
+ * (public, unauthenticated flows) and {@code hasRole("ADMIN")} for
+ * {@code /api/admin/**}; every other endpoint stays authenticated-only.
  *
  * <p>CORS is intentionally left unconfigured: the frontend is served from the
  * same origin as the backend (bundled static resources / Vite dev proxy), so
@@ -68,7 +68,20 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .requestMatchers(
+                                                "/api/auth/login",
+                                                "/api/auth/refresh",
+                                                "/api/auth/logout",
+                                                "/api/auth/register",
+                                                "/api/auth/password/**")
+                                        .permitAll()
+                                        .requestMatchers("/api/admin/**")
+                                        .hasRole("ADMIN")
+                                        .anyRequest()
+                                        .authenticated())
                 .exceptionHandling(
                         exceptions ->
                                 exceptions

@@ -76,11 +76,21 @@ public class RefreshTokenService {
         return Optional.of(issueForFamily(token.getUserId(), token.getFamilyId()));
     }
 
-    /** Logout: revokes exactly the presented token (BR-22, other devices unaffected). */
+    /**
+     * Logout: revokes exactly the presented token (BR-22, other devices
+     * unaffected). Returns the owning user id (for audit logging) when a
+     * matching token was found.
+     */
     @Transactional
-    public void revoke(String rawToken) {
+    public Optional<Long> revoke(String rawToken) {
         var hash = tokenGenerator.hash(rawToken);
-        repository.findByTokenHash(hash).ifPresent(RefreshToken::revoke);
+        return repository
+                .findByTokenHash(hash)
+                .map(
+                        token -> {
+                            token.revoke();
+                            return token.getUserId();
+                        });
     }
 
     /** Deactivation (BR-10): revokes every active token for the user, across all families. */

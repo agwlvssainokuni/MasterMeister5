@@ -41,6 +41,9 @@ public interface UserAccountService {
 
     AuthenticatedUser authenticate(String email, String rawPassword);
 
+    /** Used when reissuing an access token on refresh (current role, not the one at login time). */
+    AuthenticatedUser getAuthenticatedUser(Long userId);
+
     void requestPasswordReset(String email, Locale locale);
 
     void resetPassword(String resetToken, String newPassword);
