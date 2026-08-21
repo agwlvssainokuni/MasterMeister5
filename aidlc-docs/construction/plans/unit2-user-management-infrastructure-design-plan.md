@@ -60,7 +60,7 @@ B) Unitごとにマイグレーション番号の帯（例: Unit 2は`V200`番�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 期限切れ・失効済みトークンのクリーンアップ方針
 
@@ -77,7 +77,7 @@ RefreshTokenを物理削除するクリーンアップ処理をUnit 2で実装�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: Secure Cookie属性とローカル開発環境（TLS未使用）の両立
 
@@ -93,7 +93,7 @@ B) 環境変数でSecure属性の付与有無を切り替え可能にする（�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: セキュリティイベントのログベース検知（requirements.md 5章）
 
@@ -111,7 +111,7 @@ B) AuditEventテーブルへの記録のみとし、構造化ログへの出力�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
