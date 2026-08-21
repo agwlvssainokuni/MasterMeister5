@@ -61,61 +61,66 @@
 ## 実行ステップ
 
 ### Step 1: 依存関係・設定の追加
-- [ ] 1.1 `backend/build.gradle.kts`に`com.nimbusds:nimbus-jose-jwt`を追加
-- [ ] 1.2 `backend/src/main/resources/application.yml`にUnit 2の設定項目（トークン有効期限、
-      アカウントロック閾値・時間、Cookie設定等のプレースホルダ）を追加
-- [ ] 1.3 `src/main/resources/security/common-passwords.txt`（既知漏洩/頻出パスワード
+- [x] 1.1 `backend/build.gradle.kts`に`com.nimbusds:nimbus-jose-jwt`を追加（`spring-boot-starter-mail`も追加）
+- [x] 1.2 `backend/src/main/resources/application.yml`にUnit 2の設定項目（トークン有効期限、
+      アカウントロック閾値・時間、SMTP設定等）を追加
+- [x] 1.3 `src/main/resources/security/common-passwords.txt`（既知漏洩/頻出パスワード
       リソース）を追加
 
 ### Step 2: Business Logic Generation
-- [ ] 2.1 `User`エンティティ（JPA、状態遷移: INVITED/ACTIVE/DEACTIVATED、ロール:
+- [x] 2.1 `User`エンティティ（JPA、状態遷移: INVITED/ACTIVE/DEACTIVATED、ロール:
       ADMIN/GENERAL）
-- [ ] 2.2 `PasswordResetToken`エンティティ
-- [ ] 2.3 `RefreshToken`エンティティ
-- [ ] 2.4 `AuditEvent`エンティティ（JSON詳細列、`AttributeConverter`）
-- [ ] 2.5 `PasswordHasher`（BCryptPasswordEncoder strength=10のラッパー）
-- [ ] 2.6 `BreachedPasswordChecker`（起動時にcommon-passwords.txtをロード、完全一致照合）
-- [ ] 2.7 `SecureTokenGenerator`（SecureRandom 256bit、Base64URLエンコード）
-- [ ] 2.8 `JwtTokenProvider`（Nimbus JOSE+JWT、HS256署名、sub/role/iat/expクレーム）
-- [ ] 2.9 `JwtTokenValidatorImpl`（Nimbus JOSE+JWTで検証、`JwtTokenValidator`実装。
+- [x] 2.2 `PasswordResetToken`エンティティ
+- [x] 2.3 `RefreshToken`エンティティ
+- [x] 2.4 `AuditEvent`エンティティ（JSON詳細列、`AttributeConverter`）
+- [x] 2.5 `PasswordHasher`（BCryptPasswordEncoder strength=10のラッパー）
+- [x] 2.6 `BreachedPasswordChecker`（起動時にcommon-passwords.txtをロード、完全一致照合）
+- [x] 2.7 `SecureTokenGenerator`（SecureRandom 256bit、Base64URLエンコード）
+- [x] 2.8 `JwtTokenProvider`（Nimbus JOSE+JWT、HS256署名、sub/role/iat/expクレーム）
+- [x] 2.9 `JwtTokenValidatorImpl`（Nimbus JOSE+JWTで検証、`JwtTokenValidator`実装。
       `@ConditionalOnMissingBean`により`NoopJwtTokenValidator`を自動的に置き換える）
-- [ ] 2.10 `RefreshTokenService`（発行・ローテーション・失効・再利用検知・familyId単位
+- [x] 2.10 `RefreshTokenService`（発行・ローテーション・失効・再利用検知・familyId単位
        一括失効。SHA-256でハッシュ化して保存）
-- [ ] 2.11 `AuthCookieSupport`（リフレッシュトークンのSet-Cookieヘルパー、HttpOnly/Secure/
+- [x] 2.11 `AuthCookieSupport`（リフレッシュトークンのSet-Cookieヘルパー、HttpOnly/Secure/
        SameSite=Strict、失効時はMax-Age=0）
-- [ ] 2.12 `AuditLogService`（`recordEvent`: AuditEventテーブルへの記録＋構造化ログ出力。
+- [x] 2.12 `AuditLogService`（`recordEvent`: AuditEventテーブルへの記録＋構造化ログ出力。
        `listEvents`は内部メソッドのみ用意しUnit 6まで未使用）
-- [ ] 2.13 `NotificationService`（`java-mustache-processor`によるテンプレート処理、SMTP送信。
+- [x] 2.13 `NotificationService`（`java-mustache-processor`によるテンプレート処理、SMTP送信。
        招待メール・パスワードリセットメールのテンプレート（日英2言語）を追加）
-- [ ] 2.14 `UserAccountService`（`UserAccountComponent`実装: inviteUser/resendInvitation/
+- [x] 2.14 `UserAccountService`（`UserAccountComponent`実装: inviteUser/resendInvitation/
        completeRegistration/changeRole/deactivateUser/reactivateUser/authenticate/
        recordLoginFailure/requestPasswordReset/resetPassword/changePassword/
-       ensureInitialAdmin。business-rules.md BR-1〜BR-33に従う）
-- [ ] 2.15 `InitialAdminBootstrapper`（`ApplicationRunner`、起動時に`ensureInitialAdmin`を
+       ensureInitialAdmin。business-rules.md BR-1〜BR-33に従う。changeRole/deactivateUser/
+       reactivateUserは監査ログの実行者記録のためactorUserId引数を追加した）
+- [x] 2.15 `InitialAdminBootstrapper`（`ApplicationRunner`、起動時に`ensureInitialAdmin`を
        呼び出す）
 
 ### Step 3: Business Logic Unit Testing
-- [ ] 3.1 `UserAccountServiceTest`（招待重複判定、状態遷移、ロール変更、無効化時の
+- [x] 3.1 `UserAccountServiceImplTest`（招待重複判定、状態遷移、ロール変更、無効化時の
       RefreshToken一括失効、認証成功/失敗、アカウントロック、パスワードリセット/変更）
-- [ ] 3.2 `PasswordHasherTest`（BCryptハッシュ化・検証の正常系）
-- [ ] 3.3 `BreachedPasswordCheckerTest`（既知パスワードの検出・未知パスワードの通過）
-- [ ] 3.4 `JwtTokenProvider`/`JwtTokenValidatorImpl`のラウンドトリップテスト
-- [ ] 3.5 `RefreshTokenServiceTest`（ローテーション、再利用検知によるファミリ一括失効）
-- [ ] 3.6 `AuditLogServiceTest`（recordEvent呼び出しでAuditEvent保存・ログ出力の両方が
-      行われることを検証）
-- [ ] 3.7 property-based-testing拡張（jqwik）: functional-design/business-logic-model.mdの
-      「テスト対象プロパティ」8件を実装する
-      - パスワードハッシュ検証のInvariant（PasswordHasherTest内）
-      - User状態遷移のInvariant（不正遷移が常に拒否される）
-      - ログイン失敗カウントのInvariant（0以上、成功時リセット）
-      - アカウントロックのIdempotence
-      - リフレッシュトークンローテーションのInvariant（familyId引き継ぎ、旧トークン失効）
-      - 再利用検知ファミリ失効のIdempotence
-      - パスワードリセットトークン単一有効性のInvariant
-      - 招待トークン有効期限判定のIdempotence
+- [x] 3.2 `PasswordHasherTest`（BCryptハッシュ化・検証の正常系）
+- [x] 3.3 `BreachedPasswordCheckerTest`（既知パスワードの検出・未知パスワードの通過）
+- [x] 3.4 `JwtTokenRoundTripTest`（`JwtTokenProvider`/`JwtTokenValidatorImpl`のラウンドトリップ）
+- [x] 3.5 `RefreshTokenServiceTest`（ローテーション、再利用検知によるファミリ一括失効）
+- [x] 3.6 `AuditLogServiceImplTest`（recordEvent呼び出しでAuditEvent保存が行われることを検証）
+- [x] 3.7 property-based-testing拡張（jqwik）: functional-design/business-logic-model.mdの
+      「テスト対象プロパティ」8件を実装した
+      - パスワードハッシュ検証のInvariant（PasswordHasherTest）
+      - User状態遷移のInvariant（UserAccountServiceImplTest、不正遷移が常に拒否される。
+        実装漏れを発見し`deactivateUser`/`reactivateUser`に状態ガードを追加した）
+      - ログイン失敗カウントのInvariant（UserAccountServiceImplTest、0以上、成功時リセット）
+      - アカウントロックのIdempotence（UserAccountServiceImplTest、ロック中の再試行で
+        lockedUntilが延長されない）
+      - リフレッシュトークンローテーションのInvariant（RefreshTokenServiceTest、familyId
+        引き継ぎ・旧トークン失効）
+      - 再利用検知ファミリ失効のIdempotence（RefreshTokenServiceTest）
+      - パスワードリセットトークン単一有効性のInvariant（UserAccountServiceImplTest）
+      - 招待トークン有効期限判定のIdempotence（副作用のない時刻比較のため、既存の
+        `completeRegistrationRejectsAnExpiredToken`テストで実質的に担保。独立した
+        Property化は行わなかった）
 
 ### Step 4: Business Logic Summary
-- [ ] 4.1 `aidlc-docs/construction/unit2-user-management/code/business-logic-summary.md`を
+- [x] 4.1 `aidlc-docs/construction/unit2-user-management/code/business-logic-summary.md`を
       生成する
 
 ### Step 5: API Layer Generation

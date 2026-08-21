@@ -12,13 +12,41 @@ spring:
     open-in-view: false
   flyway:
     enabled: true
+  mail:
+    host: ${MM5_SMTP_HOST:localhost}
+    port: ${MM5_SMTP_PORT:1025}
+    username: ${MM5_SMTP_USERNAME:}
+    password: ${MM5_SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MM5_SMTP_AUTH:false}
+          starttls:
+            enable: ${MM5_SMTP_STARTTLS:false}
 
 mastermeister5:
+  app:
+    base-url: ${MM5_APP_BASE_URL:http://localhost:8080}
+  mail:
+    from: ${MM5_MAIL_FROM:no-reply@mastermeister5.local}
   security:
     rate-limit:
       capacity: 10
       refill-tokens: 10
       refill-period-seconds: 60
+    jwt:
+      secret: ${MM5_JWT_SECRET:}
+      access-token-ttl-minutes: ${MM5_ACCESS_TOKEN_TTL_MINUTES:10}
+      refresh-token-ttl-hours: ${MM5_REFRESH_TOKEN_TTL_HOURS:24}
+    account:
+      invitation-token-ttl-hours: ${MM5_INVITATION_TOKEN_TTL_HOURS:3}
+      password-reset-token-ttl-hours: ${MM5_PASSWORD_RESET_TOKEN_TTL_HOURS:3}
+      max-failed-login-attempts: ${MM5_MAX_FAILED_LOGIN_ATTEMPTS:5}
+      account-lock-duration-minutes: ${MM5_ACCOUNT_LOCK_DURATION_MINUTES:15}
+      password-min-length: ${MM5_PASSWORD_MIN_LENGTH:8}
+      initial-admin:
+        email: ${MM5_INITIAL_ADMIN_EMAIL:}
+        password: ${MM5_INITIAL_ADMIN_PASSWORD:}
 
 logging:
   config: classpath:logback-spring.xml

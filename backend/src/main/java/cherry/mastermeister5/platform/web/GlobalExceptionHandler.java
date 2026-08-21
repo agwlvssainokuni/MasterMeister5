@@ -16,6 +16,7 @@
 
 package cherry.mastermeister5.platform.web;
 
+import cherry.mastermeister5.useraccount.service.UserAccountException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,15 @@ public class GlobalExceptionHandler {
                 .body(
                         errorResponseFactory.create(
                                 "VALIDATION_ERROR", "errors.validation", request.getLocale()));
+    }
+
+    @ExceptionHandler(UserAccountException.class)
+    public ResponseEntity<ErrorResponse> handleUserAccount(
+            UserAccountException ex, HttpServletRequest request) {
+        return ResponseEntity.status(ex.getStatus())
+                .body(
+                        errorResponseFactory.create(
+                                ex.getErrorCode(), ex.getMessageKey(), request.getLocale()));
     }
 
     @ExceptionHandler(Exception.class)

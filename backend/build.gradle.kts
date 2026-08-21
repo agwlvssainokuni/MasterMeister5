@@ -36,6 +36,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    // JWT issuing/verification (Unit 2, nfr-design-plan.md Question 4 = HS256).
+    implementation("com.nimbusds:nimbus-jose-jwt:9.37.3")
     // H2 support ships inside flyway-core itself — no separate flyway-database-h2
     // artifact exists (unlike flyway-mysql / flyway-database-postgresql etc.).
     implementation("org.flywaydb:flyway-core")
