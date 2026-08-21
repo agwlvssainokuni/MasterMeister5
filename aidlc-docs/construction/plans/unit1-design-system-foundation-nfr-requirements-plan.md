@@ -79,7 +79,7 @@ B) UserAccountComponentのアカウントロック機構（ログイン失敗5�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: B
+[Answer]: A（Question 4aでの再確認によりAへ変更）
 
 ### Question 4a（Question 4の回答に対する追加確認・security-baseline整合性）
 Question 4でBを選択された場合、アカウントロック機構が対象とするのはログインエンドポイント
@@ -99,7 +99,7 @@ B) Bのままとするが、対象を「ログインエンドポイントのみ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ## Mandatory Artifacts
 

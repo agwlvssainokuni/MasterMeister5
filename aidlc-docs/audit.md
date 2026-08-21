@@ -167,3 +167,9 @@
 **Context**: CONSTRUCTION PHASE - Unit 1 - NFR Requirements Step 1〜4 完了、Step 5 GATE待ち（コミット後に提示）
 
 ---
+
+## CONSTRUCTION - Unit 1 - NFR Requirements 回答
+**Timestamp**: 2026-08-21T15:00:00Z
+**User Input**: "A B A B" / (Question 4aへ) "A"
+**AI Response**: "Q1=A(Spring Security)、Q2=B(GitHub Dependabot)、Q3=A(Logback+JSON構造化ログ)を反映。Q4=Bはsecurity-baseline拡張SECURITY-11(公開エンドポイントのレート制限)と抵触する可能性を検出しQuestion 4aを追加、ユーザーはAを選択したためQ4の回答をA(bucket4j等をログイン以外の公開エンドポイントにも適用)へ変更した。矛盾・あいまいさなしと判定。"
+**Context**: CONSTRUCTION PHASE - Unit 1 - NFR Requirements Step 5 完了(ambiguity resolved)
