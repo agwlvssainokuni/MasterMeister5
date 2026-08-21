@@ -36,7 +36,7 @@ B) 独自の認可フィルタ/インターセプタを実装する（Spring Sec
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: 依存関係の脆弱性スキャンツール（SECURITY-10）
 依存関係の脆弱性スキャン（SECURITY-10）に使用するツールを選定してください。CI/CD構築自体は
@@ -51,7 +51,7 @@ B) GitHub Dependabot（リポジトリ設定のみで、ローカル実行は不
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: B
 
 ### Question 3: 構造化ログの実装方式（SECURITY-03）
 アプリケーションログの構造化出力（JSON形式、相関ID付与）をどう実装しますか？
@@ -64,7 +64,7 @@ B) Spring Boot標準のログ設定（プレーンテキスト）をベースに
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: レート制限の実装方式（SECURITY-11）
 公開エンドポイント（ログイン、パスワードリセット申請等）へのレート制限/スロットリングを
@@ -76,6 +76,26 @@ A) bucket4j等の軽量レート制限ライブラリをアプリケーション
 
 B) UserAccountComponentのアカウントロック機構（ログイン失敗5回で15分ロック）のみで対応し、
    汎用的なレート制限ライブラリは導入しない
+
+C) Other (please describe after [Answer]: tag below)
+
+[Answer]: B
+
+### Question 4a（Question 4の回答に対する追加確認・security-baseline整合性）
+Question 4でBを選択された場合、アカウントロック機構が対象とするのはログインエンドポイント
+のみであり、パスワードリセット申請（US-1.9）や招待受諾（US-1.6）等、認証前に匿名で叩ける
+他の公開エンドポイントにはレート制限がかかりません。security-baseline拡張のSECURITY-11
+「公開エンドポイントはレート制限/スロットリングを実装しなければならない」はブロッキング
+ルールであり、この状態のままではUnit 1のNFR Requirements完了時にblocking findingとして
+扱われます。どちらの対応としますか？
+
+A) Question 4の回答をAへ変更する（bucket4j等の軽量レート制限ライブラリを、ログイン以外の
+   公開エンドポイント（パスワードリセット申請、招待受諾等）にも適用する）
+
+B) Bのままとするが、対象を「ログインエンドポイントのみ」に限定した理由を文書化し、他の公開
+   エンドポイント（パスワードリセット申請・招待受諾）にも同等の粗い対策（例: IPベースの
+   簡易スロットリングをリバースプロキシ/インフラ層で行う想定とし、アプリケーション層では
+   実装しない）を明記したうえで、security-baseline拡張の例外として承認する
 
 C) Other (please describe after [Answer]: tag below)
 
