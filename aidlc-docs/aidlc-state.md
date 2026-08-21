@@ -49,7 +49,7 @@
 | Unit | Functional Design | NFR Requirements | NFR Design | Infrastructure Design | Code Generation |
 |---|---|---|---|---|---|
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
-| 2. ユーザ管理 | 完了・承認待ち | - | - | - | - |
+| 2. ユーザ管理 | 完了・承認済み | 質問提示中 | - | - | - |
 | 3. 対象RDBMSセットアップ | - | - | - | - | - |
 | 4. アクセス制御 | - | - | - | - | - |
 | 5. データ表示 | - | - | - | - | - |

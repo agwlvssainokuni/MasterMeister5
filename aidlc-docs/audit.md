@@ -317,3 +317,19 @@
 **User Input**: "推奨の通りとする。"
 **AI Response**: "unit2-user-management-functional-design-plan.mdの全10問に推奨案（Q1:A, Q2:A, Q3:B, Q4:A, Q5:A, Q6:A, Q7:A, Q8:A, Q9:A, Q10:A）を記入した。矛盾・曖昧性は検出されなかった（Q2の即時失効なし方針とQ3のJWTロールクレーム含む方針は一貫している）。Step 6として以下4件のFunctional Design成果物を生成した: business-logic-model.md（招待・本登録・ロール変更・無効化/再有効化・ログイン・トークンリフレッシュ/再利用検知・ログアウト・パスワードリセット・パスワード変更・初期管理者作成の11業務フロー、およびproperty-based-testing拡張PBT-01に基づくテスト対象プロパティ表）、business-rules.md（BR-1〜BR-33）、domain-entities.md（User/PasswordResetToken/RefreshTokenの3エンティティ、状態遷移図）、frontend-components.md（7画面のルーティング・状態・バリデーション・API連携）。"
 **Context**: CONSTRUCTION PHASE - Unit 2 - Functional Design Step 5〜6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 2 - Functional Design 承認
+**Timestamp**: 2026-08-22T00:05:00Z
+**User Input**: "承認します、NFR Requirementsに進めてください。"
+**AI Response**: "Unit 2のFunctional Design成果物（business-logic-model.md、business-rules.md、domain-entities.md、frontend-components.md）を承認として記録。NFR Requirements（Unit 2）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Functional Design Step 9 完了、NFR Requirementsへ
+
+---
+
+## CONSTRUCTION - Unit 2 - NFR Requirements Plan 作成
+**Timestamp**: 2026-08-22T00:10:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit2-user-management-nfr-requirements-plan.mdを作成した。Unit 1で確定済みの共通基盤（Spring Security、構造化ログ、bucket4jレート制限、依存関係ロック）とrequirements.md 5章で既に確定済みの項目（同時利用者数・応答性能・可用性目標等）は再度問わず、Unit 2固有の技術選定として計8問を作成した: パスワードハッシュアルゴリズム、既知漏洩パスワード照合データソース、リフレッシュトークンのハッシュ方式、JWT署名アルゴリズム・鍵管理、メール送信失敗時のリトライ方針、監査ログの改ざん防止担保レベル、AuditLogComponentのデータモデル方針、機微設定の管理方法。フロントエンドのトークン保存方式はfunctional-design/frontend-components.mdの記載通りNFR Designで扱うこととし、本Planでは問わない。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - NFR Requirements Step 2〜4 完了、ユーザー回答待ち
