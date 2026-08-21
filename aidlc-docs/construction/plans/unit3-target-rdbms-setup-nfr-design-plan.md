@@ -42,7 +42,7 @@ B) IVを暗号文と別のカラムに分けて保存する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: JDBC接続URL構築時の安全性
 
@@ -57,7 +57,7 @@ B) 入力検証は行わず、JDBCドライバ側のURL解析に委ねる
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: 接続パスワード暗号化コンポーネントの配置
 
@@ -69,7 +69,7 @@ B) 新規に`cherry.mastermeister5.connectionschema.security`サブパッケー�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 4: ConnectionSchemaComponentの実装配置パッケージ
 
@@ -83,7 +83,7 @@ B) Unit 1の`platform.theme`と同様、レイヤー分割せず`cherry.masterme
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 5: HikariCPの詳細設定
 
@@ -95,7 +95,7 @@ B) HikariCPのデフォルト設定のまま、プールサイズ以外は変更
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 6: スキーマ全置換のトランザクション境界
 
@@ -111,7 +111,7 @@ B) 接続全体（全スキーマ）を1トランザクションとする（一�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
