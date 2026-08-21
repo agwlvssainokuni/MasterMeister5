@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: INCEPTION - Workflow Planning
+- **Current Stage**: INCEPTION - Application Design
 
 ## Workspace State
 - **Existing Code**: No
@@ -39,8 +39,8 @@
 - [x] Workspace Detection (2026-08-21T12:35:19Z)
 - [x] Requirements Analysis — requirements.md作成完了、ユーザー承認済み
 - [x] User Stories — stories.md（32ストーリー）・personas.md作成完了、ユーザー承認済み
-- [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認待ち
-- [ ] Application Design - EXECUTE
+- [x] Workflow Planning — execution-plan.md作成完了、ユーザー承認済み
+- [ ] Application Design - EXECUTE（進行中）
 - [ ] Units Generation - EXECUTE
 
 ### 🟢 CONSTRUCTION PHASE
