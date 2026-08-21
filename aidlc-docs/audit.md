@@ -461,3 +461,19 @@
 **User Input**: "A, A(クエリストリングとしてオプション指定も可とする), A, A, A, A, B, A"（続けて"commit"で回答反映を承認）
 **AI Response**: "unit3-target-rdbms-setup-functional-design-plan.mdの全8問に回答を記入した（Q1:A, Q2:A+対象スキーマ名の任意指定を追加, Q3:A, Q4:A, Q5:A, Q6:A, Q7:B[MariaDB専用ドライバも追加], Q8:A）。矛盾・曖昧性は検出されなかった。Step 6としてdomain-entities.md（Connection/Schema/Table/Column/ForeignKeyConstraint、状態遷移図、全置換方針）、business-logic-model.md（接続登録・無効化/再有効化・スキーマ取込・許可リスト検証の4フロー、PBTプロパティ4件）、business-rules.md（BR-1〜BR-18）、frontend-components.md（ConnectionListScreen、スキーマ取込結果モーダル）を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 3 - Functional Design Step 5〜6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 3 - Functional Design 承認
+**Timestamp**: 2026-08-22T07:40:00Z
+**User Input**: "承認します、NFR Requirementsに進めてください。"
+**AI Response**: "Unit 3のFunctional Design成果物を承認として記録。NFR Requirements（Unit 3）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Functional Design Step 9 完了、NFR Requirementsへ
+
+---
+
+## CONSTRUCTION - Unit 3 - NFR Requirements Plan 作成
+**Timestamp**: 2026-08-22T07:41:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit3-target-rdbms-setup-nfr-requirements-plan.mdを作成した。接続パスワード暗号化アルゴリズム・接続確認タイムアウト・コネクションプールサイズ・スキーマ取込のタイムアウト方針・JDBCドライバの脆弱性スキャン対応・接続エラーメッセージの分類について計6問を作成した。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - NFR Requirements Step 2〜4 完了、ユーザー回答待ち
