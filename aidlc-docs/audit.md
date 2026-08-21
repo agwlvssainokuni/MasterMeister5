@@ -453,3 +453,11 @@
 **User Input**: (継続作業。ユーザーからの追加入力なし)
 **AI Response**: "aidlc-docs/construction/plans/unit3-target-rdbms-setup-functional-design-plan.mdを作成した。requirements.mdで明示的に「Functional Designで確定する」とされた接続再有効化要否に加え、スキーマ取込の粒度・許可リストの実体・制約情報の範囲・メタデータ取得方式・接続テスト要否・JDBCドライバ追加・コネクションプール構成について計8問を作成した。"
 **Context**: CONSTRUCTION PHASE - Unit 3 - Functional Design Step 2〜4 完了、ユーザー回答待ち
+
+---
+
+## CONSTRUCTION - Unit 3 - Functional Design 回答収集・成果物生成
+**Timestamp**: 2026-08-22T07:37:00Z
+**User Input**: "A, A(クエリストリングとしてオプション指定も可とする), A, A, A, A, B, A"（続けて"commit"で回答反映を承認）
+**AI Response**: "unit3-target-rdbms-setup-functional-design-plan.mdの全8問に回答を記入した（Q1:A, Q2:A+対象スキーマ名の任意指定を追加, Q3:A, Q4:A, Q5:A, Q6:A, Q7:B[MariaDB専用ドライバも追加], Q8:A）。矛盾・曖昧性は検出されなかった。Step 6としてdomain-entities.md（Connection/Schema/Table/Column/ForeignKeyConstraint、状態遷移図、全置換方針）、business-logic-model.md（接続登録・無効化/再有効化・スキーマ取込・許可リスト検証の4フロー、PBTプロパティ4件）、business-rules.md（BR-1〜BR-18）、frontend-components.md（ConnectionListScreen、スキーマ取込結果モーダル）を生成した。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Functional Design Step 5〜6 完了、完了報告・承認待ちへ

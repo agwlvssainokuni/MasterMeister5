@@ -50,7 +50,7 @@
 |---|---|---|---|---|---|
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
 | 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 3. 対象RDBMSセットアップ | 計画中 | - | - | - | - |
+| 3. 対象RDBMSセットアップ | 完了・承認待ち | - | - | - | - |
 | 4. アクセス制御 | - | - | - | - | - |
 | 5. データ表示 | - | - | - | - | - |
 | 6. その他機能 | - | - | - | - | - |
@@ -62,6 +62,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 3（対象RDBMSセットアップ）- Functional Design 質問提示中
-- **Next Stage**: 回答収集後、Functional Design成果物生成
-- **Status**: ユーザー回答待ち（`aidlc-docs/construction/plans/unit3-target-rdbms-setup-functional-design-plan.md`）
+- **Current Stage**: Unit 3（対象RDBMSセットアップ）- Functional Design 成果物生成完了
+- **Next Stage**: NFR Requirements（Unit 3）
+- **Status**: ユーザー承認待ち（`aidlc-docs/construction/unit3-target-rdbms-setup/functional-design/`）
