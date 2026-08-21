@@ -429,3 +429,27 @@
 **User Input**: (継続作業。ユーザーからの追加入力なし)
 **AI Response**: "計画16ステップすべてを完了。User/PasswordResetToken/RefreshToken/AuditEventエンティティ、UserAccountService/AuditLogService/NotificationService、JwtTokenProvider/JwtTokenValidatorImpl（Nimbus JOSE+JWT、NoopJwtTokenValidator置換）、4コントローラ、Flywayマイグレーション（V2〜V5）、フロントエンド6画面・AuthContext・RequireAuthを実装した。Unit 1と同様、完了直後に実動作検証を行い、./gradlew :backend:testで13件の失敗（BreachedPasswordCheckerのアクセス修飾子、Mockitoのstatic import誤り、jqwikのPBTがBCryptの72byte上限を超過、@Modifying一括UPDATEとJPA第一階層キャッシュの不整合、@Mock+jqwik @Propertyの併用不可、@WebMvcTestでのAuthentication引数解決不可）を検出・修正し、backend 92件・frontend 21件のテストとtsc型チェックが全て成功することを確認した。さらにbootWarを実行したところnpmBuildFrontendタスクに入力(inputs)が宣言されておらずUnit 2のフロントエンド変更が反映されない不具合を発見し、build.gradle.ktsにinputsを追加して修正、再ビルドで反映を確認した。"
 **Context**: CONSTRUCTION PHASE - Unit 2 - Code Generation Part 2 完了、実動作検証済み、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 2 - 実動作検証確認
+**Timestamp**: 2026-08-22T07:25:00Z
+**User Input**: "全てテスト実行済み？"
+**AI Response**: "backend 79件（19テストクラス）・frontend 21件（10ファイル）を再実行し、全て成功することを確認して回答した。tsc型チェック・bootWarも成功済み。"
+**Context**: CONSTRUCTION PHASE - Unit 2 - Code Generation 完了報告に対するユーザーからの実動作確認
+
+---
+
+## CONSTRUCTION - Unit 2 - Code Generation 承認、Unit 3 着手
+**Timestamp**: 2026-08-22T07:26:00Z
+**User Input**: "承認します、Unit 3に進めてください。"
+**AI Response**: "Unit 2（ユーザ管理）のCode Generationを承認として記録し、Unit 2のPer-Unit Loopを完了。Unit 3（対象RDBMSセットアップ）のPer-Unit Loop（Functional Design）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 2 完了、Unit 3 - Functional Design Step 1へ
+
+---
+
+## CONSTRUCTION - Unit 3 - Functional Design Plan 作成
+**Timestamp**: 2026-08-22T07:30:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit3-target-rdbms-setup-functional-design-plan.mdを作成した。requirements.mdで明示的に「Functional Designで確定する」とされた接続再有効化要否に加え、スキーマ取込の粒度・許可リストの実体・制約情報の範囲・メタデータ取得方式・接続テスト要否・JDBCドライバ追加・コネクションプール構成について計8問を作成した。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Functional Design Step 2〜4 完了、ユーザー回答待ち
