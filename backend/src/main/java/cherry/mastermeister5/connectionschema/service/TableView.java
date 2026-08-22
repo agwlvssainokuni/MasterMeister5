@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.service;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import cherry.mastermeister5.connectionschema.entity.DbTable;
+import java.util.List;
 
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+public record TableView(
+        String tableName, DbTable.Type tableType, String comment, List<ColumnView> columns) {
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.entity;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+/** requirements.md 3章: 対象RDBMSとして必須サポートする4種類。 */
+public enum RdbmsType {
+    MYSQL,
+    MARIADB,
+    POSTGRESQL,
+    H2
 }

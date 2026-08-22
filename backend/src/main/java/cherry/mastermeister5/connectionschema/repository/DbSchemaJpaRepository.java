@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.repository;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import cherry.mastermeister5.connectionschema.entity.DbSchema;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+public interface DbSchemaJpaRepository extends JpaRepository<DbSchema, Long> {
+
+    List<DbSchema> findAllByConnectionId(Long connectionId);
+
+    Optional<DbSchema> findByConnectionIdAndSchemaName(Long connectionId, String schemaName);
 }

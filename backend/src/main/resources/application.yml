@@ -47,6 +47,7 @@ mastermeister5:
       initial-admin:
         email: ${MM5_INITIAL_ADMIN_EMAIL:}
         password: ${MM5_INITIAL_ADMIN_PASSWORD:}
+    connection-secret-key: ${MM5_CONNECTION_SECRET_KEY:}
 
 logging:
   config: classpath:logback-spring.xml

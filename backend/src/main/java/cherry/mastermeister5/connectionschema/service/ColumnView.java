@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.service;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+/** getSchema() view (Unit 4/5/6 consume this). */
+public record ColumnView(
+        String columnName, String dataType, boolean nullable, boolean primaryKey, String comment) {
 }

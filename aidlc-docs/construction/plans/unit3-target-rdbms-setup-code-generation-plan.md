@@ -42,24 +42,25 @@
 ## 実行ステップ
 
 ### Step 1: 依存関係・設定の追加
-- [ ] 1.1 `backend/build.gradle.kts`にJDBCドライバ（`com.mysql:mysql-connector-j`、
+- [x] 1.1 `backend/build.gradle.kts`にJDBCドライバ（`com.mysql:mysql-connector-j`、
       `org.postgresql:postgresql`、`org.mariadb.jdbc:mariadb-java-client`）を追加
-- [ ] 1.2 `backend/src/main/resources/application.yml`に接続暗号鍵設定
+- [x] 1.2 `backend/src/main/resources/application.yml`に接続暗号鍵設定
       （`mastermeister5.security.connection-secret-key`）のプレースホルダを追加
 
 ### Step 2: Business Logic Generation
-- [ ] 2.1 `TargetConnection`エンティティ（JPA、状態: ACTIVE/DEACTIVATED）
-- [ ] 2.2 `RdbmsType`enum（MYSQL/MARIADB/POSTGRESQL/H2）、`ConnectionStatus`enum
-- [ ] 2.3 `DbSchema`/`DbTable`/`DbColumn`/`ForeignKeyConstraint`エンティティ
-- [ ] 2.4 `ConnectionSecretCipher`（AES-256-GCM、`platform.security`パッケージ、
+- [x] 2.1 `TargetConnection`エンティティ（JPA、状態: ACTIVE/DEACTIVATED）
+- [x] 2.2 `RdbmsType`enum（MYSQL/MARIADB/POSTGRESQL/H2）、`ConnectionStatus`enum
+- [x] 2.3 `DbSchema`/`DbTable`/`DbColumn`/`ForeignKeyConstraint`エンティティ
+- [x] 2.4 `ConnectionSecretCipher`（AES-256-GCM、`platform.security`パッケージ、
       `SecurityInfrastructureComponent#encryptConnectionSecret`/`#decryptConnectionSecret`
       実装）
-- [ ] 2.5 `ConnectionPoolRegistry`（接続ごとのHikariCPプール遅延生成・キャッシュ・破棄）
-- [ ] 2.6 `SchemaMetadataReader`（JDBC `DatabaseMetaData`によるテーブル/カラム/PK/FK読取り）
-- [ ] 2.7 `ConnectionException`（業務例外、`UserAccountException`と同型パターン）
-- [ ] 2.8 `ConnectionSchemaService`/`ConnectionSchemaServiceImpl`（`registerConnection`
+- [x] 2.5 `ConnectionPoolRegistry`（接続ごとのHikariCPプール遅延生成・キャッシュ・破棄）
+- [x] 2.6 `SchemaMetadataReader`（JDBC `DatabaseMetaData`によるテーブル/カラム/PK/FK読取り）
+- [x] 2.7 `ConnectionException`（業務例外、`UserAccountException`と同型パターン）
+- [x] 2.8 `ConnectionSchemaService`/`ConnectionSchemaServiceImpl`（`registerConnection`
       [登録時接続確認を含む]/`deactivateConnection`/`reactivateConnection`/`importSchema`
-      [スキーマ単位トランザクション、全置換、差分算出]/`getSchema`/`isSchemaAllowed`）
+      [スキーマ単位トランザクション、全置換、差分算出]/`getSchema`/`isSchemaAllowed`。
+      リポジトリ（Step 8相当）もサービスと合わせて先行生成した）
 
 ### Step 3: Business Logic Unit Testing
 - [ ] 3.1 `ConnectionSchemaServiceImplTest`（登録重複判定、状態遷移、スキーマ取込の全置換・
@@ -95,9 +96,9 @@
       生成する
 
 ### Step 8: Repository Layer Generation
-- [ ] 8.1 `TargetConnectionJpaRepository`（接続名一意検索を含む）
-- [ ] 8.2 `DbSchemaJpaRepository`/`DbTableJpaRepository`/`DbColumnJpaRepository`/
-      `ForeignKeyConstraintJpaRepository`
+- [x] 8.1 `TargetConnectionJpaRepository`（接続名一意検索を含む。Step 2で先行生成済み）
+- [x] 8.2 `DbSchemaJpaRepository`/`DbTableJpaRepository`/`DbColumnJpaRepository`/
+      `ForeignKeyConstraintJpaRepository`（同上）
 
 ### Step 9: Repository Layer Unit Testing
 - [ ] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ）
@@ -124,11 +125,11 @@
        生成する
 
 ### Step 14: Database Migration Scripts
-- [ ] 14.1 `V6__create_connection.sql`
-- [ ] 14.2 `V7__create_db_schema.sql`
-- [ ] 14.3 `V8__create_db_table.sql`
-- [ ] 14.4 `V9__create_db_column.sql`
-- [ ] 14.5 `V10__create_foreign_key_constraint.sql`
+- [x] 14.1 `V6__create_connection.sql`（Step 3のテスト前提として先行生成済み）
+- [x] 14.2 `V7__create_db_schema.sql`（同上）
+- [x] 14.3 `V8__create_db_table.sql`（同上）
+- [x] 14.4 `V9__create_db_column.sql`（同上）
+- [x] 14.5 `V10__create_foreign_key_constraint.sql`（同上）
 
 ### Step 15: Documentation Generation
 - [ ] 15.1 `README.md`更新（devenvでの対象RDBMS接続情報、`localhost`+マッピング済み

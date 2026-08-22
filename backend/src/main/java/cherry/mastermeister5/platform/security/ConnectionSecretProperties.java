@@ -16,10 +16,9 @@
 
 package cherry.mastermeister5.platform.security;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+/** nfr-requirements-plan.md Question 1: AES-256-GCM, key from an environment variable. */
+@ConfigurationProperties(prefix = "mastermeister5.security")
+public record ConnectionSecretProperties(String connectionSecretKey) {
 }

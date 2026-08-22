@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.service;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import cherry.mastermeister5.connectionschema.entity.RdbmsType;
 
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+public record RegisterConnectionCommand(
+        String name,
+        RdbmsType rdbmsType,
+        String host,
+        int port,
+        String databaseName,
+        String schemaNameHint,
+        String username,
+        String password) {
 }

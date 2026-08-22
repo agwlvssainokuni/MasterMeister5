@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.platform.security;
+package cherry.mastermeister5.connectionschema.entity;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@EnableConfigurationProperties({JwtProperties.class, ConnectionSecretProperties.class})
-public class SecurityPropertiesConfig {
+/** domain-entities.md: ACTIVE &lt;-&gt; DEACTIVATED のみ（物理削除はない）。 */
+public enum ConnectionStatus {
+    ACTIVE,
+    DEACTIVATED
 }
