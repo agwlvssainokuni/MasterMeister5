@@ -80,20 +80,20 @@
       を生成する
 
 ### Step 5: API Layer Generation
-- [ ] 5.1 `ConnectionController`（一覧・登録・無効化・再有効化・スキーマ取込）
-- [ ] 5.2 リクエスト/レスポンスDTO（record、SECURITY-05の入力検証アノテーション付与。
-      ホスト名等の許可文字検証を含む）
-- [ ] 5.3 `SecurityConfig`更新（既存ファイルを修正）: `/api/admin/connections/**`に
-      `hasRole("ADMIN")`を追加（既存の`/api/admin/**`ルールで既にカバーされているか確認し、
-      未カバーであれば追加）
-- [ ] 5.4 `GlobalExceptionHandler`更新: `ConnectionException`用のハンドラを追加
+- [x] 5.1 `ConnectionController`（一覧・登録・無効化・再有効化・スキーマ取込）
+- [x] 5.2 リクエスト/レスポンスDTO（record、SECURITY-05の入力検証アノテーション付与。
+      ホスト名等の許可文字検証はサービス層`ConnectionSchemaServiceImpl`で実施）
+- [x] 5.3 `SecurityConfig`確認: Unit 2で追加済みの`/api/admin/**` → `hasRole("ADMIN")`
+      ルールが`/api/admin/connections/**`をそのままカバーしており、追加変更は不要と確認した
+- [x] 5.4 `GlobalExceptionHandler`更新: `ConnectionException`用のハンドラを追加
+      （Step 2で先行対応済み）
 
 ### Step 6: API Layer Unit Testing
-- [ ] 6.1 `ConnectionControllerTest`（登録成功/重複エラー/接続確認失敗、スキーマ取込結果の
-      レスポンス、無効化/再有効化）
+- [x] 6.1 `ConnectionControllerTest`（一覧、登録成功/重複エラー、無効化のactorUserId伝播、
+      スキーマ取込結果のレスポンス）
 
 ### Step 7: API Layer Summary
-- [ ] 7.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/api-layer-summary.md`を
+- [x] 7.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/api-layer-summary.md`を
       生成する
 
 ### Step 8: Repository Layer Generation
@@ -105,7 +105,7 @@
 - [x] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ、削除の範囲限定）
 
 ### Step 10: Repository Layer Summary
-- [ ] 10.1
+- [x] 10.1
       `aidlc-docs/construction/unit3-target-rdbms-setup/code/repository-layer-summary.md`
        を生成する
 
