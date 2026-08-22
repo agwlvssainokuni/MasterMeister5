@@ -591,3 +591,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 4 - Functional Design Step 5 完了、成果物生成へ
 
 ---
+
+## CONSTRUCTION - Unit 4 - Functional Design成果物生成
+**Timestamp**: 2026-08-22T16:55:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "domain-entities.md（UserGroup/GroupMembership/Subject/ResourcePath/PermissionEntry/EffectivePermission）、business-logic-model.md（権限設定・グループ管理・実効権限算出アルゴリズム・キャッシュ無効化契機・YAMLエクスポート/インポート、PBT-01テスト対象プロパティ6件）、business-rules.md（BR-1〜BR-21）、frontend-components.md（GroupManagementScreen、PermissionScreン＝ツリー＋Subject選択形式）を生成した。完了報告を提示する。"
+**Context**: CONSTRUCTION PHASE - Unit 4 - Functional Design Step 6 完了、完了報告・承認待ちへ
+
+---
