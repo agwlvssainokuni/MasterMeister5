@@ -847,3 +847,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - Infrastructure Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 5 - Infrastructure Design 承認、Code Generation着手
+**Timestamp**: 2026-08-22T20:22:00Z
+**User Input**: "承認します、Code Generationに進めてください。"
+**AI Response**: "Unit 5のInfrastructure Design成果物を承認として記録。Code Generation（Unit 5、Part 1: Planning）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Infrastructure Design Step 9 完了、Code Generationへ
+
+---
+
+## CONSTRUCTION - Unit 5 - Code Generation Plan（Part 1: Planning）作成
+**Timestamp**: 2026-08-22T20:25:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit5-data-display-code-generation-plan.mdを作成した。REST APIエンドポイント一覧（データ表示3件は認証済み全ユーザ、カスタマイズ3件はADMIN限定）、Step1〜16（依存関係確認、ビジネスロジック生成・テスト・サマリ[Unit3へのSchemaImportedEvent追加、Unit4へのresolveEffectivePermissionsForTable追加を含む]、APIレイヤ生成・テスト・サマリ[SecurityConfig新規ルール追加を含む]、リポジトリレイヤ生成・テスト・サマリ、フロントエンド生成・テスト・サマリ[make-you-chic-uiのTableコンポーネント活用]、DBマイグレーションV14〜V16、ドキュメント、デプロイ成果物確認)を含む計画を作成した。ユーザーの承認を求める。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Code Generation Part 1 Step 5〜6 完了、承認プロンプト提示
+
+---
