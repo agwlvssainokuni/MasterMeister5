@@ -53,7 +53,7 @@
 | 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 5. データ表示 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 6. その他機能 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 着手中 | - |
+| 6. その他機能 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | Part 1（Planning）承認待ち |
 
 - [ ] Build and Test - EXECUTE（全Unit完了後）
 
@@ -62,6 +62,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 6（その他機能）- Infrastructure Design 着手
-- **Next Stage**: Infrastructure Design（Unit 6）質問への回答待ち
+- **Current Stage**: Unit 6（その他機能）- Code Generation Part 1（Planning）
+- **Next Stage**: Code Generation Part 1 承認待ち → Part 2（Generation）
 - **Status**: 作業中
