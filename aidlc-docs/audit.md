@@ -1053,3 +1053,11 @@
 **User Input**: "docker compose --profile postgres up -d で動かして確認する" → "mysql, mariadbも同様にテスト。"
 **AI Response**: "Colimaが接続不能だったため`colima restart`で復旧し、postgres/mysql/mariadbの3コンテナを実際に起動して検証した。3種とも行数（customers 5,000/products 200/orders 20,000/order_items 40,000）・外部キー整合性（孤立行0件）は正常だったが、INSERT...SELECTにORDER BYがなく挿入順序が不定なため、MySQLとMariaDB/PostgreSQLでid列と論理連番（例: idと商品名の対応）が一致しないことを発見した。両SQLファイルの4つのINSERT文全てに`ORDER BY`を追加し、3種のコンテナを`down`→`up`で再作成して再検証し、全てでid=Nと論理内容が一致すること・行数とFK整合性が引き続き正常であることを確認した。"
 **Context**: devenv動作確認用データの実機検証で発見した不具合を修正・再検証済み
+
+---
+
+## Playwright E2Eテストスイートの追加・実機検証
+**Timestamp**: 2026-08-23T04:45:00Z
+**User Input**: "e2eテストを作ってください。"（ツール選定・スコープの質問への回答: Playwright（推奨）／主要シナリオ一通り（推奨））
+**AI Response**: "e2e/配下にPlaywright E2Eテストスイート（main-journey.spec.ts、globalSetup、webServer起動スクリプト、MailPit連携ヘルパー）を新規作成し、ログイン→一般ユーザー招待→グループ作成→対象RDBMS接続登録→スキーマ取込→権限付与→MailPit経由の招待メール取得・本登録→データ表示→クエリ実行→クエリ実行履歴確認→監査ログ確認、という主要シナリオ一通りを1本のテストとして自動化した。実際に`./gradlew :backend:bootRun`でパッケージ済みアプリケーションを本セッション初めて起動し、devenvの実PostgreSQL・MailPitに対して実行し、7件の実バグを発見・修正した：(1) Jackson 2/3混在によるObjectMapper DI失敗（RestAccessDeniedHandler/RestAuthenticationEntryPoint/RateLimitFilterでObjectMapperを自前インスタンス化）、(2) Flywayのオートコンフィグ未登録（spring-boot-flywayをtestImplementationからimplementationへ移動）、(3) SPAディープリンクの404/401（forward:方式は複数のStackOverflowErrorを引き起こしたため、ClassPathResourceからindex.htmlのバイト列を直接ストリーミングするSpaFallbackControllerを新設、SecurityConfigのanyRequest()をpermitAll()に変更）、(4) セキュリティエラー応答の文字化け（response.getWriter()のISO-8859-1既定値を避けresponse.getOutputStream()に変更）、(5) RateLimitFilterの適用範囲過大（AntPathMatcherで未認証のpermitAllパスのみに限定）、(6) 一般ユーザーがConnectionController（ADMIN限定）を参照していたため接続一覧・スキーマを取得できない（ConnectionViewControllerを新設し`/api/connections`・`/api/connections/{id}/schema`を追加、frontend/src/api/connections.tsを向き先変更）、(7) AppLayoutのサイドバーnavItemsにonClickが未配線でクリックの度にフルページリロードが発生し、AuthProviderのマウント時サイレントrefresh()が連発してRateLimitFilterの`/api/auth/refresh`用バケットを使い切り一般ユーザーがログアウト状態に戻る（onClickでpreventDefault+navigate()によるクライアントサイド遷移に変更）。加えて`bootRun`タスクがフロントエンドビルド（npmBuildFrontend）に依存しておらず、フロントエンド変更が反映されないという運用上の問題も発見し、war/bootWar同様にdependsOnを追加して修正した。全ての修正後、E2Eスイートを3回連続で完全パス（全11ステップ）させて安定性を確認し、バックエンド全テスト（BUILD SUCCESSFUL）・フロントエンド全テスト（46件）・型チェックも合わせて成功したことを確認した。AI-DLCの正式なUnit外の開発支援タスクのため、簡易な記録のみとする。"
+**Context**: E2Eテストスイートの追加、および実機起動で初めて発覚した7件の実行時不具合の修正・検証済み

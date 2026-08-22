@@ -48,7 +48,7 @@ describe("CustomizationScreen", () => {
   it("lists tables after selecting a connection", async () => {
     installFetch([
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
     render(<CustomizationScreen />);
@@ -70,7 +70,7 @@ describe("CustomizationScreen", () => {
         }),
       },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
     render(<CustomizationScreen />);

@@ -30,19 +30,39 @@ export function AppLayout(): React.JSX.Element {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
+  // Sidebar renders navItems as plain <a href> (make-you-chic-ui's
+  // AppShellNavItem.onClick exists precisely for this: "call
+  // event.preventDefault() inside to take over navigation yourself"). Without
+  // wiring it up here, every sidebar click was a full page reload — each one
+  // re-running AuthProvider's mount-time silent refresh() via the httpOnly
+  // cookie. Found via E2E testing: navigating through several admin screens
+  // then logging in as a second user drove enough refresh() calls to trip
+  // RateLimitFilter's budget for /api/auth/refresh (429), which the frontend
+  // has no handling for, so RequireAuth just saw user=null and bounced to
+  // /login. Client-side navigation avoids the reload (and its refresh call)
+  // entirely for in-app link clicks.
+  const goTo = (href: string) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    navigate(href);
+  };
+
   const navItems: AppShellNavItem[] = [
-    { label: t("nav.home"), href: "/" },
-    { label: t("nav.masterData"), href: "/data" },
-    { label: t("nav.query"), href: "/queries" },
-    { label: t("nav.queryHistory"), href: "/queries/history" },
+    { label: t("nav.home"), href: "/", onClick: goTo("/") },
+    { label: t("nav.masterData"), href: "/data", onClick: goTo("/data") },
+    { label: t("nav.query"), href: "/queries", onClick: goTo("/queries") },
+    { label: t("nav.queryHistory"), href: "/queries/history", onClick: goTo("/queries/history") },
   ];
   if (user?.role === "ADMIN") {
-    navItems.push({ label: t("nav.users"), href: "/users" });
-    navItems.push({ label: t("nav.connections"), href: "/connections" });
-    navItems.push({ label: t("nav.groups"), href: "/groups" });
-    navItems.push({ label: t("nav.permissions"), href: "/permissions" });
-    navItems.push({ label: t("nav.customizations"), href: "/data/customization" });
-    navItems.push({ label: t("nav.auditLog"), href: "/audit-log" });
+    navItems.push({ label: t("nav.users"), href: "/users", onClick: goTo("/users") });
+    navItems.push({ label: t("nav.connections"), href: "/connections", onClick: goTo("/connections") });
+    navItems.push({ label: t("nav.groups"), href: "/groups", onClick: goTo("/groups") });
+    navItems.push({ label: t("nav.permissions"), href: "/permissions", onClick: goTo("/permissions") });
+    navItems.push({
+      label: t("nav.customizations"),
+      href: "/data/customization",
+      onClick: goTo("/data/customization"),
+    });
+    navItems.push({ label: t("nav.auditLog"), href: "/audit-log", onClick: goTo("/audit-log") });
   }
 
   async function handleLogout() {

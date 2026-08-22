@@ -36,12 +36,14 @@ import org.springframework.stereotype.Component;
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ErrorResponseFactory errorResponseFactory;
-    private final ObjectMapper objectMapper;
+    // Self-instantiated, not Spring-injected: Spring Boot 4's JacksonAutoConfiguration
+    // only registers a tools.jackson.databind.ObjectMapper (Jackson 3) bean, not this
+    // com.fasterxml.jackson.databind.ObjectMapper (Jackson 2) type — same pattern
+    // already used by CustomizationYamlMapper/PermissionYamlMapper/JsonMapConverter.
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public RestAuthenticationEntryPoint(
-            ErrorResponseFactory errorResponseFactory, ObjectMapper objectMapper) {
+    public RestAuthenticationEntryPoint(ErrorResponseFactory errorResponseFactory) {
         this.errorResponseFactory = errorResponseFactory;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -55,6 +57,12 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         var errorResponse =
                 errorResponseFactory.create(
                         "UNAUTHORIZED", "errors.unauthorized", request.getLocale());
-        objectMapper.writeValue(response.getWriter(), errorResponse);
+        // response.getWriter() uses the Servlet spec's ISO-8859-1 default character
+        // encoding unless setCharacterEncoding() is called first, garbling non-ASCII
+        // (Japanese) error messages. Writing to the byte OutputStream instead lets
+        // Jackson encode as UTF-8 (its own default), sidestepping the Writer pitfall
+        // entirely. Found via E2E testing (main-journey.spec.ts) — no test in this
+        // project previously asserted on the actual bytes of a security error response.
+        objectMapper.writeValue(response.getOutputStream(), errorResponse);
     }
 }

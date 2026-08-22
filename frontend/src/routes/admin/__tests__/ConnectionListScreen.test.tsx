@@ -57,7 +57,7 @@ describe("ConnectionListScreen", () => {
       if (url.includes("/api/admin/connections") && init?.method === "POST") {
         return Promise.resolve({ ok: true });
       }
-      if (url.includes("/api/admin/connections")) {
+      if (url.includes("/api/connections")) {
         listCallCount += 1;
         return Promise.resolve({ ok: true, json: async () => [] });
       }
@@ -95,7 +95,7 @@ describe("ConnectionListScreen", () => {
           }),
         });
       }
-      if (url.includes("/api/admin/connections")) {
+      if (url.includes("/api/connections")) {
         return Promise.resolve({
           ok: true,
           json: async () => [

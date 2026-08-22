@@ -65,7 +65,7 @@ describe("QueryHistoryScreen", () => {
   it("renders execution history rows", async () => {
     installFetch([
       { url: "/api/query/execution-history", respond: async () => ({ ok: true, json: async () => HISTORY_PAGE }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
     render(<QueryHistoryScreen />);
@@ -82,7 +82,7 @@ describe("QueryHistoryScreen", () => {
           return { ok: true, json: async () => HISTORY_PAGE };
         },
       },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
     const original = globalThis.fetch as unknown as ReturnType<typeof vi.fn>;
     globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {

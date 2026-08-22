@@ -77,7 +77,7 @@ describe("MasterDataScreen", () => {
     installFetch([
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
     render(<MasterDataScreen />);
@@ -100,7 +100,7 @@ describe("MasterDataScreen", () => {
       },
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
     const original = globalThis.fetch as unknown as ReturnType<typeof vi.fn>;
     globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {

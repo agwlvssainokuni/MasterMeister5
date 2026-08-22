@@ -79,7 +79,7 @@ describe("QueryScreen", () => {
       { url: "/api/auth/refresh", respond: async () => ({ ok: false, status: 401 }) },
       { url: "/api/query/saved-queries", method: "GET", respond: async () => ({ ok: true, json: async () => SAVED_QUERIES }) },
       { url: "/schema", respond: async () => ({ ok: true, json: async () => SCHEMAS }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
       { url: "/detect-parameters", respond: async () => ({ ok: true, json: async () => [] }) },
       {
         url: "/api/query/execute",
@@ -120,7 +120,7 @@ describe("QueryScreen", () => {
     installFetch([
       { url: "/api/auth/refresh", respond: async () => ({ ok: false, status: 401 }) },
       { url: "/api/query/saved-queries", method: "GET", respond: async () => ({ ok: true, json: async () => [] }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => [] }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => [] }) },
       { url: "/detect-parameters", respond: async () => ({ ok: true, json: async () => [] }) },
       {
         url: "/api/query/saved-queries",

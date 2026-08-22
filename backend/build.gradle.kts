@@ -50,6 +50,14 @@ dependencies {
     // H2 support ships inside flyway-core itself — no separate flyway-database-h2
     // artifact exists (unlike flyway-mysql / flyway-database-postgresql etc.).
     implementation("org.flywaydb:flyway-core")
+    // Spring Boot 4 split FlywayAutoConfiguration out of the main autoconfigure
+    // jar into this separate module. flyway-core alone (above) only provides the
+    // migration engine, not the Spring Boot glue that runs it automatically on
+    // startup — without this, the app boots against an empty schema and every
+    // JPA entity fails Hibernate's ddl-auto=validate check. Found by actually
+    // running `bootRun` for the E2E suite; no test in this project boots the
+    // full application context, so nothing had caught this until then.
+    implementation("org.springframework.boot:spring-boot-flyway")
     implementation("com.h2database:h2")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("com.bucket4j:bucket4j-core:8.10.1")
@@ -66,10 +74,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.security:spring-security-test")
-    // @DataJpaTest does not import Flyway autoconfiguration by default; tests
-    // that need it (AppThemeRepositoryImplTest) add it back explicitly via
-    // @ImportAutoConfiguration, which requires this class on the classpath.
-    testImplementation("org.springframework.boot:spring-boot-flyway")
     testImplementation("net.jqwik:jqwik:1.9.1")
 }
 
@@ -143,5 +147,13 @@ tasks.named("war") {
 }
 
 tasks.named("bootWar") {
+    dependsOn(npmBuildFrontend)
+}
+
+// bootRun didn't depend on this either, so it kept serving whatever static/
+// assets happened to exist from the last `war`/`bootWar` build — found via
+// E2E testing when a frontend source fix (connections.ts) had no effect on
+// a `bootRun`-started app until this was added.
+tasks.named("bootRun") {
     dependsOn(npmBuildFrontend)
 }

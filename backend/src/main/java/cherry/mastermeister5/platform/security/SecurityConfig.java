@@ -80,8 +80,18 @@ public class SecurityConfig {
                                         .permitAll()
                                         .requestMatchers("/api/admin/**")
                                         .hasRole("ADMIN")
+                                        .requestMatchers("/api/**")
+                                        .authenticated()
+                                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**")
+                                        .authenticated()
+                                        // Everything else is the bundled SPA shell/static assets
+                                        // (SpaFallbackController, index.html, /assets/**): always
+                                        // public — no application data lives here, only the HTML/JS
+                                        // shell. RequireAuth + the httpOnly refresh cookie handle
+                                        // per-route auth entirely client-side (nfr-design-plan.md
+                                        // Question 3).
                                         .anyRequest()
-                                        .authenticated())
+                                        .permitAll())
                 .exceptionHandling(
                         exceptions ->
                                 exceptions

@@ -75,8 +75,15 @@ export interface SchemaViewDto {
   tables: TableViewDto[];
 }
 
+/**
+ * Read-only listing (backend/ConnectionViewController), available to every
+ * authenticated user — not just ADMIN — since MasterDataScreen and
+ * QueryScreen need it too, not only the ADMIN-only ConnectionListScreen/
+ * PermissionScreen. Registering/deactivating/reactivating a connection
+ * remain ADMIN-only (`/api/admin/connections/**`, below).
+ */
 export function listConnections(): Promise<ConnectionSummaryDto[]> {
-  return authenticatedJson<ConnectionSummaryDto[]>("/api/admin/connections");
+  return authenticatedJson<ConnectionSummaryDto[]>("/api/connections");
 }
 
 export function registerConnection(request: RegisterConnectionRequest): Promise<void> {
@@ -102,7 +109,12 @@ export function importSchema(connectionId: number): Promise<SchemaImportResultDt
   );
 }
 
-/** Unit 4's PermissionScreen tree display. */
+/**
+ * Read-only schema tree (backend/ConnectionViewController), available to
+ * every authenticated user — used by Unit 4's PermissionScreen (ADMIN-only
+ * screen, but the endpoint itself isn't role-restricted) and Unit 6's
+ * QueryScreen (schema picker, general users).
+ */
 export function getSchema(connectionId: number): Promise<SchemaViewDto[]> {
-  return authenticatedJson<SchemaViewDto[]>(`/api/admin/connections/${connectionId}/schema`);
+  return authenticatedJson<SchemaViewDto[]>(`/api/connections/${connectionId}/schema`);
 }

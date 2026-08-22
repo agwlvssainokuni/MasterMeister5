@@ -1,6 +1,17 @@
 spring:
   application:
     name: mastermeister5
+  security:
+    filter:
+      # SpaFallbackController forwards non-API routes to index.html
+      # (forward:), which re-enters the servlet container's filter
+      # registrations under DispatcherType.FORWARD. Excluding FORWARD here
+      # keeps the security filter chain running only once per request, on
+      # the original REQUEST dispatch — found via E2E testing as a
+      # StackOverflowError (a self-wrapping HttpServletRequestWrapper) the
+      # very first time any real HTTP client ever hit this app's forward-based
+      # routes (the welcome page's own "/" -> index.html forward included).
+      dispatcher-types: request, async, error
   datasource:
     url: jdbc:h2:file:${MM5_INTERNAL_DB_PATH:./data/mastermeister5};AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver

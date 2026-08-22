@@ -61,8 +61,8 @@ describe("PermissionScreen", () => {
 
   it("renders the schema tree after selecting a connection and subject", async () => {
     installFetch([
-      { url: "/api/admin/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
       { url: "/api/admin/users", respond: async () => ({ ok: true, json: async () => USERS }) },
       { url: "/api/admin/groups", respond: async () => ({ ok: true, json: async () => [] }) },
       { url: "/api/admin/permissions", respond: async () => ({ ok: true, json: async () => [] }) },
@@ -89,8 +89,8 @@ describe("PermissionScreen", () => {
           return { ok: true };
         },
       },
-      { url: "/api/admin/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
       { url: "/api/admin/users", respond: async () => ({ ok: true, json: async () => USERS }) },
       { url: "/api/admin/groups", respond: async () => ({ ok: true, json: async () => [] }) },
       { url: "/api/admin/permissions", respond: async () => ({ ok: true, json: async () => [] }) },
@@ -133,8 +133,8 @@ describe("PermissionScreen", () => {
           json: async () => ({ errorCode: "PERMISSION_DUPLICATE_ENTRY", message: "duplicate" }),
         }),
       },
-      { url: "/api/admin/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
-      { url: "/api/admin/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
       { url: "/api/admin/users", respond: async () => ({ ok: true, json: async () => USERS }) },
       { url: "/api/admin/groups", respond: async () => ({ ok: true, json: async () => [] }) },
       { url: "/api/admin/permissions", respond: async () => ({ ok: true, json: async () => [] }) },
