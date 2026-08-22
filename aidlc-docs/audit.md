@@ -575,3 +575,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 3 完了、Unit 4（アクセス制御）Functional Designへ
 
 ---
+
+## CONSTRUCTION - Unit 4 - Functional Design質問ファイル作成
+**Timestamp**: 2026-08-22T16:45:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit4-access-control-functional-design-plan.mdを作成した。ResourcePathの表現方式（スキーマ再取込によるID変動への対応）、権限設定データモデルの粒度、Subject（ユーザ/グループ）の表現方法、実効権限算出時のフォールバック規則、スキーマ再取込で削除されたリソースに紐づく権限設定の扱い、YAMLでのSubject識別方法、インポート時の重複エントリ判定基準、権限設定画面のUI構造の8問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 4 - Functional Design Step 2〜4 完了、回答待ち
+
+---
