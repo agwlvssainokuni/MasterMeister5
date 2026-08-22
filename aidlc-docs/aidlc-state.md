@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: CONSTRUCTION - Unit 3（対象RDBMSセットアップ）- Functional Design
+- **Current Stage**: CONSTRUCTION - Unit 3（対象RDBMSセットアップ）- Code Generation 完了・実動作検証済み
 
 ## Workspace State
 - **Existing Code**: No
@@ -50,7 +50,7 @@
 |---|---|---|---|---|---|
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
 | 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 計画中 |
+| 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認待ち |
 | 4. アクセス制御 | - | - | - | - | - |
 | 5. データ表示 | - | - | - | - | - |
 | 6. その他機能 | - | - | - | - | - |
