@@ -9,9 +9,9 @@ Unit 1〜5で確定済みの基盤（クラウド不使用・自己完結型WAR/
 - [x] Step 1: nfr-design/logical-components.mdを分析する（完了）
 - [x] Step 2-4: 質問の作成・提示（本ファイル）
 - [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
-- [ ] Step 6: Infrastructure Design成果物生成
-  - [ ] `infrastructure-design.md`
-  - [ ] `deployment-architecture.md`
+- [x] Step 6: Infrastructure Design成果物生成
+  - [x] `infrastructure-design.md`
+  - [x] `deployment-architecture.md`
 - [ ] Step 7-9: 完了報告・承認待ち・記録
 
 ## カテゴリ評価（MANDATORY: 全カテゴリを評価）
