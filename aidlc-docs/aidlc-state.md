@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: CONSTRUCTION - Unit 4（アクセス制御）- Code Generation 完了・実動作検証済み
+- **Current Stage**: CONSTRUCTION - Unit 5（データ表示）- Functional Design 着手
 
 ## Workspace State
 - **Existing Code**: No
@@ -51,8 +51,8 @@
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
 | 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認待ち |
-| 5. データ表示 | - | - | - | - | - |
+| 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
+| 5. データ表示 | 着手中 | - | - | - | - |
 | 6. その他機能 | - | - | - | - | - |
 
 - [ ] Build and Test - EXECUTE（全Unit完了後）
@@ -62,7 +62,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 4（アクセス制御）- Infrastructure Design 成果物生成完了、
-  Code Generation実行完了
-- **Next Stage**: Code Generation（Unit 4）承認待ち
-- **Status**: ユーザー承認待ち（`aidlc-docs/construction/unit4-access-control/code/`）
+- **Current Stage**: Unit 5（データ表示）- Functional Design 着手
+- **Next Stage**: Functional Design（Unit 5）Part 1 Planning
+- **Status**: 作業中

@@ -719,3 +719,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 4 - Code Generation Part 2 完了、実動作検証済み、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 4 - Code Generation 承認、Unit 5着手
+**Timestamp**: 2026-08-22T19:36:00Z
+**User Input**: "承認します、Unit 5に進めてください。"
+**AI Response**: "Unit 4（アクセス制御）のCode Generationを承認として記録。Per-Unit LoopをUnit 5（データ表示）に進める。"
+**Context**: CONSTRUCTION PHASE - Unit 4 完了、Unit 5（データ表示）Functional Designへ
+
+---
+
+## CONSTRUCTION - Unit 5 - Functional Design質問ファイル作成
+**Timestamp**: 2026-08-22T19:38:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit5-data-display-functional-design-plan.mdを作成した。レコード識別方式（主キーなしテーブルの更新・削除不可）、WHERE/ORDER BY手入力の安全性（SQLスタッキング検出）、一括反映APIのペイロード構造（操作種別混在の単一トランザクション）、カスタマイズ定義の対象リソース特定方式（名前ベース）、スキーマ再取込時の陳腐化整理・結果表示（SchemaImportResultへのフィールド追加）、フィルタ条件UIの対応演算子、入力ウィジェット種別、簡易バリデーションルール表現形式、ページング方式の9問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Functional Design Step 2〜4 完了、回答待ち
+
+---
