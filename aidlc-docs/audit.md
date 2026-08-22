@@ -967,3 +967,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - NFR Design Step 5 完了、成果物生成へ
 
 ---
+
+## CONSTRUCTION - Unit 6 - NFR Design成果物生成
+**Timestamp**: 2026-08-22T21:34:00Z
+**User Input**: "commit"（前段のNFR Design回答コミット許可。本ステップ自体はユーザーからの追加入力なし、継続作業）
+**AI Response**: "nfr-design-patterns.md（クエリ実行の上限・タイムアウト、読み取り専用の多層防御、パラメータバインディング、スキーマ適用、Unit 2/Unit 5との連携パターン、パッケージ構成）、logical-components.md（QueryController/QueryService/SavedQueryJpaRepository/QueryExecutionHistoryJpaRepository/QueryException/ReadOnlySqlValidator、Unit 2のAuditLogController新設、Unit 5のlistRecordsへの遡及変更）を生成した。完了報告を提示する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - NFR Design Step 6 完了、完了報告・承認待ちへ
+
+---
