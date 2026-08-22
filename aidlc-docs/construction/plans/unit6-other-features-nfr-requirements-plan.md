@@ -8,9 +8,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: Functional Design成果物分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: Functional Design成果物分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: NFR Requirements成果物生成
   - [ ] `nfr-requirements.md`
   - [ ] `tech-stack-decisions.md`
@@ -34,7 +34,7 @@ B) 上限・タイムアウトを設けない（同時利用者数約10名規模
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: 読み取り専用の多層防御
 
@@ -49,7 +49,7 @@ B) ブロックリストのみに依拠し、JDBCレベルの追加設定は行�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 大量データ取得閾値の設定方法
 
@@ -61,7 +61,7 @@ B) Unit 5・Unit 6でそれぞれ独立した設定値を持つ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: クエリ実行履歴・監査ログのページングのデフォルト件数
 
@@ -72,7 +72,7 @@ B) 監査ログ・クエリ履歴は独自のデフォルト件数を設定す�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: 監査ログ・実行履歴フィルタ列へのインデックス付与
 
@@ -84,7 +84,7 @@ B) インデックスは追加しない（同時利用者数約10名規模のた
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
