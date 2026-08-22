@@ -751,3 +751,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - Functional Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 5 - Functional Design 承認、NFR Requirements着手
+**Timestamp**: 2026-08-22T19:57:00Z
+**User Input**: "ok"
+**AI Response**: "Unit 5のFunctional Design成果物を承認として記録。NFR Requirementsに着手する。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Functional Design 完了、NFR Requirementsへ
+
+---
+
+## CONSTRUCTION - Unit 5 - NFR Requirements質問ファイル作成
+**Timestamp**: 2026-08-22T19:58:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit5-data-display-nfr-requirements-plan.mdを作成した。実効権限判定のバッチ化（N+1回避）、フィルタ値のSQLインジェクション対策、手入力WHERE/ORDER BY句の検証方式、applyChangesの検証順序・実行方式、レコード一覧のキャッシュ方針、監査ログ記録粒度の6問を作成した。Resilience/Scalability PatternsはN/Aと明記した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - NFR Requirements Step 2〜4 完了、回答待ち
+
+---
