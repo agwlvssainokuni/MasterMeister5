@@ -45,7 +45,7 @@ B) Unitごとにマイグレーション番号の帯を予約する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 2: devenvでの対象RDBMS接続情報
 
@@ -63,7 +63,7 @@ B) devenvにbackendアプリ自体のコンテナ定義を追加し、Docker Com
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ### Question 3: 接続暗号鍵の環境変数管理
 
@@ -74,7 +74,7 @@ B) 専用シークレットマネージャの導入を今のタイミングで�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]:
+[Answer]: A
 
 ---
 
