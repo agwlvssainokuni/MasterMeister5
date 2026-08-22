@@ -943,3 +943,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - NFR Requirements Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 6 - NFR Requirements 承認、NFR Design着手
+**Timestamp**: 2026-08-22T21:28:00Z
+**User Input**: "承認します、NFR Designに進めてください。"
+**AI Response**: "Unit 6のNFR Requirements成果物を承認として記録。NFR Designに着手する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - NFR Requirements 完了、NFR Designへ
+
+---
+
+## CONSTRUCTION - Unit 6 - NFR Design質問ファイル作成
+**Timestamp**: 2026-08-22T21:29:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit6-other-features-nfr-design-plan.mdを作成した。パッケージ構成（queryパッケージ新設、監査ログ閲覧APIは既存auditパッケージに追加）、クエリ実行の上限・タイムアウト・読み取り専用設定の実装パターン（JdbcTemplate標準機能活用）、AuditLogServiceインタフェースの拡張方法（非破壊的オーバーロード追加）、フィルタ列インデックスのマイグレーション方式の4問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - NFR Design Step 2〜4 完了、回答待ち
+
+---
