@@ -52,6 +52,7 @@ export interface SchemaImportResultDto {
   removedTableRefs: string[];
   removedColumnRefs: string[];
   failures: SchemaImportFailureDto[];
+  prunedCustomizationCount: number;
 }
 
 export interface ColumnViewDto {

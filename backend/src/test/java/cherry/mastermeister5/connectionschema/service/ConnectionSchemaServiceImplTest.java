@@ -45,6 +45,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -71,6 +72,7 @@ class ConnectionSchemaServiceImplTest {
     private final SchemaMetadataReader metadataReader = mock(SchemaMetadataReader.class);
     private final AuditLogService auditLogService = mock(AuditLogService.class);
     private final PermissionCacheService permissionCacheService = mock(PermissionCacheService.class);
+    private final ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
 
     private static final PlatformTransactionManager NOOP_TX_MANAGER =
             new PlatformTransactionManager() {
@@ -100,7 +102,8 @@ class ConnectionSchemaServiceImplTest {
                     metadataReader,
                     auditLogService,
                     NOOP_TX_MANAGER,
-                    permissionCacheService);
+                    permissionCacheService,
+                    eventPublisher);
 
     // --- registerConnection ---
 
@@ -305,6 +308,33 @@ class ConnectionSchemaServiceImplTest {
         service.importSchema(5L, 1L);
 
         org.mockito.Mockito.verify(permissionCacheService).invalidateByConnection(5L);
+    }
+
+    /** Unit 5 nfr-design-plan.md Question 1: event-driven prune, no direct dependency on Unit 5. */
+    @Test
+    void importSchemaPublishesASchemaImportedEvent() throws SQLException {
+        var connection = activeConnection(5L, "conn5");
+        when(connectionRepository.findById(5L)).thenReturn(Optional.of(connection));
+        var dataSource = mock(HikariDataSource.class);
+        when(poolRegistry.dataSourceFor(connection)).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(mock(Connection.class));
+        when(metadataReader.readSchemas(any(), org.mockito.ArgumentMatchers.isNull()))
+                .thenReturn(List.of(new DiscoveredSchema("public", List.of(), List.of())));
+        when(schemaRepository.findByConnectionIdAndSchemaName(5L, "public")).thenReturn(Optional.empty());
+        when(schemaRepository.save(any()))
+                .thenAnswer(
+                        invocation -> {
+                            var schema = invocation.getArgument(0, DbSchema.class);
+                            setId(schema, 10L);
+                            return schema;
+                        });
+        when(tableRepository.findAllBySchemaId(10L)).thenReturn(List.of());
+        when(columnRepository.findAllByTableIdIn(List.of())).thenReturn(List.of());
+
+        service.importSchema(5L, 1L);
+
+        org.mockito.Mockito.verify(eventPublisher)
+                .publishEvent(org.mockito.ArgumentMatchers.isA(SchemaImportedEvent.class));
     }
 
     @Test

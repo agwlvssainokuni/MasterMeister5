@@ -863,3 +863,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - Code Generation Part 1 Step 5〜6 完了、承認プロンプト提示
 
 ---
+
+## CONSTRUCTION - Unit 5 - Code Generation Part 1 承認
+**Timestamp**: 2026-08-22T20:26:00Z
+**User Input**: "承認します、Part 2に進めてください。"
+**AI Response**: "Unit 5のCode Generation Plan（Part 1）を承認として記録。Part 2 Generationに着手。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Code Generation Part 1 完了、Part 2へ
+
+---
+
+## CONSTRUCTION - Unit 5 - Code Generation（Part 2: Generation）
+**Timestamp**: 2026-08-22T21:01:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "計画42チェック項目すべてを完了。TableCustomization/ColumnCustomization/ValidationRuleエンティティ、MasterMaintenanceService（listRecords[実効権限バッチ判定＋カスタマイズ定義マージ＋WHERE/ORDER BY生成＋ページング]、applyChanges[検証・実行2段階、対象RDBMSへの単一JDBCトランザクションによるオールオアナッシング]、YAMLエクスポート/インポート、@EventListenerによる陳腐化整理）、MasterDataController/CustomizationController、フロントエンドのMasterDataScreen（make-you-chic-uiのTableコンポーネント活用）/CustomizationScreenを実装した。Unit 3にSchemaImportedEvent（イベント駆動、循環依存回避）とSchemaImportResult.prunedCustomizationCountを追加、Unit 4にresolveEffectivePermissionsForTableを追加、Unit 3のConnectionListScreenに削除カスタマイズ件数表示を追加した。計画からの変更点として、listRecordsをGETからPOST検索エンドポイントに変更し、SecurityConfigは既存のanyRequest().authenticated()で要件を満たすため変更不要と判明した点を記録した。backend 178テストケース（Unit5新規39件+Unit3/4修正2件を含む）、frontend 15ファイル・34テストが全て成功することを確認し、bootWar実行時にUnit 5の追加文言（master-data-apply-button、データ表示、表示・入力カスタマイズ等）が実際のビルド成果物に反映されることも確認した。実装中、applyChangesのSingleConnectionDataSourceをtry-with-resourcesで閉じると内部の生JDBCコネクションが早期にクローズされる実バグを実テスト（H2実DB）で検出し修正した。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Code Generation Part 2 完了、実動作検証済み、完了報告・承認待ちへ
+
+---

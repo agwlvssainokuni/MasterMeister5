@@ -279,6 +279,13 @@ export function ConnectionListScreen(): React.JSX.Element {
                 </ul>
               </div>
             )}
+            {importResult.prunedCustomizationCount > 0 && (
+              <p data-testid="connections-import-result-pruned-customizations">
+                {t("admin.connections.importResult.prunedCustomizations", {
+                  count: importResult.prunedCustomizationCount,
+                })}
+              </p>
+            )}
             <Button onClick={() => setImportResult(null)} data-testid="connections-import-result-close-button">
               {t("admin.connections.importResult.close")}
             </Button>

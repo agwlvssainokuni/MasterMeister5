@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
     private final AuditLogService auditLogService;
     private final TransactionTemplate transactionTemplate;
     private final PermissionCacheService permissionCacheService;
+    private final ApplicationEventPublisher eventPublisher;
 
     ConnectionSchemaServiceImpl(
             TargetConnectionJpaRepository connectionRepository,
@@ -76,7 +78,8 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
             SchemaMetadataReader metadataReader,
             AuditLogService auditLogService,
             PlatformTransactionManager transactionManager,
-            PermissionCacheService permissionCacheService) {
+            PermissionCacheService permissionCacheService,
+            ApplicationEventPublisher eventPublisher) {
         this.connectionRepository = connectionRepository;
         this.schemaRepository = schemaRepository;
         this.tableRepository = tableRepository;
@@ -88,6 +91,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
         this.auditLogService = auditLogService;
         this.transactionTemplate = new TransactionTemplate(transactionManager);
         this.permissionCacheService = permissionCacheService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -217,8 +221,24 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
         // entries reference the changed tables/columns by name.
         permissionCacheService.invalidateByConnection(connectionId);
 
+        // Unit 5 nfr-design-plan.md Question 1: publish rather than call
+        // MasterMaintenanceService directly, so this package never imports
+        // anything from `mastermaintenance` (avoids a package cycle, since
+        // mastermaintenance already depends on connectionschema). Spring's
+        // default synchronous @EventListener dispatch means the listener
+        // has already set prunedCustomizationCount by the time this returns.
+        var schemaImportedEvent =
+                new SchemaImportedEvent(this, connectionId, removedTableRefs, removedColumnRefs);
+        eventPublisher.publishEvent(schemaImportedEvent);
+
         return new SchemaImportResult(
-                schemasImported, totalTables, totalColumns, removedTableRefs, removedColumnRefs, failures);
+                schemasImported,
+                totalTables,
+                totalColumns,
+                removedTableRefs,
+                removedColumnRefs,
+                failures,
+                schemaImportedEvent.getPrunedCustomizationCount());
     }
 
     private record SchemaReplaceResult(

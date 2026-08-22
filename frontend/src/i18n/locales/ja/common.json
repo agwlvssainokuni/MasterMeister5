@@ -8,6 +8,8 @@
     "connections": "接続管理",
     "groups": "グループ管理",
     "permissions": "アクセス権限",
+    "masterData": "データ表示",
+    "customizations": "表示・入力カスタマイズ",
     "changePassword": "パスワード変更",
     "logout": "ログアウト"
   },
@@ -117,6 +119,7 @@
         "title": "スキーマ取込結果",
         "summary": "{{schemas}}件のスキーマ、{{tables}}件のテーブル、{{columns}}件のカラムを取り込みました。",
         "removedTables": "削除されたテーブル・カラム:",
+        "prunedCustomizations": "陳腐化のため削除されたカスタマイズ定義: {{count}}件",
         "close": "閉じる"
       }
     },
@@ -157,6 +160,35 @@
       "auxCreate": "作成可",
       "auxDelete": "削除可",
       "noSchemaImported": "この接続はまだスキーマが取り込まれていません。接続管理画面から取込を行ってください。",
+      "import": {
+        "error": "インポートに失敗しました。"
+      }
+    },
+    "masterData": {
+      "title": "データ表示",
+      "rawWhereClause": "WHERE句（手入力）",
+      "applyButton": "反映",
+      "createButton": "新規作成",
+      "deleteButton": "削除",
+      "undoDeleteButton": "削除取消",
+      "columns": {
+        "actions": "操作"
+      },
+      "create": {
+        "title": "新規作成",
+        "add": "追加"
+      },
+      "apply": {
+        "error": "反映に失敗しました。"
+      }
+    },
+    "customizations": {
+      "title": "表示・入力カスタマイズ",
+      "exportButton": "YAMLエクスポート",
+      "columns": {
+        "schemaName": "スキーマ名",
+        "tableName": "テーブル名"
+      },
       "import": {
         "error": "インポートに失敗しました。"
       }

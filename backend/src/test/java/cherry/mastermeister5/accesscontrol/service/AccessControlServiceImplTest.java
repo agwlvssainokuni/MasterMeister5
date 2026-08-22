@@ -305,6 +305,26 @@ class AccessControlServiceImplTest {
         assertThat(result.canDelete()).isFalse();
     }
 
+    @Test
+    void resolveEffectivePermissionsForTableResolvesAllColumnsFromASingleQuery() {
+        when(cacheService.getCached(any())).thenReturn(Optional.empty());
+        when(membershipRepository.findAllByUserId(5L)).thenReturn(List.of());
+        var columnAEntry = new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.COLUMN, "public", "t1", "a");
+        columnAEntry.setPrimaryLevel(PrimaryLevel.READ);
+        var columnBEntry = new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.COLUMN, "public", "t1", "b");
+        columnBEntry.setPrimaryLevel(PrimaryLevel.UPDATE);
+        when(permissionRepository.findForResolution(5L, List.of(-1L), 1L, "public"))
+                .thenReturn(List.of(columnAEntry, columnBEntry));
+
+        var result =
+                service.resolveEffectivePermissionsForTable(5L, 1L, "public", "t1", List.of("a", "b", "c"));
+
+        assertThat(result.get("a").primaryLevel()).isEqualTo(PrimaryLevel.READ);
+        assertThat(result.get("b").primaryLevel()).isEqualTo(PrimaryLevel.UPDATE);
+        assertThat(result.get("c").primaryLevel()).isEqualTo(PrimaryLevel.NONE);
+        verify(permissionRepository, org.mockito.Mockito.times(1)).findForResolution(5L, List.of(-1L), 1L, "public");
+    }
+
     // --- YAML export/import ---
 
     @Test

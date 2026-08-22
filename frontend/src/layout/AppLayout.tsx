@@ -30,12 +30,16 @@ export function AppLayout(): React.JSX.Element {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const navItems: AppShellNavItem[] = [{ label: t("nav.home"), href: "/" }];
+  const navItems: AppShellNavItem[] = [
+    { label: t("nav.home"), href: "/" },
+    { label: t("nav.masterData"), href: "/data" },
+  ];
   if (user?.role === "ADMIN") {
     navItems.push({ label: t("nav.users"), href: "/users" });
     navItems.push({ label: t("nav.connections"), href: "/connections" });
     navItems.push({ label: t("nav.groups"), href: "/groups" });
     navItems.push({ label: t("nav.permissions"), href: "/permissions" });
+    navItems.push({ label: t("nav.customizations"), href: "/data/customization" });
   }
 
   async function handleLogout() {

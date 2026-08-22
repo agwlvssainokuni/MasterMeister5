@@ -8,6 +8,8 @@
     "connections": "Connections",
     "groups": "Groups",
     "permissions": "Access Permissions",
+    "masterData": "Master Data",
+    "customizations": "Display/Input Customization",
     "changePassword": "Change Password",
     "logout": "Log Out"
   },
@@ -117,6 +119,7 @@
         "title": "Schema Import Result",
         "summary": "Imported {{schemas}} schema(s), {{tables}} table(s), and {{columns}} column(s).",
         "removedTables": "Removed tables/columns:",
+        "prunedCustomizations": "Removed stale customization definitions: {{count}}",
         "close": "Close"
       }
     },
@@ -157,6 +160,35 @@
       "auxCreate": "Can Create",
       "auxDelete": "Can Delete",
       "noSchemaImported": "This connection has no imported schema yet. Please import it from the Connections screen.",
+      "import": {
+        "error": "Failed to import."
+      }
+    },
+    "masterData": {
+      "title": "Master Data",
+      "rawWhereClause": "WHERE clause (manual)",
+      "applyButton": "Apply",
+      "createButton": "Create",
+      "deleteButton": "Delete",
+      "undoDeleteButton": "Undo Delete",
+      "columns": {
+        "actions": "Actions"
+      },
+      "create": {
+        "title": "Create Record",
+        "add": "Add"
+      },
+      "apply": {
+        "error": "Failed to apply changes."
+      }
+    },
+    "customizations": {
+      "title": "Display/Input Customization",
+      "exportButton": "Export YAML",
+      "columns": {
+        "schemaName": "Schema Name",
+        "tableName": "Table Name"
+      },
       "import": {
         "error": "Failed to import."
       }

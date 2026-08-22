@@ -31,7 +31,8 @@ public record SchemaImportResult(
         int columnsImported,
         List<String> removedTableRefs,
         List<String> removedColumnRefs,
-        List<SchemaImportFailure> failures) {
+        List<SchemaImportFailure> failures,
+        int prunedCustomizationCount) {
 
     public record SchemaImportFailure(String schemaName, String reasonCode) {
     }

@@ -143,7 +143,7 @@ class ConnectionControllerTest {
     @Test
     void schemaImportReturnsTheResultSummary() throws Exception {
         given(connectionSchemaService.importSchema(3L, 1L))
-                .willReturn(new SchemaImportResult(1, 2, 5, List.of("public.old"), List.of(), List.of()));
+                .willReturn(new SchemaImportResult(1, 2, 5, List.of("public.old"), List.of(), List.of(), 0));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/admin/connections/3/schema-import")

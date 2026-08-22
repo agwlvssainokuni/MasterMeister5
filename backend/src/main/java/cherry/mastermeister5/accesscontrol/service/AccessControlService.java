@@ -20,6 +20,7 @@ import cherry.mastermeister5.accesscontrol.cache.EffectivePermission;
 import cherry.mastermeister5.accesscontrol.entity.ResourceLevel;
 import cherry.mastermeister5.accesscontrol.entity.SubjectType;
 import java.util.List;
+import java.util.Map;
 
 /** component-methods.md: AccessControlComponent. */
 public interface AccessControlService {
@@ -46,6 +47,14 @@ public interface AccessControlService {
 
     EffectivePermission resolveEffectivePermission(
             Long userId, Long connectionId, ResourceLevel resourceLevel, String schemaName, String tableName, String columnName);
+
+    /**
+     * nfr-design-plan.md (Unit 5) Question 2: batched column-level resolution
+     * for a single table, sharing one {@code findForResolution} query
+     * instead of one per column.
+     */
+    Map<String, EffectivePermission> resolveEffectivePermissionsForTable(
+            Long userId, Long connectionId, String schemaName, String tableName, List<String> columnNames);
 
     String exportPermissions(Long connectionId, Long actorUserId);
 

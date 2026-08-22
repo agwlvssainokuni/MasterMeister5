@@ -38,6 +38,7 @@ import cherry.mastermeister5.useraccount.entity.User;
 import cherry.mastermeister5.useraccount.repository.UserJpaRepository;
 import cherry.mastermeister5.useraccount.service.UserAccountException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -294,6 +295,30 @@ class AccessControlServiceImpl implements AccessControlService {
 
         var result = new EffectivePermission(primaryLevel, canCreate, canDelete);
         cacheService.put(cacheKey, result);
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, EffectivePermission> resolveEffectivePermissionsForTable(
+            Long userId, Long connectionId, String schemaName, String tableName, List<String> columnNames) {
+        var groupIds = membershipRepository.findAllByUserId(userId).stream().map(GroupMembership::getGroupId).toList();
+        var queryGroupIds = groupIds.isEmpty() ? List.of(-1L) : groupIds;
+        var entries = permissionRepository.findForResolution(userId, queryGroupIds, connectionId, schemaName);
+
+        var result = new HashMap<String, EffectivePermission>();
+        for (var columnName : columnNames) {
+            var cacheKey = new CacheKey(userId, connectionId, ResourceLevel.COLUMN, schemaName, tableName, columnName);
+            var cached = cacheService.getCached(cacheKey);
+            if (cached.isPresent()) {
+                result.put(columnName, cached.get());
+                continue;
+            }
+            var primaryLevel = resolvePrimaryLevel(entries, userId, groupIds, ResourceLevel.COLUMN, tableName, columnName);
+            var permission = new EffectivePermission(primaryLevel, false, false);
+            cacheService.put(cacheKey, permission);
+            result.put(columnName, permission);
+        }
         return result;
     }
 

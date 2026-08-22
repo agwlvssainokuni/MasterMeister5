@@ -91,6 +91,7 @@ describe("ConnectionListScreen", () => {
             removedTableRefs: ["public.old_table"],
             removedColumnRefs: [],
             failures: [],
+            prunedCustomizationCount: 3,
           }),
         });
       }
@@ -120,5 +121,6 @@ describe("ConnectionListScreen", () => {
 
     await waitFor(() => expect(screen.getByTestId("connections-import-result")).toBeInTheDocument());
     expect(screen.getByText("public.old_table")).toBeInTheDocument();
+    expect(screen.getByTestId("connections-import-result-pruned-customizations")).toBeInTheDocument();
   });
 });
