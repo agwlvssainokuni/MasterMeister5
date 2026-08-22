@@ -39,6 +39,7 @@ import cherry.mastermeister5.mastermaintenance.entity.ValidationRule;
 import cherry.mastermeister5.mastermaintenance.repository.ColumnCustomizationJpaRepository;
 import cherry.mastermeister5.mastermaintenance.repository.TableCustomizationJpaRepository;
 import cherry.mastermeister5.mastermaintenance.repository.ValidationRuleJpaRepository;
+import cherry.mastermeister5.platform.BulkAccessProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -84,6 +85,7 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
     private final AccessControlService accessControlService;
     private final CustomizationYamlMapper yamlMapper;
     private final AuditLogService auditLogService;
+    private final BulkAccessProperties bulkAccessProperties;
 
     MasterMaintenanceServiceImpl(
             TableCustomizationJpaRepository tableCustomizationRepository,
@@ -96,7 +98,8 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
             ConnectionPoolRegistry poolRegistry,
             AccessControlService accessControlService,
             CustomizationYamlMapper yamlMapper,
-            AuditLogService auditLogService) {
+            AuditLogService auditLogService,
+            BulkAccessProperties bulkAccessProperties) {
         this.tableCustomizationRepository = tableCustomizationRepository;
         this.columnCustomizationRepository = columnCustomizationRepository;
         this.validationRuleRepository = validationRuleRepository;
@@ -108,6 +111,7 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
         this.accessControlService = accessControlService;
         this.yamlMapper = yamlMapper;
         this.auditLogService = auditLogService;
+        this.bulkAccessProperties = bulkAccessProperties;
     }
 
     // --- table listing (US-3.1) ---
@@ -269,7 +273,25 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                             return row;
                         });
 
-        return new RecordPage(visibleColumns, rows, command.page(), command.pageSize(), totalCount == null ? 0 : totalCount);
+        var effectiveTotalCount = totalCount == null ? 0 : totalCount;
+        // tech-stack-decisions.md (Unit 6) Question 3 / business-rules.md BR-15:
+        // "bulk data access" is measured against the total matching row count,
+        // not just the page returned, since that is what reflects the scope of
+        // data the caller has queried access to.
+        if (effectiveTotalCount >= bulkAccessProperties.threshold()) {
+            auditLogService.recordEvent(
+                    AuditEventType.BULK_DATA_ACCESSED,
+                    command.userId(),
+                    null,
+                    Map.of(
+                            "source", "masterData",
+                            "connectionId", command.connectionId(),
+                            "schemaName", command.schemaName(),
+                            "tableName", command.tableName(),
+                            "totalCount", effectiveTotalCount));
+        }
+
+        return new RecordPage(visibleColumns, rows, command.page(), command.pageSize(), effectiveTotalCount);
     }
 
     private String renderCondition(FilterCondition condition, String paramName, MapSqlParameterSource paramSource) {

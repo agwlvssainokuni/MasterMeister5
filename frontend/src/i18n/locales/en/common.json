@@ -10,6 +10,9 @@
     "permissions": "Access Permissions",
     "masterData": "Master Data",
     "customizations": "Display/Input Customization",
+    "query": "Query",
+    "queryHistory": "Query History",
+    "auditLog": "Audit Log",
     "changePassword": "Change Password",
     "logout": "Log Out"
   },
@@ -192,6 +195,79 @@
       "import": {
         "error": "Failed to import."
       }
+    },
+    "query": {
+      "title": "Query",
+      "savedQuery": "Saved Query",
+      "newQuery": "New Query",
+      "mode": {
+        "builder": "Query Builder",
+        "raw": "Raw SQL"
+      },
+      "parseToBuilder": "Load into Builder",
+      "sqlPreview": "SQL Preview",
+      "saveButton": "Save",
+      "retireButton": "Retire",
+      "connection": "Connection",
+      "schema": "Schema",
+      "executeButton": "Execute",
+      "execute": {
+        "error": "Failed to execute the query."
+      },
+      "result": {
+        "title": "Result",
+        "summary": "{{count}} row(s), {{ms}}ms",
+        "truncated": "The result was truncated because there were too many rows."
+      },
+      "save": {
+        "title": "Save Query",
+        "name": "Query Name",
+        "visibility": "Visibility",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private (mine only)",
+        "confirm": "Save"
+      }
+    },
+    "queryHistory": {
+      "title": "Query History",
+      "filter": {
+        "all": "All",
+        "connection": "Connection",
+        "schema": "Schema",
+        "sqlTextContains": "SQL Text Contains",
+        "fromDate": "Executed From",
+        "toDate": "Executed To"
+      },
+      "columns": {
+        "executedAt": "Executed At",
+        "executedBy": "Executed By",
+        "connection": "Connection",
+        "schema": "Schema",
+        "source": "Source",
+        "sql": "SQL",
+        "rowCount": "Rows",
+        "executionTime": "Execution Time (ms)"
+      },
+      "source": {
+        "saved": "Saved Query",
+        "direct": "Direct Input"
+      }
+    },
+    "auditLog": {
+      "title": "Audit Log",
+      "filter": {
+        "eventType": "Event Type",
+        "actorUserId": "Actor User ID",
+        "fromDate": "From",
+        "toDate": "To"
+      },
+      "columns": {
+        "occurredAt": "Occurred At",
+        "actor": "User ID",
+        "eventType": "Event Type",
+        "details": "Details"
+      },
+      "detailsButton": "Show Details"
     }
   },
   "errors": {

@@ -16,14 +16,20 @@
 
 package cherry.mastermeister5.audit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * infrastructure-design.md Question 4: recordEvent must persist AND emit a
@@ -43,5 +49,21 @@ class AuditLogServiceImplTest {
         service.recordEvent(AuditEventType.LOGIN_SUCCEEDED, 1L, 1L, Map.of("ip", "127.0.0.1"));
 
         verify(repository).save(any(AuditEvent.class));
+    }
+
+    /** nfr-design-patterns.md (Unit 6) Question 3: non-breaking overload delegates to the new search query. */
+    @Test
+    void listEventsWithFilterCriteriaDelegatesToRepositorySearch() {
+        var service = new AuditLogServiceImpl(repository);
+        var pageable = PageRequest.of(0, 50);
+        var criteria = new AuditEventFilterCriteria(AuditEventType.LOGIN_SUCCEEDED, 1L, Instant.EPOCH, Instant.now());
+        var expected = Page.<AuditEvent>empty();
+        when(repository.search(
+                        eq(AuditEventType.LOGIN_SUCCEEDED), eq(1L), any(Instant.class), any(Instant.class), eq(pageable)))
+                .thenReturn(expected);
+
+        var result = service.listEvents(criteria, pageable);
+
+        assertThat(result).isSameAs(expected);
     }
 }

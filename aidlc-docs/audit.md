@@ -1007,3 +1007,17 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - Infrastructure Design 完了、Code Generation Part 1 プラン作成完了、承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 6 - Code Generation Part 1 承認、Part 2着手
+**Timestamp**: 2026-08-22T21:47:00Z
+**User Input**: "承認します、Part 2に進めてください。"
+**AI Response**: "Unit 6のCode Generation Part 1（Planning）を承認として記録。Part 2（Generation）に着手し、unit6-other-features-code-generation-plan.mdのStep 1から順に実行する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - Code Generation Part 1 完了、Part 2（Generation）着手
+
+---
+
+## CONSTRUCTION - Unit 6 - Code Generation Part 2完了
+**Timestamp**: 2026-08-22T22:31:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit6-other-features-code-generation-plan.mdの全16ステップを実行した。cherry.mastermeister5.queryパッケージ（SavedQuery/QueryExecutionHistoryエンティティ、QueryService、QueryController）、Unit 2へのAuditLogController新設・listEvents拡張オーバーロード、Unit 5のlistRecordsへの大量データ取得監査ログ追加、共通BulkAccessProperties、DBマイグレーションV17〜V19、フロントエンド（QueryScreen/QueryHistoryScreen/AuditLogScreen、queryBuilder.ts）を生成した。実行時に2件の設計逸脱を発見・記録した（NamedParameterUtils#getParameterNamesがpackage-privateのため正規表現による検出に変更、jqwikが1つの@Propertyメソッド内の全試行を同一インスタンスで実行するためclearInvocationsが必要と判明）。バックエンド210件・フロントエンド46件のテストが全て成功、TypeScript型チェック・bootWarビルドも成功したことを確認した。完了報告を提示する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - Code Generation Part 2 完了、完了報告・承認待ちへ

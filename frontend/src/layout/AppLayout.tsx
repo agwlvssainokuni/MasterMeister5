@@ -33,6 +33,8 @@ export function AppLayout(): React.JSX.Element {
   const navItems: AppShellNavItem[] = [
     { label: t("nav.home"), href: "/" },
     { label: t("nav.masterData"), href: "/data" },
+    { label: t("nav.query"), href: "/queries" },
+    { label: t("nav.queryHistory"), href: "/queries/history" },
   ];
   if (user?.role === "ADMIN") {
     navItems.push({ label: t("nav.users"), href: "/users" });
@@ -40,6 +42,7 @@ export function AppLayout(): React.JSX.Element {
     navItems.push({ label: t("nav.groups"), href: "/groups" });
     navItems.push({ label: t("nav.permissions"), href: "/permissions" });
     navItems.push({ label: t("nav.customizations"), href: "/data/customization" });
+    navItems.push({ label: t("nav.auditLog"), href: "/audit-log" });
   }
 
   async function handleLogout() {

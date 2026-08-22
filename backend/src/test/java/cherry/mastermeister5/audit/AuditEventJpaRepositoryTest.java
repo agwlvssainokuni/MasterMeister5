@@ -61,4 +61,19 @@ class AuditEventJpaRepositoryTest {
         assertThat(page.getContent()).hasSize(2);
         assertThat(page.getContent().get(0).getEventType()).isEqualTo(AuditEventType.LOGOUT);
     }
+
+    /** nfr-design-patterns.md (Unit 6) Question 3/BR-17: filter by real columns only. */
+    @Test
+    void searchFiltersByEventTypeAndActorAndDateRange() {
+        repository.save(new AuditEvent(AuditEventType.LOGIN_SUCCEEDED, 1L, 1L, Map.of(), "corr-1"));
+        repository.save(new AuditEvent(AuditEventType.LOGOUT, 1L, 1L, Map.of(), "corr-2"));
+        repository.save(new AuditEvent(AuditEventType.LOGIN_SUCCEEDED, 2L, 2L, Map.of(), "corr-3"));
+
+        var page =
+                repository.search(
+                        AuditEventType.LOGIN_SUCCEEDED, 1L, null, null, PageRequest.of(0, 10));
+
+        assertThat(page.getContent()).hasSize(1);
+        assertThat(page.getContent().get(0).getActorUserId()).isEqualTo(1L);
+    }
 }

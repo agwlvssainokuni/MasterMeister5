@@ -19,6 +19,7 @@ package cherry.mastermeister5.platform.web;
 import cherry.mastermeister5.accesscontrol.service.AccessControlException;
 import cherry.mastermeister5.connectionschema.service.ConnectionException;
 import cherry.mastermeister5.mastermaintenance.service.MasterMaintenanceException;
+import cherry.mastermeister5.query.service.QueryException;
 import cherry.mastermeister5.useraccount.service.UserAccountException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -83,6 +84,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MasterMaintenanceException.class)
     public ResponseEntity<ErrorResponse> handleMasterMaintenance(
             MasterMaintenanceException ex, HttpServletRequest request) {
+        return ResponseEntity.status(ex.getStatus())
+                .body(
+                        errorResponseFactory.create(
+                                ex.getErrorCode(), ex.getMessageKey(), request.getLocale()));
+    }
+
+    @ExceptionHandler(QueryException.class)
+    public ResponseEntity<ErrorResponse> handleQuery(QueryException ex, HttpServletRequest request) {
         return ResponseEntity.status(ex.getStatus())
                 .body(
                         errorResponseFactory.create(

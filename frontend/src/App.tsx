@@ -28,6 +28,9 @@ import { GroupManagementScreen } from "./routes/admin/GroupManagementScreen";
 import { PermissionScreen } from "./routes/admin/PermissionScreen";
 import { MasterDataScreen } from "./routes/admin/MasterDataScreen";
 import { CustomizationScreen } from "./routes/admin/CustomizationScreen";
+import { QueryScreen } from "./routes/admin/QueryScreen";
+import { QueryHistoryScreen } from "./routes/admin/QueryHistoryScreen";
+import { AuditLogScreen } from "./routes/admin/AuditLogScreen";
 import { RequireAuth } from "./auth/RequireAuth";
 
 /**
@@ -48,12 +51,15 @@ export function App(): React.JSX.Element {
           <Route path="/" element={<HomePage />} />
           <Route path="/settings/password" element={<ChangePasswordScreen />} />
           <Route path="/data" element={<MasterDataScreen />} />
+          <Route path="/queries" element={<QueryScreen />} />
+          <Route path="/queries/history" element={<QueryHistoryScreen />} />
           <Route element={<RequireAuth role="ADMIN" />}>
             <Route path="/users" element={<AdminUserListScreen />} />
             <Route path="/connections" element={<ConnectionListScreen />} />
             <Route path="/groups" element={<GroupManagementScreen />} />
             <Route path="/permissions" element={<PermissionScreen />} />
             <Route path="/data/customization" element={<CustomizationScreen />} />
+            <Route path="/audit-log" element={<AuditLogScreen />} />
           </Route>
         </Route>
       </Route>

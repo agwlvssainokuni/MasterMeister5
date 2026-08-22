@@ -27,6 +27,8 @@ spring:
 mastermeister5:
   app:
     base-url: ${MM5_APP_BASE_URL:http://localhost:8080}
+  bulk-access:
+    threshold: ${MM5_BULK_ACCESS_THRESHOLD:100}
   mail:
     from: ${MM5_MAIL_FROM:no-reply@mastermeister5.local}
   security:

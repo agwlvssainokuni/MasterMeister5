@@ -31,4 +31,11 @@ public interface AuditLogService {
             AuditEventType eventType, Long actorUserId, Long targetUserId, Map<String, Object> details);
 
     Page<AuditEvent> listEvents(Pageable pageable);
+
+    /**
+     * nfr-design-patterns.md (Unit 6) Question 3: non-breaking overload added
+     * for Unit 6's audit log viewing API, filtered by
+     * {@link AuditEventFilterCriteria}.
+     */
+    Page<AuditEvent> listEvents(AuditEventFilterCriteria filterCriteria, Pageable pageable);
 }

@@ -10,6 +10,9 @@
     "permissions": "アクセス権限",
     "masterData": "データ表示",
     "customizations": "表示・入力カスタマイズ",
+    "query": "クエリ",
+    "queryHistory": "クエリ履歴",
+    "auditLog": "監査ログ",
     "changePassword": "パスワード変更",
     "logout": "ログアウト"
   },
@@ -192,6 +195,79 @@
       "import": {
         "error": "インポートに失敗しました。"
       }
+    },
+    "query": {
+      "title": "クエリ",
+      "savedQuery": "保存済みクエリ",
+      "newQuery": "新規クエリ",
+      "mode": {
+        "builder": "クエリビルダー",
+        "raw": "SQL直接入力"
+      },
+      "parseToBuilder": "ビルダーへ反映",
+      "sqlPreview": "SQLプレビュー",
+      "saveButton": "保存",
+      "retireButton": "論理非表示",
+      "connection": "接続",
+      "schema": "スキーマ",
+      "executeButton": "実行",
+      "execute": {
+        "error": "クエリの実行に失敗しました。"
+      },
+      "result": {
+        "title": "実行結果",
+        "summary": "{{count}}件・{{ms}}ms",
+        "truncated": "結果が多いため一部のみ表示しています。"
+      },
+      "save": {
+        "title": "クエリを保存",
+        "name": "クエリ名",
+        "visibility": "公開範囲",
+        "visibilityPublic": "全員に公開",
+        "visibilityPrivate": "自分のみ",
+        "confirm": "保存する"
+      }
+    },
+    "queryHistory": {
+      "title": "クエリ履歴",
+      "filter": {
+        "all": "すべて",
+        "connection": "接続",
+        "schema": "スキーマ",
+        "sqlTextContains": "SQL文（部分一致）",
+        "fromDate": "実行日時（開始）",
+        "toDate": "実行日時（終了）"
+      },
+      "columns": {
+        "executedAt": "実行日時",
+        "executedBy": "実行者",
+        "connection": "接続",
+        "schema": "スキーマ",
+        "source": "種別",
+        "sql": "SQL",
+        "rowCount": "件数",
+        "executionTime": "実行時間(ms)"
+      },
+      "source": {
+        "saved": "保存クエリ",
+        "direct": "直接入力"
+      }
+    },
+    "auditLog": {
+      "title": "監査ログ",
+      "filter": {
+        "eventType": "イベント種別",
+        "actorUserId": "実行者ID",
+        "fromDate": "日時（開始）",
+        "toDate": "日時（終了）"
+      },
+      "columns": {
+        "occurredAt": "日時",
+        "actor": "ユーザID",
+        "eventType": "イベント種別",
+        "details": "詳細"
+      },
+      "detailsButton": "詳細表示"
     }
   },
   "errors": {

@@ -20,13 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import cherry.mastermeister5.accesscontrol.cache.EffectivePermission;
 import cherry.mastermeister5.accesscontrol.entity.PrimaryLevel;
 import cherry.mastermeister5.accesscontrol.entity.ResourceLevel;
 import cherry.mastermeister5.accesscontrol.service.AccessControlService;
+import cherry.mastermeister5.audit.AuditEventType;
 import cherry.mastermeister5.audit.AuditLogService;
 import cherry.mastermeister5.connectionschema.entity.DbColumn;
 import cherry.mastermeister5.connectionschema.entity.DbSchema;
@@ -45,6 +49,7 @@ import cherry.mastermeister5.mastermaintenance.entity.ValidationRuleType;
 import cherry.mastermeister5.mastermaintenance.repository.ColumnCustomizationJpaRepository;
 import cherry.mastermeister5.mastermaintenance.repository.TableCustomizationJpaRepository;
 import cherry.mastermeister5.mastermaintenance.repository.ValidationRuleJpaRepository;
+import cherry.mastermeister5.platform.BulkAccessProperties;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -81,6 +86,7 @@ class MasterMaintenanceServiceImplTest {
     private final AccessControlService accessControlService = mock(AccessControlService.class);
     private final CustomizationYamlMapper yamlMapper = mock(CustomizationYamlMapper.class);
     private final AuditLogService auditLogService = mock(AuditLogService.class);
+    private final BulkAccessProperties bulkAccessProperties = new BulkAccessProperties(100);
 
     private final MasterMaintenanceServiceImpl service =
             new MasterMaintenanceServiceImpl(
@@ -94,7 +100,8 @@ class MasterMaintenanceServiceImplTest {
                     poolRegistry,
                     accessControlService,
                     yamlMapper,
-                    auditLogService);
+                    auditLogService,
+                    bulkAccessProperties);
 
     private final Connection setupConnection;
 
@@ -248,6 +255,33 @@ class MasterMaintenanceServiceImplTest {
 
         var nameVisible = page.columns().stream().anyMatch(c -> c.columnName().equals("name"));
         assertThat(nameVisible).isEqualTo(level != PrimaryLevel.NONE);
+    }
+
+    /**
+     * tech-stack-decisions.md (Unit 6) Question 3 / business-rules.md BR-15:
+     * Unit 5's listRecords must also record the "bulk data access" event once
+     * the matching row count reaches MM5_BULK_ACCESS_THRESHOLD, even though
+     * this test's page size (50) returns fewer rows per call.
+     */
+    @Test
+    void listRecordsRecordsABulkDataAccessEventWhenTotalCountReachesTheThreshold() throws Exception {
+        try (var statement = setupConnection.createStatement()) {
+            statement.execute("CREATE TABLE bulk_table (id BIGINT PRIMARY KEY)");
+            for (var i = 1; i <= 100; i++) {
+                statement.execute("INSERT INTO bulk_table VALUES (" + i + ")");
+            }
+        }
+        mockTable("bulk_table", List.of(column("id", true)), true);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(Map.of("id", new EffectivePermission(PrimaryLevel.READ, false, false)));
+
+        var page =
+                service.listRecords(
+                        new ListRecordsCommand(1L, "public", "bulk_table", 9L, new FilterCriteria(List.of(), null), null, 0, 50));
+
+        assertThat(page.totalCount()).isEqualTo(100);
+        verify(auditLogService)
+                .recordEvent(eq(AuditEventType.BULK_DATA_ACCESSED), eq(9L), isNull(), any());
     }
 
     // --- applyChanges ---

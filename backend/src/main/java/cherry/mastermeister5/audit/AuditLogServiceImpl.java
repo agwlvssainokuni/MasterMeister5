@@ -62,4 +62,15 @@ class AuditLogServiceImpl implements AuditLogService {
     public Page<AuditEvent> listEvents(Pageable pageable) {
         return repository.findAllByOrderByOccurredAtDesc(pageable);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AuditEvent> listEvents(AuditEventFilterCriteria filterCriteria, Pageable pageable) {
+        return repository.search(
+                filterCriteria.eventType(),
+                filterCriteria.actorUserId(),
+                filterCriteria.fromDate(),
+                filterCriteria.toDate(),
+                pageable);
+    }
 }
