@@ -975,3 +975,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - NFR Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 6 - NFR Design 承認、Infrastructure Design着手
+**Timestamp**: 2026-08-22T21:36:00Z
+**User Input**: "承認します、Infrastructure Designに進めてください。"
+**AI Response**: "Unit 6のNFR Design成果物を承認として記録。Infrastructure Designに着手する。unit6-other-features-infrastructure-design-plan.mdを作成した。Flywayマイグレーションのバージョニング（V17開始）、既存テーブルaudit_eventへのインデックス追加マイグレーション構成の2問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - NFR Design 完了、Infrastructure Design Step 2〜4 完了、回答待ちへ
+
+---
