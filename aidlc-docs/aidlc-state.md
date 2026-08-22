@@ -51,7 +51,7 @@
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
 | 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 4. アクセス制御 | 着手中 | - | - | - | - |
+| 4. アクセス制御 | 完了・承認済み | 着手中 | - | - | - |
 | 5. データ表示 | - | - | - | - | - |
 | 6. その他機能 | - | - | - | - | - |
 
@@ -62,6 +62,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 4（アクセス制御）- Functional Design 着手
-- **Next Stage**: Functional Design（Unit 4）Part 1 Planning
-- **Status**: 作業中
+- **Current Stage**: Unit 4（アクセス制御）- NFR Requirements 質問提示中
+- **Next Stage**: NFR Requirements（Unit 4）回答収集
+- **Status**: ユーザー回答待ち（`aidlc-docs/construction/plans/unit4-access-control-nfr-requirements-plan.md`）

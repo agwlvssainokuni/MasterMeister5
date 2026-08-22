@@ -599,3 +599,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 4 - Functional Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 4 - Functional Design 承認、NFR Requirements着手
+**Timestamp**: 2026-08-22T17:00:00Z
+**User Input**: "承認します、NFR Requirementsに進めてください。"
+**AI Response**: "Unit 4のFunctional Design成果物を承認として記録。NFR Requirementsに着手し、unit4-access-control-nfr-requirements-plan.mdを作成した。YAML処理ライブラリの選定（Jackson YAMLモジュール推奨）、Caffeineキャッシュ構成（TTLなし・最大10,000件）、実効権限解決のパフォーマンス方針（N+1回避のクエリ設計）、YAMLインポート時のセキュリティ対策（型安全デシリアライズ＋識別子検証）、監査ログ記録粒度の5問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 4 - Functional Design 完了、NFR Requirements Step 2〜4 完了、回答待ち
+
+---
