@@ -13,9 +13,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: ユニットコンテキスト分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: ユニットコンテキスト分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: Functional Design成果物生成
   - [ ] `business-logic-model.md`
   - [ ] `business-rules.md`
@@ -42,7 +42,7 @@ B) 主キーを持たないテーブルも、全カラムの現在値をWHERE条
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: WHERE句・ORDER BY句手入力の安全性（US-3.3）
 
@@ -61,7 +61,7 @@ B) 手入力条件で参照するカラムも含めてすべて権限チェッ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 一括反映（作成・更新・削除）APIのペイロード構造（US-3.4〜3.6）
 
@@ -78,7 +78,7 @@ B) 作成・更新・削除を別々のAPIエンドポイントに分割する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: カスタマイズ定義の対象リソース特定方式
 
@@ -90,7 +90,7 @@ B) `DbTable`/`DbColumn`のIDを直接参照する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: スキーマ再取込時のカスタマイズ定義の陳腐化整理・結果表示（US-3.7）
 
@@ -108,7 +108,7 @@ B) 別画面・別APIとして、カスタマイズ定義の陳腐化状況を�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 6: フィルタ条件UIの対応演算子（US-3.2）
 
@@ -121,7 +121,7 @@ B) IN・BETWEENを含むSQLの主要な演算子をすべて初期リリース�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 7: 入力ウィジェット種別の列挙（表示・入力カスタマイズ）
 
@@ -132,7 +132,7 @@ B) より多くのウィジェット種別（複数選択、範囲スライダ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 8: 簡易バリデーションルールの表現形式（表示・入力カスタマイズ）
 
@@ -144,7 +144,7 @@ B) 相互参照・条件付き必須等を含む、より高度なバリデー�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 9: ページングの方式・デフォルト件数
 
@@ -157,7 +157,7 @@ B) カーソルベースページングを採用する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
