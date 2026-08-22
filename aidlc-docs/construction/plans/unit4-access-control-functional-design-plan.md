@@ -12,9 +12,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: ユニットコンテキスト分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: ユニットコンテキスト分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: Functional Design成果物生成
   - [ ] `business-logic-model.md`
   - [ ] `business-rules.md`
@@ -42,7 +42,7 @@ B) `DbSchema`/`DbTable`/`DbColumn`のIDで対象リソースを特定する。�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: 権限設定データモデルの粒度
 
@@ -59,7 +59,7 @@ B) 主権限用テーブルと補助権限用テーブルを分離する（階�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: Subject（ユーザ/グループ）の表現方法
 
@@ -73,7 +73,7 @@ B) ユーザ向け権限テーブルとグループ向け権限テーブルを�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: 実効権限算出時、階層に明示設定がない場合のフォールバック規則
 
@@ -89,7 +89,7 @@ B) 各階層は独立とし、明示設定がない階層は常に`NONE`とす�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: スキーマ再取込で削除されたテーブル/カラムに紐づく既存権限設定の扱い
 
@@ -108,7 +108,7 @@ B) `importSchema`実行時に、削除されたテーブル/カラムに紐づ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 6: YAMLエクスポート/インポートでのSubject識別方法
 
@@ -124,7 +124,7 @@ IDが一致している前提を置く）
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 7: インポート時の「重複エントリ」の判定基準
 
@@ -139,7 +139,7 @@ B) Subjectのみ、またはResourcePathのみが同一であれば重複とす�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 8: 権限設定画面（フロントエンド）の構造
 
@@ -155,7 +155,7 @@ B) Subject×ResourcePathの個別エントリを1件ずつ追加・編集・削�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
