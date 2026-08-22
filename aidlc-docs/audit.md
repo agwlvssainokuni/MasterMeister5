@@ -533,3 +533,19 @@
 **User Input**: "推奨の通りとする。"（続けて"commit"で回答反映を承認）
 **AI Response**: "unit3-target-rdbms-setup-infrastructure-design-plan.mdの全3問に推奨案(A)を記入した。矛盾・曖昧性は検出されなかった。Step 6としてinfrastructure-design.md（Flywayマイグレーション連番継続、schema/tableの予約語回避のためdb_schema/db_tableに命名、devenv接続情報はlocalhost+マッピング済みポート、暗号鍵の.env方式）とdeployment-architecture.md（開発環境・本番相当構成図に対象RDBMSへの接続経路を追加）を生成した。"
 **Context**: CONSTRUCTION PHASE - Unit 3 - Infrastructure Design Step 5〜6 完了、完了報告・承認待ちへ
+
+---
+
+## CONSTRUCTION - Unit 3 - Infrastructure Design 承認、Code Generation着手
+**Timestamp**: 2026-08-22T08:14:00Z
+**User Input**: "承認します、Code Generationに進めてください。"
+**AI Response**: "Unit 3のInfrastructure Design成果物を承認として記録。Code Generation（Unit 3、Part 1: Planning）に着手。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Infrastructure Design Step 9 完了、Code Generationへ
+
+---
+
+## CONSTRUCTION - Unit 3 - Code Generation Plan（Part 1: Planning）作成
+**Timestamp**: 2026-08-22T08:16:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit3-target-rdbms-setup-code-generation-plan.mdを作成した。java.sql.Connectionとの名前衝突を避けるためエンティティクラス名をTargetConnectionとする決定、DbSchema/DbTable/DbColumnという命名、REST APIエンドポイント一覧、Step1〜16（依存関係追加、ビジネスロジック生成・テスト・サマリ、APIレイヤ生成・テスト・サマリ、リポジトリレイヤ生成・テスト・サマリ、フロントエンド生成・テスト・サマリ、DBマイグレーション、ドキュメント、デプロイ成果物）を含む計画を作成した。ユーザーの承認を求める。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Code Generation Part 1 Step 5〜6 完了、承認プロンプト提示
