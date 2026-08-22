@@ -903,3 +903,11 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - Functional Design Step 5 完了、成果物生成へ
 
 ---
+
+## CONSTRUCTION - Unit 6 - Functional Design成果物生成
+**Timestamp**: 2026-08-22T21:20:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "domain-entities.md（SavedQuery/QueryExecutionHistory、ParameterDescriptor/QueryResult/フィルタ条件の値オブジェクト、QueryBuilderStateはフロントエンドのみ）、business-logic-model.md（クエリ保存・実行・履歴閲覧・監査ログ閲覧の各フロー、Unit5への大量データ取得監査ログ遡及適用、PBT-01テスト対象プロパティ4件）、business-rules.md（BR-1〜BR-19）、frontend-components.md（QueryScreen[ビルダー+SQL直接入力+実行を統合]、QueryHistoryScreen、AuditLogScreen[ADMIN限定]）を生成した。完了報告を提示する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - Functional Design Step 6 完了、完了報告・承認待ちへ
+
+---
