@@ -783,3 +783,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - NFR Requirements Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 5 - NFR Requirements 承認、NFR Design着手
+**Timestamp**: 2026-08-22T20:08:00Z
+**User Input**: "ok"
+**AI Response**: "Unit 5のNFR Requirements成果物を承認として記録。NFR Designに着手する。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - NFR Requirements 完了、NFR Designへ
+
+---
+
+## CONSTRUCTION - Unit 5 - NFR Design質問ファイル作成
+**Timestamp**: 2026-08-22T20:10:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit5-data-display-nfr-design-plan.mdを作成した。最重要論点として、Unit3からUnit5への陳腐化整理呼び出し方式（Unit4と異なりconnectionschema⇄mastermaintenanceの循環依存が生じるため、Spring ApplicationEventPublisherによる疎結合化を推奨案として提示）を含む5問（実効権限バッチ判定の内部実装、WHERE/ORDER BYブロックリスト実装、ValidationRule実行層、SQL生成・パラメータバインディング）を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - NFR Design Step 2〜4 完了、回答待ち
+
+---
