@@ -11,9 +11,9 @@
 - [x] Step 1: Functional Design成果物分析（完了）
 - [x] Step 2-4: 質問の作成・提示（本ファイル）
 - [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
-- [ ] Step 6: NFR Requirements成果物生成
-  - [ ] `nfr-requirements.md`
-  - [ ] `tech-stack-decisions.md`
+- [x] Step 6: NFR Requirements成果物生成
+  - [x] `nfr-requirements.md`
+  - [x] `tech-stack-decisions.md`
 - [ ] Step 7-9: 完了報告・承認待ち・記録
 
 ---
