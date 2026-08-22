@@ -64,7 +64,8 @@ FROM (
     SELECT d1.d + d2.d * 10 + d3.d * 100 + d4.d * 1000 + 1 AS n
     FROM digits d1, digits d2, digits d3, digits d4
 ) AS nums
-WHERE n <= 5000;
+WHERE n <= 5000
+ORDER BY n;
 
 -- products: 200件
 INSERT INTO products (name, category, unit_price, in_stock)
@@ -77,7 +78,8 @@ FROM (
     SELECT d1.d + d2.d * 10 + d3.d * 100 + 1 AS n
     FROM digits d1, digits d2, digits d3
 ) AS nums
-WHERE n <= 200;
+WHERE n <= 200
+ORDER BY n;
 
 -- orders: 20,000件
 INSERT INTO orders (customer_id, order_date, status, total_amount)
@@ -90,7 +92,8 @@ FROM (
     SELECT d1.d + d2.d * 10 + d3.d * 100 + d4.d * 1000 + d5.d * 10000 + 1 AS n
     FROM digits d1, digits d2, digits d3, digits d4, digits d5
 ) AS nums
-WHERE n <= 20000;
+WHERE n <= 20000
+ORDER BY n;
 
 -- order_items: 注文1件あたり1〜3件（約40,000件）
 INSERT INTO order_items (order_id, product_id, quantity, unit_price)
@@ -101,6 +104,7 @@ SELECT
     ROUND(10 + ((o.id * mult.s) % 990) / 10, 2)
 FROM orders o
 CROSS JOIN (SELECT 1 AS s UNION ALL SELECT 2 UNION ALL SELECT 3) AS mult
-WHERE (o.id + mult.s) % 3 <> 0;
+WHERE (o.id + mult.s) % 3 <> 0
+ORDER BY o.id, mult.s;
 
 DROP TABLE digits;

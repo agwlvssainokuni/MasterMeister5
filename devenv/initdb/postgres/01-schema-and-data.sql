@@ -51,7 +51,8 @@ SELECT
     DATE '2020-01-01' + (n % 2000),
     (n % 10) <> 0,
     CASE WHEN n % 7 = 0 THEN 'VIP customer' ELSE NULL END
-FROM generate_series(1, 5000) AS n;
+FROM generate_series(1, 5000) AS n
+ORDER BY n;
 
 -- products: 200件
 INSERT INTO products (name, category, unit_price, in_stock)
@@ -60,7 +61,8 @@ SELECT
     (ARRAY['Electronics', 'Books', 'Clothing', 'Home', 'Toys'])[1 + (n % 5)],
     ROUND((10 + (n % 990) / 10.0)::numeric, 2),
     (n % 8) <> 0
-FROM generate_series(1, 200) AS n;
+FROM generate_series(1, 200) AS n
+ORDER BY n;
 
 -- orders: 20,000件
 INSERT INTO orders (customer_id, order_date, status, total_amount)
@@ -69,7 +71,8 @@ SELECT
     DATE '2023-01-01' + (n % 900),
     (ARRAY['PENDING', 'SHIPPED', 'DELIVERED', 'CANCELLED'])[1 + (n % 4)],
     ROUND((5 + (n % 9500) / 100.0)::numeric, 2)
-FROM generate_series(1, 20000) AS n;
+FROM generate_series(1, 20000) AS n
+ORDER BY n;
 
 -- order_items: 注文1件あたり1〜3件（約40,000件）
 INSERT INTO order_items (order_id, product_id, quantity, unit_price)
@@ -80,4 +83,5 @@ SELECT
     ROUND((10 + ((o.id * s) % 990) / 10.0)::numeric, 2)
 FROM orders o
 CROSS JOIN generate_series(1, 3) AS s
-WHERE (o.id + s) % 3 <> 0;
+WHERE (o.id + s) % 3 <> 0
+ORDER BY o.id, s;

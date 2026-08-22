@@ -1045,3 +1045,11 @@
 **User Input**: "devenvのDBMSに確認用のDDL/初期データを用意して。レコード数多めで。"
 **AI Response**: "devenv/initdb/{mysql-mariadb,postgres}/01-schema-and-data.sqlを新規作成した。顧客（5,000件）・商品（200件）・注文（20,000件）・注文明細（約40,000件）からなる簡易ECドメインのDDL/初期データを、MySQL 8.4・MariaDB 11.4（共通スクリプト、桁の直積方式で連番生成）・PostgreSQL 17（generate_series使用）それぞれの方言に合わせて作成した。devenv/docker-compose.ymlの各対象RDBMSサービスに`/docker-entrypoint-initdb.d`へのボリュームマウントを追加し、README.mdの開発環境セットアップ手順に説明を追記した。このセッションのサンドボックスからはColima/Dockerデーモンに接続できず実行検証はできなかったため、SQL文の構文（括弧・クォートの対応、文の区切り）をPythonスクリプトで機械的に確認したのみである点をユーザーに開示した。AI-DLCの正式なUnit外の開発支援タスクのため、簡易な記録のみとする。"
 **Context**: devenv動作確認用データ整備（AI-DLC Unitの正式なワークフロー外の開発支援タスク）
+
+---
+
+## devenv動作確認用データの実機検証・修正
+**Timestamp**: 2026-08-22T23:00:00Z
+**User Input**: "docker compose --profile postgres up -d で動かして確認する" → "mysql, mariadbも同様にテスト。"
+**AI Response**: "Colimaが接続不能だったため`colima restart`で復旧し、postgres/mysql/mariadbの3コンテナを実際に起動して検証した。3種とも行数（customers 5,000/products 200/orders 20,000/order_items 40,000）・外部キー整合性（孤立行0件）は正常だったが、INSERT...SELECTにORDER BYがなく挿入順序が不定なため、MySQLとMariaDB/PostgreSQLでid列と論理連番（例: idと商品名の対応）が一致しないことを発見した。両SQLファイルの4つのINSERT文全てに`ORDER BY`を追加し、3種のコンテナを`down`→`up`で再作成して再検証し、全てでid=Nと論理内容が一致すること・行数とFK整合性が引き続き正常であることを確認した。"
+**Context**: devenv動作確認用データの実機検証で発見した不具合を修正・再検証済み
