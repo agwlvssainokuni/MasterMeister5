@@ -18,11 +18,15 @@ package cherry.mastermeister5.connectionschema.repository;
 
 import cherry.mastermeister5.connectionschema.entity.DbTable;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DbTableJpaRepository extends JpaRepository<DbTable, Long> {
 
     List<DbTable> findAllBySchemaId(Long schemaId);
+
+    /** Unit 4's AccessControlServiceImpl: primary-key lookup for record create/delete rules. */
+    Optional<DbTable> findBySchemaIdAndTableName(Long schemaId, String tableName);
 
     void deleteAllBySchemaId(Long schemaId);
 }

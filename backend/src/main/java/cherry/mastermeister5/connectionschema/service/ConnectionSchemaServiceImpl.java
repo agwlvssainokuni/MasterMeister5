@@ -16,6 +16,7 @@
 
 package cherry.mastermeister5.connectionschema.service;
 
+import cherry.mastermeister5.accesscontrol.cache.PermissionCacheService;
 import cherry.mastermeister5.audit.AuditEventType;
 import cherry.mastermeister5.audit.AuditLogService;
 import cherry.mastermeister5.connectionschema.entity.ConnectionStatus;
@@ -62,6 +63,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
     private final SchemaMetadataReader metadataReader;
     private final AuditLogService auditLogService;
     private final TransactionTemplate transactionTemplate;
+    private final PermissionCacheService permissionCacheService;
 
     ConnectionSchemaServiceImpl(
             TargetConnectionJpaRepository connectionRepository,
@@ -73,7 +75,8 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
             ConnectionPoolRegistry poolRegistry,
             SchemaMetadataReader metadataReader,
             AuditLogService auditLogService,
-            PlatformTransactionManager transactionManager) {
+            PlatformTransactionManager transactionManager,
+            PermissionCacheService permissionCacheService) {
         this.connectionRepository = connectionRepository;
         this.schemaRepository = schemaRepository;
         this.tableRepository = tableRepository;
@@ -84,6 +87,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
         this.metadataReader = metadataReader;
         this.auditLogService = auditLogService;
         this.transactionTemplate = new TransactionTemplate(transactionManager);
+        this.permissionCacheService = permissionCacheService;
     }
 
     @Override
@@ -206,6 +210,12 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                         "schemasImported", schemasImported,
                         "tablesImported", totalTables,
                         "removedTables", removedTableRefs.size()));
+
+        // NFR Design logical-components.md "Unit 3との連携": requirements.md
+        // requires the effective-permission cache to be invalidated whenever
+        // a schema is re-imported, regardless of whether any permission
+        // entries reference the changed tables/columns by name.
+        permissionCacheService.invalidateByConnection(connectionId);
 
         return new SchemaImportResult(
                 schemasImported, totalTables, totalColumns, removedTableRefs, removedColumnRefs, failures);

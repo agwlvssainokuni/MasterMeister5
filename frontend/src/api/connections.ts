@@ -54,6 +54,26 @@ export interface SchemaImportResultDto {
   failures: SchemaImportFailureDto[];
 }
 
+export interface ColumnViewDto {
+  columnName: string;
+  dataType: string;
+  nullable: boolean;
+  primaryKey: boolean;
+  comment: string | null;
+}
+
+export interface TableViewDto {
+  tableName: string;
+  tableType: "TABLE" | "VIEW";
+  comment: string | null;
+  columns: ColumnViewDto[];
+}
+
+export interface SchemaViewDto {
+  schemaName: string;
+  tables: TableViewDto[];
+}
+
 export function listConnections(): Promise<ConnectionSummaryDto[]> {
   return authenticatedJson<ConnectionSummaryDto[]>("/api/admin/connections");
 }
@@ -79,4 +99,9 @@ export function importSchema(connectionId: number): Promise<SchemaImportResultDt
     `/api/admin/connections/${connectionId}/schema-import`,
     { method: "POST" },
   );
+}
+
+/** Unit 4's PermissionScreen tree display. */
+export function getSchema(connectionId: number): Promise<SchemaViewDto[]> {
+  return authenticatedJson<SchemaViewDto[]>(`/api/admin/connections/${connectionId}/schema`);
 }

@@ -6,6 +6,8 @@
     "home": "Home",
     "users": "User Management",
     "connections": "Connections",
+    "groups": "Groups",
+    "permissions": "Access Permissions",
     "changePassword": "Change Password",
     "logout": "Log Out"
   },
@@ -116,6 +118,47 @@
         "summary": "Imported {{schemas}} schema(s), {{tables}} table(s), and {{columns}} column(s).",
         "removedTables": "Removed tables/columns:",
         "close": "Close"
+      }
+    },
+    "groups": {
+      "title": "Groups",
+      "createButton": "Create Group",
+      "selectButton": "Select",
+      "renameButton": "Rename",
+      "deleteButton": "Delete",
+      "columns": {
+        "name": "Group Name",
+        "memberCount": "Members",
+        "actions": "Actions"
+      },
+      "create": {
+        "title": "Create Group",
+        "submit": "Create",
+        "error": "Failed to create the group."
+      },
+      "rename": {
+        "title": "Rename Group",
+        "submit": "Rename",
+        "error": "Failed to rename the group."
+      },
+      "members": {
+        "title": "Members",
+        "addButton": "Add",
+        "removeButton": "Remove"
+      }
+    },
+    "permissions": {
+      "title": "Access Permissions",
+      "subjectType": {
+        "user": "User",
+        "group": "Group"
+      },
+      "exportButton": "Export YAML",
+      "auxCreate": "Can Create",
+      "auxDelete": "Can Delete",
+      "noSchemaImported": "This connection has no imported schema yet. Please import it from the Connections screen.",
+      "import": {
+        "error": "Failed to import."
       }
     }
   },

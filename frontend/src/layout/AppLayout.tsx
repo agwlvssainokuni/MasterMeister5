@@ -34,6 +34,8 @@ export function AppLayout(): React.JSX.Element {
   if (user?.role === "ADMIN") {
     navItems.push({ label: t("nav.users"), href: "/users" });
     navItems.push({ label: t("nav.connections"), href: "/connections" });
+    navItems.push({ label: t("nav.groups"), href: "/groups" });
+    navItems.push({ label: t("nav.permissions"), href: "/permissions" });
   }
 
   async function handleLogout() {

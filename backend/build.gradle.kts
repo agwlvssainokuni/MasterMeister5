@@ -43,6 +43,10 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:9.1.0")
     implementation("org.postgresql:postgresql:42.7.4")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.1")
+    // Effective-permission cache (Unit 4, nfr-requirements-plan.md Question 2).
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+    // Access-control YAML export/import (Unit 4, nfr-requirements-plan.md Question 1).
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     // H2 support ships inside flyway-core itself — no separate flyway-database-h2
     // artifact exists (unlike flyway-mysql / flyway-database-postgresql etc.).
     implementation("org.flywaydb:flyway-core")

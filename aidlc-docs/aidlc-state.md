@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-08-21T12:35:19Z
-- **Current Stage**: CONSTRUCTION - Unit 4（アクセス制御）- Functional Design 着手
+- **Current Stage**: CONSTRUCTION - Unit 4（アクセス制御）- Code Generation 完了・実動作検証済み
 
 ## Workspace State
 - **Existing Code**: No
@@ -51,7 +51,7 @@
 | 1. デザインシステム基盤 | SKIP | 完了 | 完了 | 完了 | 完了・承認済み |
 | 2. ユーザ管理 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 着手中 |
+| 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認待ち |
 | 5. データ表示 | - | - | - | - | - |
 | 6. その他機能 | - | - | - | - | - |
 
@@ -62,6 +62,7 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 4（アクセス制御）- NFR Requirements 質問提示中
-- **Next Stage**: NFR Requirements（Unit 4）回答収集
-- **Status**: ユーザー回答待ち（`aidlc-docs/construction/plans/unit4-access-control-nfr-requirements-plan.md`）
+- **Current Stage**: Unit 4（アクセス制御）- Infrastructure Design 成果物生成完了、
+  Code Generation実行完了
+- **Next Stage**: Code Generation（Unit 4）承認待ち
+- **Status**: ユーザー承認待ち（`aidlc-docs/construction/unit4-access-control/code/`）

@@ -16,6 +16,7 @@
 
 package cherry.mastermeister5.platform.web;
 
+import cherry.mastermeister5.accesscontrol.service.AccessControlException;
 import cherry.mastermeister5.connectionschema.service.ConnectionException;
 import cherry.mastermeister5.useraccount.service.UserAccountException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,6 +64,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConnectionException.class)
     public ResponseEntity<ErrorResponse> handleConnection(
             ConnectionException ex, HttpServletRequest request) {
+        return ResponseEntity.status(ex.getStatus())
+                .body(
+                        errorResponseFactory.create(
+                                ex.getErrorCode(), ex.getMessageKey(), request.getLocale()));
+    }
+
+    @ExceptionHandler(AccessControlException.class)
+    public ResponseEntity<ErrorResponse> handleAccessControl(
+            AccessControlException ex, HttpServletRequest request) {
         return ResponseEntity.status(ex.getStatus())
                 .body(
                         errorResponseFactory.create(

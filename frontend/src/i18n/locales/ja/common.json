@@ -6,6 +6,8 @@
     "home": "ホーム",
     "users": "ユーザー管理",
     "connections": "接続管理",
+    "groups": "グループ管理",
+    "permissions": "アクセス権限",
     "changePassword": "パスワード変更",
     "logout": "ログアウト"
   },
@@ -116,6 +118,47 @@
         "summary": "{{schemas}}件のスキーマ、{{tables}}件のテーブル、{{columns}}件のカラムを取り込みました。",
         "removedTables": "削除されたテーブル・カラム:",
         "close": "閉じる"
+      }
+    },
+    "groups": {
+      "title": "グループ管理",
+      "createButton": "グループを作成",
+      "selectButton": "選択",
+      "renameButton": "改名",
+      "deleteButton": "削除",
+      "columns": {
+        "name": "グループ名",
+        "memberCount": "所属人数",
+        "actions": "操作"
+      },
+      "create": {
+        "title": "グループを作成",
+        "submit": "作成する",
+        "error": "作成に失敗しました。"
+      },
+      "rename": {
+        "title": "グループを改名",
+        "submit": "改名する",
+        "error": "改名に失敗しました。"
+      },
+      "members": {
+        "title": "所属メンバー",
+        "addButton": "追加",
+        "removeButton": "削除"
+      }
+    },
+    "permissions": {
+      "title": "アクセス権限",
+      "subjectType": {
+        "user": "ユーザ",
+        "group": "グループ"
+      },
+      "exportButton": "YAMLエクスポート",
+      "auxCreate": "作成可",
+      "auxDelete": "削除可",
+      "noSchemaImported": "この接続はまだスキーマが取り込まれていません。接続管理画面から取込を行ってください。",
+      "import": {
+        "error": "インポートに失敗しました。"
       }
     }
   },

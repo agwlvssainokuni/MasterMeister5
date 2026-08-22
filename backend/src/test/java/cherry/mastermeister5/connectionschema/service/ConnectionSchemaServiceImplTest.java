@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import cherry.mastermeister5.accesscontrol.cache.PermissionCacheService;
 import cherry.mastermeister5.audit.AuditLogService;
 import cherry.mastermeister5.connectionschema.entity.ConnectionStatus;
 import cherry.mastermeister5.connectionschema.entity.DbColumn;
@@ -69,6 +70,7 @@ class ConnectionSchemaServiceImplTest {
     private final ConnectionPoolRegistry poolRegistry = mock(ConnectionPoolRegistry.class);
     private final SchemaMetadataReader metadataReader = mock(SchemaMetadataReader.class);
     private final AuditLogService auditLogService = mock(AuditLogService.class);
+    private final PermissionCacheService permissionCacheService = mock(PermissionCacheService.class);
 
     private static final PlatformTransactionManager NOOP_TX_MANAGER =
             new PlatformTransactionManager() {
@@ -97,7 +99,8 @@ class ConnectionSchemaServiceImplTest {
                     poolRegistry,
                     metadataReader,
                     auditLogService,
-                    NOOP_TX_MANAGER);
+                    NOOP_TX_MANAGER,
+                    permissionCacheService);
 
     // --- registerConnection ---
 
@@ -276,6 +279,32 @@ class ConnectionSchemaServiceImplTest {
         assertThat(result.columnsImported()).isEqualTo(1);
         assertThat(result.removedTableRefs()).isEmpty();
         assertThat(result.failures()).isEmpty();
+    }
+
+    /** nfr-design/logical-components.md "Unit 3との連携": Unit 4 relies on this call. */
+    @Test
+    void importSchemaInvalidatesThePermissionCacheForTheConnection() throws SQLException {
+        var connection = activeConnection(5L, "conn5");
+        when(connectionRepository.findById(5L)).thenReturn(Optional.of(connection));
+        var dataSource = mock(HikariDataSource.class);
+        when(poolRegistry.dataSourceFor(connection)).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(mock(Connection.class));
+        when(metadataReader.readSchemas(any(), org.mockito.ArgumentMatchers.isNull()))
+                .thenReturn(List.of(new DiscoveredSchema("public", List.of(), List.of())));
+        when(schemaRepository.findByConnectionIdAndSchemaName(5L, "public")).thenReturn(Optional.empty());
+        when(schemaRepository.save(any()))
+                .thenAnswer(
+                        invocation -> {
+                            var schema = invocation.getArgument(0, DbSchema.class);
+                            setId(schema, 10L);
+                            return schema;
+                        });
+        when(tableRepository.findAllBySchemaId(10L)).thenReturn(List.of());
+        when(columnRepository.findAllByTableIdIn(List.of())).thenReturn(List.of());
+
+        service.importSchema(5L, 1L);
+
+        org.mockito.Mockito.verify(permissionCacheService).invalidateByConnection(5L);
     }
 
     @Test

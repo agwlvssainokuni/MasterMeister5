@@ -19,6 +19,7 @@ package cherry.mastermeister5.connectionschema.controller;
 import cherry.mastermeister5.connectionschema.controller.dto.ConnectionSummaryResponse;
 import cherry.mastermeister5.connectionschema.controller.dto.RegisterConnectionRequest;
 import cherry.mastermeister5.connectionschema.controller.dto.SchemaImportResultResponse;
+import cherry.mastermeister5.connectionschema.controller.dto.SchemaViewResponse;
 import cherry.mastermeister5.connectionschema.service.ConnectionSchemaService;
 import cherry.mastermeister5.connectionschema.service.RegisterConnectionCommand;
 import jakarta.validation.Valid;
@@ -88,5 +89,11 @@ public class ConnectionController {
         var actorUserId = Long.valueOf(authentication.getName());
         return SchemaImportResultResponse.from(
                 connectionSchemaService.importSchema(connectionId, actorUserId));
+    }
+
+    /** Unit 4's PermissionScreen tree display (nfr-design/logical-components.md). */
+    @GetMapping("/api/admin/connections/{connectionId}/schema")
+    public List<SchemaViewResponse> getSchema(@PathVariable Long connectionId) {
+        return connectionSchemaService.getSchema(connectionId).stream().map(SchemaViewResponse::from).toList();
     }
 }
