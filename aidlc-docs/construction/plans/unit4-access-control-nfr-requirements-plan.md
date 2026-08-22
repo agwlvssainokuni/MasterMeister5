@@ -9,9 +9,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: Functional Design成果物分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: Functional Design成果物分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: NFR Requirements成果物生成
   - [ ] `nfr-requirements.md`
   - [ ] `tech-stack-decisions.md`
@@ -35,7 +35,7 @@ B) SnakeYAML（`org.yaml.snakeyaml`、Spring Boot依存に既に同梱）を直�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: Caffeineキャッシュ（実効権限キャッシュ）の構成
 
@@ -51,7 +51,7 @@ B) TTLを設定する（例: 30分）ことで、無効化処理の実装漏れ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 実効権限解決のパフォーマンス方針
 
@@ -67,7 +67,7 @@ B) 実効権限解決はキャッシュ未ヒット時でも99パーセンタイ
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: YAMLインポート時のセキュリティ対策
 
@@ -85,7 +85,7 @@ B) 追加のサニタイズ・型制約は設けず、パースできた内容�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: 監査ログ記録の粒度（権限設定変更・グループ操作・YAML入出力）
 
@@ -101,7 +101,7 @@ B) 個々の`PermissionEntry`変更ごとに監査ログを記録する（YAML�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
