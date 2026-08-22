@@ -12,9 +12,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: ユニットコンテキスト分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: ユニットコンテキスト分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: Functional Design成果物生成
   - [ ] `business-logic-model.md`
   - [ ] `business-rules.md`
@@ -44,7 +44,7 @@ B) バックエンドに本格的なSQLパーサライブラリを導入し、�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: クエリ実行時の対象スキーマ適用方式
 
@@ -57,7 +57,7 @@ B) SQL文字列を解析し、テーブル名にスキーマ修飾子を機械�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 読み取り専用SQL検証方式
 
@@ -72,7 +72,7 @@ B) 専用のSQLパーサでSQL全体を構文解析し、DML/DDLキーワード�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: パラメータ検出・バインディング方式
 
@@ -88,7 +88,7 @@ B) 独自の正規表現でパラメータを検出し、実行時に`?`プレ�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: 保存クエリの更新方法
 
@@ -104,7 +104,7 @@ B) 新規作成用`saveQuery`と更新用`updateQuery`を別メソッドとし�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 6: 大量データ取得監査ログのしきい値・適用範囲
 
@@ -122,7 +122,7 @@ B) 大量データ取得の記録はUnit 6の`executeQuery`のみを対象とし
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 7: 監査ログ閲覧のフィルタ範囲
 
@@ -141,7 +141,7 @@ B) `details`のJSONカラムに対してもSQLレベルでの部分一致検索�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
