@@ -911,3 +911,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 6 - Functional Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 6 - Functional Design 承認、NFR Requirements着手
+**Timestamp**: 2026-08-22T21:22:00Z
+**User Input**: "承認します、NFR Requirementsに進めてください。"
+**AI Response**: "Unit 6のFunctional Design成果物を承認として記録。NFR Requirementsに着手する。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - Functional Design 完了、NFR Requirementsへ
+
+---
+
+## CONSTRUCTION - Unit 6 - NFR Requirements質問ファイル作成
+**Timestamp**: 2026-08-22T21:23:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit6-other-features-nfr-requirements-plan.mdを作成した。クエリ実行結果の上限件数・タイムアウト（1000件・30秒）、読み取り専用の多層防御（Connection#setReadOnly）、大量データ取得閾値の設定方法（環境変数）、ページングデフォルト件数（Unit5と統一50件）、フィルタ列へのインデックス付与の5問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - NFR Requirements Step 2〜4 完了、回答待ち
+
+---
