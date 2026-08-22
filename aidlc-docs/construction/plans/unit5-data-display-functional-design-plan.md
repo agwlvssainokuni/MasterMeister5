@@ -16,11 +16,11 @@
 - [x] Step 1: ユニットコンテキスト分析（完了）
 - [x] Step 2-4: 質問の作成・提示（本ファイル）
 - [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
-- [ ] Step 6: Functional Design成果物生成
-  - [ ] `business-logic-model.md`
-  - [ ] `business-rules.md`
-  - [ ] `domain-entities.md`
-  - [ ] `frontend-components.md`
+- [x] Step 6: Functional Design成果物生成
+  - [x] `business-logic-model.md`
+  - [x] `business-rules.md`
+  - [x] `domain-entities.md`
+  - [x] `frontend-components.md`
 - [ ] Step 7-9: 完了報告・承認待ち・記録
 
 ---
