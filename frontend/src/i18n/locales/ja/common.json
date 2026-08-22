@@ -5,6 +5,7 @@
   "nav": {
     "home": "ホーム",
     "users": "ユーザー管理",
+    "connections": "接続管理",
     "changePassword": "パスワード変更",
     "logout": "ログアウト"
   },
@@ -80,6 +81,41 @@
         "title": "ユーザーを招待",
         "submit": "招待する",
         "error": "招待に失敗しました。"
+      }
+    },
+    "connections": {
+      "title": "接続管理",
+      "registerButton": "接続を登録",
+      "importButton": "スキーマ取込",
+      "deactivateButton": "無効化",
+      "reactivateButton": "再有効化",
+      "host": "ホスト",
+      "port": "ポート",
+      "schemaNameHint": "対象スキーマ名（任意）",
+      "username": "ユーザ名",
+      "password": "パスワード",
+      "columns": {
+        "name": "接続名",
+        "rdbmsType": "RDBMS種別",
+        "hostPort": "ホスト:ポート",
+        "databaseName": "データベース名",
+        "status": "状態",
+        "actions": "操作"
+      },
+      "status": {
+        "active": "有効",
+        "deactivated": "無効化済み"
+      },
+      "register": {
+        "title": "接続を登録",
+        "submit": "登録する",
+        "error": "登録に失敗しました。"
+      },
+      "importResult": {
+        "title": "スキーマ取込結果",
+        "summary": "{{schemas}}件のスキーマ、{{tables}}件のテーブル、{{columns}}件のカラムを取り込みました。",
+        "removedTables": "削除されたテーブル・カラム:",
+        "close": "閉じる"
       }
     }
   },

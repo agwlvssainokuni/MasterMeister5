@@ -81,6 +81,12 @@ docker compose --profile postgres up  # PostgreSQLも起動
 
 MailPit Web UI: http://localhost:8025
 
+対象RDBMSコンテナはホストポートにマッピング済み（MySQL: 3306、MariaDB: 3307、
+PostgreSQL: 5432）。backendアプリ自体はdevenvにコンテナ定義を持たずホスト上で直接
+実行されるため、管理者ダッシュボードで対象RDBMS接続を登録する際はホストに`localhost`、
+ポートに上記の値を指定する（Unit 3）。接続パスワードの暗号化には`MM5_CONNECTION_SECRET_KEY`
+環境変数（32byte以上）が必須。詳細は`.env.example`を参照。
+
 ## テスト
 
 ```bash

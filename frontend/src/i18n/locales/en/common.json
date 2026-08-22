@@ -5,6 +5,7 @@
   "nav": {
     "home": "Home",
     "users": "User Management",
+    "connections": "Connections",
     "changePassword": "Change Password",
     "logout": "Log Out"
   },
@@ -80,6 +81,41 @@
         "title": "Invite User",
         "submit": "Invite",
         "error": "Failed to invite the user."
+      }
+    },
+    "connections": {
+      "title": "Connections",
+      "registerButton": "Register Connection",
+      "importButton": "Import Schema",
+      "deactivateButton": "Deactivate",
+      "reactivateButton": "Reactivate",
+      "host": "Host",
+      "port": "Port",
+      "schemaNameHint": "Target Schema Name (optional)",
+      "username": "Username",
+      "password": "Password",
+      "columns": {
+        "name": "Connection Name",
+        "rdbmsType": "RDBMS Type",
+        "hostPort": "Host:Port",
+        "databaseName": "Database Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Active",
+        "deactivated": "Deactivated"
+      },
+      "register": {
+        "title": "Register Connection",
+        "submit": "Register",
+        "error": "Failed to register the connection."
+      },
+      "importResult": {
+        "title": "Schema Import Result",
+        "summary": "Imported {{schemas}} schema(s), {{tables}} table(s), and {{columns}} column(s).",
+        "removedTables": "Removed tables/columns:",
+        "close": "Close"
       }
     }
   },

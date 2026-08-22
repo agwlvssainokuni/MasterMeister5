@@ -23,6 +23,7 @@ import { ForgotPasswordScreen } from "./routes/ForgotPasswordScreen";
 import { ResetPasswordScreen } from "./routes/ResetPasswordScreen";
 import { ChangePasswordScreen } from "./routes/ChangePasswordScreen";
 import { AdminUserListScreen } from "./routes/admin/AdminUserListScreen";
+import { ConnectionListScreen } from "./routes/admin/ConnectionListScreen";
 import { RequireAuth } from "./auth/RequireAuth";
 
 /**
@@ -44,6 +45,7 @@ export function App(): React.JSX.Element {
           <Route path="/settings/password" element={<ChangePasswordScreen />} />
           <Route element={<RequireAuth role="ADMIN" />}>
             <Route path="/users" element={<AdminUserListScreen />} />
+            <Route path="/connections" element={<ConnectionListScreen />} />
           </Route>
         </Route>
       </Route>

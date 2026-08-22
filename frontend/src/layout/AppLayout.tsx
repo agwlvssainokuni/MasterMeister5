@@ -33,6 +33,7 @@ export function AppLayout(): React.JSX.Element {
   const navItems: AppShellNavItem[] = [{ label: t("nav.home"), href: "/" }];
   if (user?.role === "ADMIN") {
     navItems.push({ label: t("nav.users"), href: "/users" });
+    navItems.push({ label: t("nav.connections"), href: "/connections" });
   }
 
   async function handleLogout() {

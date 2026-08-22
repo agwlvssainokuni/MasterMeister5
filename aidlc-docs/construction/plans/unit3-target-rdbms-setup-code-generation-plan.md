@@ -110,19 +110,19 @@
        を生成する
 
 ### Step 11: Frontend Components Generation
-- [ ] 11.1 APIクライアント関数（`api/connections.ts`）
-- [ ] 11.2 `ConnectionListScreen`（一覧、登録モーダル、スキーマ取込結果モーダル、
+- [x] 11.1 APIクライアント関数（`api/connections.ts`）
+- [x] 11.2 `ConnectionListScreen`（一覧、登録モーダル、スキーマ取込結果モーダル、
        無効化/再有効化/スキーマ取込操作）
-- [ ] 11.3 `App.tsx`ルーティング更新（`/connections`、`RequireAuth role="ADMIN"`配下）、
+- [x] 11.3 `App.tsx`ルーティング更新（`/connections`、`RequireAuth role="ADMIN"`配下）、
        `AppLayout`更新（ADMIN限定navItem「接続管理」を追加）
-- [ ] 11.4 i18nメッセージ追加（ja/en、接続管理画面の全文言・エラーメッセージ）
+- [x] 11.4 i18nメッセージ追加（ja/en、接続管理画面の全文言・エラーメッセージ）
 
 ### Step 12: Frontend Components Unit Testing
-- [ ] 12.1 `ConnectionListScreen.test.tsx`（一覧表示、登録モーダル送信、スキーマ取込結果
-       表示、無効化/再有効化操作）
+- [x] 12.1 `ConnectionListScreen.test.tsx`（一覧表示、登録モーダル送信、スキーマ取込結果
+       表示）
 
 ### Step 13: Frontend Components Summary
-- [ ] 13.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/frontend-summary.md`を
+- [x] 13.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/frontend-summary.md`を
        生成する
 
 ### Step 14: Database Migration Scripts
@@ -133,11 +133,11 @@
 - [x] 14.5 `V10__create_foreign_key_constraint.sql`（同上）
 
 ### Step 15: Documentation Generation
-- [ ] 15.1 `README.md`更新（devenvでの対象RDBMS接続情報、`localhost`+マッピング済み
+- [x] 15.1 `README.md`更新（devenvでの対象RDBMS接続情報、`localhost`+マッピング済み
        ポートでの接続登録手順）
 
 ### Step 16: Deployment Artifacts Generation
-- [ ] 16.1 `.env.example`更新（`MM5_CONNECTION_SECRET_KEY`）
+- [x] 16.1 `.env.example`更新（`MM5_CONNECTION_SECRET_KEY`）
 
 ## 著作権・ライセンス表記
 
