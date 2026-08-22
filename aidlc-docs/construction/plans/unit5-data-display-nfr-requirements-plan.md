@@ -8,9 +8,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: Functional Design成果物分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: Functional Design成果物分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: NFR Requirements成果物生成
   - [ ] `nfr-requirements.md`
   - [ ] `tech-stack-decisions.md`
@@ -37,7 +37,7 @@ B) 既存の`resolveEffectivePermission`をカラムごとに呼び出す（初�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: フィルタ値のSQLインジェクション対策
 
@@ -51,7 +51,7 @@ B) 値も含めてすべて文字列連結でSQLを組み立てる（非推奨�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 手入力WHERE/ORDER BY句の具体的な検証方式（US-3.3、Functional Design
 Question 2の具体化）
@@ -65,7 +65,7 @@ B) 専用のSQLパーサライブラリを導入し、WHERE/ORDER BY句を構文
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: `applyChanges`の検証順序・実行方式
 
@@ -78,7 +78,7 @@ B) 各`RecordChange`を順に検証しながら同時に実行し、エラー時
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: レコード一覧のキャッシュ方針
 
@@ -90,7 +90,7 @@ B) 短時間（数秒程度）のレコード一覧キャッシュを導入す�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 6: 監査ログ記録の粒度
 
@@ -102,7 +102,7 @@ B) 個々のレコード変更ごとに監査ログを記録する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
