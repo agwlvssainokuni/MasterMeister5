@@ -53,15 +53,15 @@
 | 3. 対象RDBMSセットアップ | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 4. アクセス制御 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 | 5. データ表示 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
-| 6. その他機能 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | Part 2（Generation）完了・承認待ち |
+| 6. その他機能 | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み | 完了・承認済み |
 
-- [ ] Build and Test - EXECUTE（全Unit完了後）
+- [x] Build and Test - EXECUTE（全Unit完了後）— 成果物生成完了、承認待ち
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 6（その他機能）- Code Generation Part 2（Generation）完了
-- **Next Stage**: Code Generation承認待ち → 全Unit完了後のBuild and Test
+- **Current Stage**: Build and Test 成果物生成完了
+- **Next Stage**: Build and Test承認待ち → OPERATIONS PHASE（プレースホルダー）
 - **Status**: 作業中
