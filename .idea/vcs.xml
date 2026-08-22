@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/java-mustache-processor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/make-you-chic-ui" vcs="Git" />
   </component>
 </project>
