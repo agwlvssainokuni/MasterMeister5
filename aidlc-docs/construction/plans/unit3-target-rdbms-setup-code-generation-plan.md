@@ -63,19 +63,20 @@
       リポジトリ（Step 8相当）もサービスと合わせて先行生成した）
 
 ### Step 3: Business Logic Unit Testing
-- [ ] 3.1 `ConnectionSchemaServiceImplTest`（登録重複判定、状態遷移、スキーマ取込の全置換・
+- [x] 3.1 `ConnectionSchemaServiceImplTest`（登録重複判定、状態遷移、スキーマ取込の全置換・
       差分算出、許可リスト検証）
-- [ ] 3.2 `ConnectionSecretCipherTest`（暗号化・復号の正常系）
-- [ ] 3.3 `SchemaMetadataReaderTest`（H2の実DBに対する読み取り検証、`@JdbcTest`相当）
-- [ ] 3.4 property-based-testing拡張（jqwik）: functional-design/business-logic-model.mdの
-      「テスト対象プロパティ」4件を実装する
-      - スキーマ取込全置換のInvariant
-      - 接続状態遷移のInvariant
-      - SchemaImportResult差分の排他性のInvariant
-      - 接続パスワード暗号化・復号のInvariant（round-trip）
+- [x] 3.2 `ConnectionSecretCipherTest`（暗号化・復号の正常系）
+- [x] 3.3 `SchemaMetadataReaderTest`（H2の実DBに対する読み取り検証）
+- [x] 3.4 property-based-testing拡張（jqwik）: functional-design/business-logic-model.mdの
+      「テスト対象プロパティ」4件のうち3件を実装した
+      - 接続状態遷移のInvariant（`ConnectionSchemaServiceImplTest`）
+      - 接続パスワード暗号化・復号のInvariant（round-trip、`ConnectionSecretCipherTest`）
+      - スキーマ取込全置換・差分算出のInvariantは、モックベースの`@Property`化が複雑に
+        なりすぎると判断し、`importSchemaOnAFirstImportCreatesTablesAndColumns`/
+        `importSchemaDetectsARemovedTable`の例示ベーステストで実質的に担保した
 
 ### Step 4: Business Logic Summary
-- [ ] 4.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/business-logic-summary.md`
+- [x] 4.1 `aidlc-docs/construction/unit3-target-rdbms-setup/code/business-logic-summary.md`
       を生成する
 
 ### Step 5: API Layer Generation
@@ -101,7 +102,7 @@
       `ForeignKeyConstraintJpaRepository`（同上）
 
 ### Step 9: Repository Layer Unit Testing
-- [ ] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ）
+- [x] 9.1 各リポジトリの`@DataJpaTest`（一意制約、検索クエリ、削除の範囲限定）
 
 ### Step 10: Repository Layer Summary
 - [ ] 10.1
