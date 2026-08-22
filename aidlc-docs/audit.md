@@ -1037,3 +1037,11 @@
 **User Input**: (継続作業。ユーザーからの追加入力なし)
 **AI Response**: "`./gradlew clean build`（Success、約3分45秒）と`cd frontend && npx vitest run`を実際に実行し、バックエンド210件・フロントエンド46件、合計256件のテストが全て成功したことを確認した。build-instructions.md/unit-test-instructions.md/integration-test-instructions.md（専用結合テストソースセットは存在せず、単体テスト内結合検証＋手動スモークテスト10シナリオとして整理）/performance-test-instructions.md（自動負荷試験はスコープ外と明記）/security-test-instructions.md（SECURITY-10の依存関係脆弱性スキャナ未導入というギャップを検出・記録）/build-and-test-summary.mdを`aidlc-docs/construction/build-and-test/`に生成した。完了報告を提示する。"
 **Context**: CONSTRUCTION PHASE - Build and Test 完了、完了報告・承認待ちへ
+
+---
+
+## devenv動作確認用サンプルDDL/初期データの追加
+**Timestamp**: 2026-08-22T22:52:00Z
+**User Input**: "devenvのDBMSに確認用のDDL/初期データを用意して。レコード数多めで。"
+**AI Response**: "devenv/initdb/{mysql-mariadb,postgres}/01-schema-and-data.sqlを新規作成した。顧客（5,000件）・商品（200件）・注文（20,000件）・注文明細（約40,000件）からなる簡易ECドメインのDDL/初期データを、MySQL 8.4・MariaDB 11.4（共通スクリプト、桁の直積方式で連番生成）・PostgreSQL 17（generate_series使用）それぞれの方言に合わせて作成した。devenv/docker-compose.ymlの各対象RDBMSサービスに`/docker-entrypoint-initdb.d`へのボリュームマウントを追加し、README.mdの開発環境セットアップ手順に説明を追記した。このセッションのサンドボックスからはColima/Dockerデーモンに接続できず実行検証はできなかったため、SQL文の構文（括弧・クォートの対応、文の区切り）をPythonスクリプトで機械的に確認したのみである点をユーザーに開示した。AI-DLCの正式なUnit外の開発支援タスクのため、簡易な記録のみとする。"
+**Context**: devenv動作確認用データ整備（AI-DLC Unitの正式なワークフロー外の開発支援タスク）

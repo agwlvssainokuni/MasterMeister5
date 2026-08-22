@@ -13,6 +13,8 @@ services:
       MYSQL_DATABASE: mastermeister5_target
     ports:
       - "3306:3306"
+    volumes:
+      - ./initdb/mysql-mariadb:/docker-entrypoint-initdb.d:ro
 
   mariadb:
     image: mariadb:11.4
@@ -22,6 +24,8 @@ services:
       MARIADB_DATABASE: mastermeister5_target
     ports:
       - "3307:3306"
+    volumes:
+      - ./initdb/mysql-mariadb:/docker-entrypoint-initdb.d:ro
 
   postgres:
     image: postgres:17
@@ -31,3 +35,5 @@ services:
       POSTGRES_DB: mastermeister5_target
     ports:
       - "5432:5432"
+    volumes:
+      - ./initdb/postgres:/docker-entrypoint-initdb.d:ro
