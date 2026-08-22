@@ -7,9 +7,9 @@ Unit 1〜3で確定済みの基盤（クラウド不使用・自己完結型WAR/
 
 ## 実行チェックリスト
 
-- [ ] Step 1: nfr-design/logical-components.mdを分析する（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: nfr-design/logical-components.mdを分析する（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: Infrastructure Design成果物生成
   - [ ] `infrastructure-design.md`
   - [ ] `deployment-architecture.md`
@@ -46,7 +46,7 @@ B) Unitごとにマイグレーション番号の帯を予約する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: Caffeine依存の追加方式
 
@@ -60,7 +60,7 @@ B) 将来のマルチインスタンス化を見越し、この時点でRedis等
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
