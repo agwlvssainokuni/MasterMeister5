@@ -525,3 +525,11 @@
 **User Input**: (継続作業。ユーザーからの追加入力なし)
 **AI Response**: "aidlc-docs/construction/plans/unit3-target-rdbms-setup-infrastructure-design-plan.mdを作成した。devenv/docker-compose.ymlを確認し、対象RDBMSコンテナがホストポートマッピング済み（MySQL:3306, MariaDB:3307, PostgreSQL:5432）でbackendアプリ自体はコンテナ化されていないことを確認した。カテゴリ評価（Deployment/Compute/Messaging/Monitoring/Shared=N/A、Storage/Networking=該当）を明記し、計3問（Flywayマイグレーションのバージョニング、devenvでの対象RDBMS接続情報、接続暗号鍵の環境変数管理）を作成した。"
 **Context**: CONSTRUCTION PHASE - Unit 3 - Infrastructure Design Step 2〜4 完了、ユーザー回答待ち
+
+---
+
+## CONSTRUCTION - Unit 3 - Infrastructure Design 回答反映・成果物生成
+**Timestamp**: 2026-08-22T08:12:00Z
+**User Input**: "推奨の通りとする。"（続けて"commit"で回答反映を承認）
+**AI Response**: "unit3-target-rdbms-setup-infrastructure-design-plan.mdの全3問に推奨案(A)を記入した。矛盾・曖昧性は検出されなかった。Step 6としてinfrastructure-design.md（Flywayマイグレーション連番継続、schema/tableの予約語回避のためdb_schema/db_tableに命名、devenv接続情報はlocalhost+マッピング済みポート、暗号鍵の.env方式）とdeployment-architecture.md（開発環境・本番相当構成図に対象RDBMSへの接続経路を追加）を生成した。"
+**Context**: CONSTRUCTION PHASE - Unit 3 - Infrastructure Design Step 5〜6 完了、完了報告・承認待ちへ
