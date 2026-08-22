@@ -879,3 +879,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - Code Generation Part 2 完了、実動作検証済み、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 5 - Code Generation 承認、Unit 6着手
+**Timestamp**: 2026-08-22T21:05:00Z
+**User Input**: "承認します、Unit 6に進めてください。"
+**AI Response**: "Unit 5（データ表示）のCode Generationを承認として記録。Per-Unit LoopをUnit 6（その他機能）に進める。"
+**Context**: CONSTRUCTION PHASE - Unit 5 完了、Unit 6（その他機能）Functional Designへ
+
+---
+
+## CONSTRUCTION - Unit 6 - Functional Design質問ファイル作成
+**Timestamp**: 2026-08-22T21:08:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "aidlc-docs/construction/plans/unit6-other-features-functional-design-plan.mdを作成した。buildSql/parseSqlToBuilderStateの実装層（フロントエンド推奨）、クエリ実行時のスキーマ適用方式（JDBC Connection#setSchema）、読み取り専用SQL検証方式（Unit5のブロックリスト方式踏襲）、パラメータ検出・バインディング方式（Spring NamedParameterJdbcTemplate/NamedParameterUtils活用）、保存クエリの更新方法（saveQueryが新規/更新兼用）、大量データ取得監査ログのしきい値・Unit5への遡及適用、監査ログ閲覧のフィルタ範囲（実カラムのみ）の7問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 6 - Functional Design Step 2〜4 完了、回答待ち
+
+---
