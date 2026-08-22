@@ -815,3 +815,19 @@
 **Context**: CONSTRUCTION PHASE - Unit 5 - NFR Design Step 6 完了、完了報告・承認待ちへ
 
 ---
+
+## CONSTRUCTION - Unit 5 - NFR Design 承認、Infrastructure Design着手
+**Timestamp**: 2026-08-22T20:17:00Z
+**User Input**: "ok"
+**AI Response**: "Unit 5のNFR Design成果物を承認として記録。Infrastructure Designに着手する。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - NFR Design 完了、Infrastructure Designへ
+
+---
+
+## CONSTRUCTION - Unit 5 - Infrastructure Design質問ファイル作成
+**Timestamp**: 2026-08-22T20:18:00Z
+**User Input**: (継続作業。ユーザーからの追加入力なし)
+**AI Response**: "unit5-data-display-infrastructure-design-plan.mdを作成した。Deployment Environment/Compute/Networking/Monitoring/Shared InfrastructureはすべてN/A、Storage InfrastructureのFlywayマイグレーション番号（V14〜、Question 1）とMessaging Infrastructure相当のSchemaImportedEventのインフラ的位置づけ確認（Question 2）の2問を作成した。ユーザーの回答を待つ。"
+**Context**: CONSTRUCTION PHASE - Unit 5 - Infrastructure Design Step 2〜4 完了、回答待ち
+
+---
