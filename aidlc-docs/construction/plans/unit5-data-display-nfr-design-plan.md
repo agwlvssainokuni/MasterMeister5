@@ -7,9 +7,9 @@
 
 ## 実行計画
 
-- [ ] Step 1: NFR Requirements成果物分析（完了）
-- [ ] Step 2-4: 質問の作成・提示（本ファイル）
-- [ ] Step 5: 回答収集・曖昧性分析
+- [x] Step 1: NFR Requirements成果物分析（完了）
+- [x] Step 2-4: 質問の作成・提示（本ファイル）
+- [x] Step 5: 回答収集・曖昧性分析（全問A、矛盾なし）
 - [ ] Step 6: NFR Design成果物生成
   - [ ] `nfr-design-patterns.md`
   - [ ] `logical-components.md`
@@ -48,7 +48,7 @@ mastermaintenance`の循環依存を許容する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 2: 実効権限バッチ判定の内部実装パターン
 
@@ -64,7 +64,7 @@ B) カラムごとに内部で`resolveEffectivePermission`を呼び出す（結�
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 3: 手入力WHERE/ORDER BY句のブロックリスト実装
 
@@ -77,7 +77,7 @@ B) より高度な字句解析（トークナイザ）による検証を行う
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 4: ValidationRule（簡易バリデーション）の実行層
 
@@ -90,7 +90,7 @@ B) サーバ側検証のみ提供し、クライアント側では行わない
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5: SQL生成・パラメータバインディングの実装パターン
 
@@ -103,7 +103,7 @@ B) 独自のSQLビルダーライブラリを導入する
 
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ---
 
