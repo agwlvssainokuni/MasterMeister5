@@ -24,9 +24,8 @@ import "../../../i18n/i18n";
 const CONNECTIONS = [
   { id: 1, name: "conn1", rdbmsType: "MYSQL", host: "localhost", port: 3306, databaseName: "db", status: "ACTIVE" },
 ];
-const TABLES = [
-  { schemaName: "public", tableName: "t1", tableType: "TABLE", comment: null, canCreate: true, canDelete: true },
-];
+const TABLES = [{ schemaName: "public", tableName: "t1", tableType: "TABLE", comment: null }];
+const TABLE_PERMISSION = { canCreate: true, canDelete: true };
 const RECORD_PAGE = {
   columns: [
     {
@@ -79,6 +78,7 @@ describe("MasterDataScreen", () => {
   it("renders records after selecting a connection and table", async () => {
     installFetch([
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
@@ -102,6 +102,7 @@ describe("MasterDataScreen", () => {
         respond: async () => ({ ok: true, json: async () => ({ createdCount: 0, updatedCount: 0, deletedCount: 1 }) }),
       },
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
@@ -131,14 +132,17 @@ describe("MasterDataScreen", () => {
   });
 
   it("hides the create and delete controls when the user lacks that permission", async () => {
-    const restrictedTables = [{ ...TABLES[0], canCreate: false, canDelete: false }];
     installFetch([
       {
         url: "/tables/public/t1/records",
         method: "POST",
         respond: async () => ({ ok: true, json: async () => RECORD_PAGE }),
       },
-      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => restrictedTables }) },
+      {
+        url: "/tables/public/t1/permissions",
+        respond: async () => ({ ok: true, json: async () => ({ canCreate: false, canDelete: false }) }),
+      },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
@@ -164,6 +168,7 @@ describe("MasterDataScreen", () => {
         }),
       },
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);

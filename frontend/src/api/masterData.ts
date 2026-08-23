@@ -27,7 +27,10 @@ export interface TableSummaryDto {
   tableName: string;
   tableType: "TABLE" | "VIEW";
   comment: string | null;
-  /** Resolved table-level aux permissions; fetched as metadata alongside the table listing, not with each record page. */
+}
+
+/** Resolved table-level aux permissions; fetched via its own endpoint, separate from both the table listing and record data. */
+export interface TablePermissionDto {
   canCreate: boolean;
   canDelete: boolean;
 }
@@ -81,6 +84,16 @@ export interface ApplyResultDto {
 
 export function listTables(connectionId: number): Promise<TableSummaryDto[]> {
   return authenticatedJson<TableSummaryDto[]>(`/api/data/connections/${connectionId}/tables`, { method: "POST" });
+}
+
+export function getTablePermission(
+  connectionId: number,
+  schemaName: string,
+  tableName: string,
+): Promise<TablePermissionDto> {
+  return authenticatedJson<TablePermissionDto>(
+    `/api/data/connections/${connectionId}/tables/${schemaName}/${tableName}/permissions`,
+  );
 }
 
 export function listRecords(

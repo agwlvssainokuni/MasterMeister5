@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package cherry.mastermeister5.mastermaintenance.controller.dto;
+package cherry.mastermeister5.mastermaintenance.service;
 
-import cherry.mastermeister5.connectionschema.entity.DbTable;
-import cherry.mastermeister5.mastermaintenance.service.TableSummary;
-
-public record TableSummaryResponse(String schemaName, String tableName, DbTable.Type tableType, String comment) {
-
-    public static TableSummaryResponse from(TableSummary summary) {
-        return new TableSummaryResponse(summary.schemaName(), summary.tableName(), summary.tableType(), summary.comment());
-    }
+/**
+ * {@code resolveTablePermission} return value: the caller's resolved
+ * table-level aux permissions, fetched as metadata separate from record
+ * data (not tied to any particular page/filter/sort of listRecords).
+ */
+public record TablePermission(boolean canCreate, boolean canDelete) {
 }

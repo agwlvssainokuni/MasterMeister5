@@ -20,11 +20,13 @@ import { Button, FormField, Modal, Select, Table, TextInput, useToast, type Sort
 import { listConnections, type ConnectionSummaryDto } from "../../api/connections";
 import {
   applyChanges,
+  getTablePermission,
   listRecords,
   listTables,
   type ColumnDefDto,
   type RecordChangeDto,
   type RecordPageDto,
+  type TablePermissionDto,
   type TableSummaryDto,
 } from "../../api/masterData";
 import { ApiError } from "../../api/auth";
@@ -63,6 +65,7 @@ export function MasterDataScreen(): React.JSX.Element {
   const pageSize = 50;
 
   const [recordPage, setRecordPage] = useState<RecordPageDto | null>(null);
+  const [tablePermission, setTablePermission] = useState<TablePermissionDto | null>(null);
   const [editsByRowId, setEditsByRowId] = useState<Map<string, Row>>(new Map());
   const [deletedRowIds, setDeletedRowIds] = useState<Set<string>>(new Set());
   const [newRows, setNewRows] = useState<Row[]>([]);
@@ -105,6 +108,16 @@ export function MasterDataScreen(): React.JSX.Element {
   useEffect(() => {
     reloadRecords();
   }, [reloadRecords]);
+
+  useEffect(() => {
+    if (!selectedConnectionId || !selectedTable) {
+      setTablePermission(null);
+      return;
+    }
+    getTablePermission(Number(selectedConnectionId), selectedTable.schemaName, selectedTable.tableName).then(
+      setTablePermission,
+    );
+  }, [selectedConnectionId, selectedTable]);
 
   function handleCellEdit(rowId: string, columnKey: string, value: unknown) {
     setEditsByRowId((prev) => {
@@ -191,7 +204,7 @@ export function MasterDataScreen(): React.JSX.Element {
       sortable: true,
       editable: editableColumnKeys.includes(c.columnName),
     }));
-    if (selectedTable?.canDelete) {
+    if (tablePermission?.canDelete) {
       columns.push({
         key: "__actions__",
         header: t("admin.masterData.columns.actions"),
@@ -212,9 +225,9 @@ export function MasterDataScreen(): React.JSX.Element {
     }
     return columns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns, selectedTable]);
+  }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns, tablePermission]);
 
-  const canCreate = selectedTable?.canCreate ?? false;
+  const canCreate = tablePermission?.canCreate ?? false;
 
   return (
     <div>

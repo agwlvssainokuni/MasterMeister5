@@ -20,6 +20,7 @@ import cherry.mastermeister5.mastermaintenance.controller.dto.ApplyChangesReques
 import cherry.mastermeister5.mastermaintenance.controller.dto.ApplyResultResponse;
 import cherry.mastermeister5.mastermaintenance.controller.dto.ListRecordsRequest;
 import cherry.mastermeister5.mastermaintenance.controller.dto.RecordPageResponse;
+import cherry.mastermeister5.mastermaintenance.controller.dto.TablePermissionResponse;
 import cherry.mastermeister5.mastermaintenance.controller.dto.TableSummaryResponse;
 import cherry.mastermeister5.mastermaintenance.service.FilterCondition;
 import cherry.mastermeister5.mastermaintenance.service.FilterCriteria;
@@ -31,6 +32,7 @@ import cherry.mastermeister5.mastermaintenance.service.SortCriteria;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -82,6 +84,17 @@ public class MasterDataController {
                         request.page(),
                         request.pageSize());
         return RecordPageResponse.from(masterMaintenanceService.listRecords(command));
+    }
+
+    @GetMapping("/api/data/connections/{connectionId}/tables/{schemaName}/{tableName}/permissions")
+    public TablePermissionResponse getTablePermission(
+            @PathVariable Long connectionId,
+            @PathVariable String schemaName,
+            @PathVariable String tableName,
+            Authentication authentication) {
+        return TablePermissionResponse.from(
+                masterMaintenanceService.resolveTablePermission(
+                        connectionId, schemaName, tableName, Long.valueOf(authentication.getName())));
     }
 
     @PostMapping("/api/data/connections/{connectionId}/tables/{schemaName}/{tableName}/apply")

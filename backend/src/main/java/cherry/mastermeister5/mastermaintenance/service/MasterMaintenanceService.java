@@ -25,6 +25,8 @@ public interface MasterMaintenanceService {
 
     RecordPage listRecords(ListRecordsCommand command);
 
+    TablePermission resolveTablePermission(Long connectionId, String schemaName, String tableName, Long userId);
+
     ApplyResult applyChanges(
             Long connectionId, String schemaName, String tableName, Long userId, RecordChangeSet changeSet);
 

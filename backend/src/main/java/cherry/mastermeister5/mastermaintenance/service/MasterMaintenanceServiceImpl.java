@@ -129,17 +129,9 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                                 userId, connectionId, schema.getSchemaName(), table.getTableName(), columnNames);
                 var anyReadable = permissions.values().stream().anyMatch(p -> p.primaryLevel() != PrimaryLevel.NONE);
                 if (anyReadable) {
-                    var tablePermission =
-                            accessControlService.resolveEffectivePermission(
-                                    userId, connectionId, ResourceLevel.TABLE, schema.getSchemaName(), table.getTableName(), null);
                     result.add(
                             new TableSummary(
-                                    schema.getSchemaName(),
-                                    table.getTableName(),
-                                    table.getTableType(),
-                                    table.getComment(),
-                                    tablePermission.canCreate(),
-                                    tablePermission.canDelete()));
+                                    schema.getSchemaName(), table.getTableName(), table.getTableType(), table.getComment()));
                 }
             }
         }
@@ -300,6 +292,17 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
         }
 
         return new RecordPage(visibleColumns, rows, command.page(), command.pageSize(), effectiveTotalCount);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TablePermission resolveTablePermission(Long connectionId, String schemaName, String tableName, Long userId) {
+        var schema = findSchemaOrThrow(connectionId, schemaName);
+        findTableOrThrow(schema.getId(), tableName);
+        var permission =
+                accessControlService.resolveEffectivePermission(
+                        userId, connectionId, ResourceLevel.TABLE, schemaName, tableName, null);
+        return new TablePermission(permission.canCreate(), permission.canDelete());
     }
 
     private String renderCondition(FilterCondition condition, String paramName, MapSqlParameterSource paramSource) {

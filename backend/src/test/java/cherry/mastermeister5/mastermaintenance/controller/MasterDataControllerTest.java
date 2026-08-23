@@ -25,6 +25,7 @@ import cherry.mastermeister5.mastermaintenance.service.ApplyResult;
 import cherry.mastermeister5.mastermaintenance.service.MasterMaintenanceException;
 import cherry.mastermeister5.mastermaintenance.service.MasterMaintenanceService;
 import cherry.mastermeister5.mastermaintenance.service.RecordPage;
+import cherry.mastermeister5.mastermaintenance.service.TablePermission;
 import cherry.mastermeister5.mastermaintenance.service.TableSummary;
 import cherry.mastermeister5.platform.web.ErrorResponse;
 import cherry.mastermeister5.platform.web.ErrorResponseFactory;
@@ -76,7 +77,7 @@ class MasterDataControllerTest {
     @Test
     void listTablesPassesTheAuthenticatedUserAsActor() throws Exception {
         given(masterMaintenanceService.listTables(1L, 9L))
-                .willReturn(List.of(new TableSummary("public", "t1", DbTable.Type.TABLE, null, true, true)));
+                .willReturn(List.of(new TableSummary("public", "t1", DbTable.Type.TABLE, null)));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/data/connections/1/tables").principal(userAuthentication))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -98,6 +99,19 @@ class MasterDataControllerTest {
                 .listRecords(
                         org.mockito.ArgumentMatchers.argThat(
                                 command -> command.connectionId().equals(1L) && command.userId().equals(9L)));
+    }
+
+    @Test
+    void getTablePermissionPassesTheAuthenticatedUserAsActor() throws Exception {
+        given(masterMaintenanceService.resolveTablePermission(1L, "public", "t1", 9L))
+                .willReturn(new TablePermission(true, false));
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/data/connections/1/tables/public/t1/permissions")
+                                .principal(userAuthentication))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.canCreate", org.hamcrest.Matchers.is(true)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.canDelete", org.hamcrest.Matchers.is(false)));
     }
 
     @Test

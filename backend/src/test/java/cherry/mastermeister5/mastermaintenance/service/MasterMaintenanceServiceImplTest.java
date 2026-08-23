@@ -284,29 +284,18 @@ class MasterMaintenanceServiceImplTest {
                 .recordEvent(eq(AuditEventType.BULK_DATA_ACCESSED), eq(9L), isNull(), any());
     }
 
-    // --- listTables ---
+    // --- resolveTablePermission ---
 
     @Test
-    void listTablesReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
-        var schema = new DbSchema(1L, "public");
-        setId(schema, 100L);
-        when(schemaRepository.findAllByConnectionId(1L)).thenReturn(List.of(schema));
-        var table = new DbTable(100L, "t1", DbTable.Type.TABLE, null);
-        setId(table, 200L);
-        when(tableRepository.findAllBySchemaId(100L)).thenReturn(List.of(table));
-        when(columnRepository.findAllByTableId(200L)).thenReturn(List.of(column("id", true)));
-        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
-                .thenReturn(Map.of("id", new EffectivePermission(PrimaryLevel.READ, false, false)));
+    void resolveTablePermissionReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
+        mockTable("t1", List.of(column("id", true)), true);
         when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
                 .thenReturn(new EffectivePermission(PrimaryLevel.READ, true, false));
 
-        var tables = service.listTables(1L, 9L);
+        var permission = service.resolveTablePermission(1L, "public", "t1", 9L);
 
-        assertThat(tables).singleElement().satisfies(
-                t -> {
-                    assertThat(t.canCreate()).isTrue();
-                    assertThat(t.canDelete()).isFalse();
-                });
+        assertThat(permission.canCreate()).isTrue();
+        assertThat(permission.canDelete()).isFalse();
     }
 
     // --- applyChanges ---
