@@ -14,14 +14,98 @@
  * limitations under the License.
  */
 
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Card } from "make-you-chic-ui";
+import { useAuth } from "../auth/AuthContext";
+import "./HomePage.css";
 
-/** Placeholder — replaced once a real landing screen exists (later units). */
+interface HomeCard {
+  id: string;
+  href: string;
+  titleKey: string;
+  descriptionKey: string;
+  adminOnly?: boolean;
+}
+
+const HOME_CARDS: HomeCard[] = [
+  { id: "masterData", href: "/data", titleKey: "nav.masterData", descriptionKey: "home.cards.masterData" },
+  { id: "query", href: "/queries", titleKey: "nav.query", descriptionKey: "home.cards.query" },
+  {
+    id: "queryHistory",
+    href: "/queries/history",
+    titleKey: "nav.queryHistory",
+    descriptionKey: "home.cards.queryHistory",
+  },
+  {
+    id: "users",
+    href: "/users",
+    titleKey: "nav.users",
+    descriptionKey: "home.cards.users",
+    adminOnly: true,
+  },
+  {
+    id: "connections",
+    href: "/connections",
+    titleKey: "nav.connections",
+    descriptionKey: "home.cards.connections",
+    adminOnly: true,
+  },
+  {
+    id: "groups",
+    href: "/groups",
+    titleKey: "nav.groups",
+    descriptionKey: "home.cards.groups",
+    adminOnly: true,
+  },
+  {
+    id: "permissions",
+    href: "/permissions",
+    titleKey: "nav.permissions",
+    descriptionKey: "home.cards.permissions",
+    adminOnly: true,
+  },
+  {
+    id: "customizations",
+    href: "/data/customization",
+    titleKey: "nav.customizations",
+    descriptionKey: "home.cards.customizations",
+    adminOnly: true,
+  },
+  {
+    id: "auditLog",
+    href: "/audit-log",
+    titleKey: "nav.auditLog",
+    descriptionKey: "home.cards.auditLog",
+    adminOnly: true,
+  },
+];
+
+/** frontend-components.md HomePage — a card grid linking to every screen the current user can access. */
 export function HomePage(): React.JSX.Element {
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  const cards = HOME_CARDS.filter((card) => !card.adminOnly || user?.role === "ADMIN");
+
   return (
     <div data-testid="home-page">
-      <h1>{t("app.name")}</h1>
+      <h1>{t("nav.home")}</h1>
+      <div className="mm5-home-cards">
+        {cards.map((card) => (
+          <Link
+            key={card.id}
+            to={card.href}
+            className="mm5-home-card-link"
+            data-testid={`home-card-${card.id}`}
+          >
+            <Card>
+              <h2 className="mm5-home-card-title">{t(card.titleKey)}</h2>
+              <p className="mm5-home-card-description">{t(card.descriptionKey)}</p>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

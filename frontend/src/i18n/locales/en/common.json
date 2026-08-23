@@ -2,6 +2,19 @@
   "app": {
     "name": "MasterMeister5"
   },
+  "home": {
+    "cards": {
+      "masterData": "Search and view registered table data, and add, edit, or delete rows according to your permissions.",
+      "query": "Search data using the query builder or direct SQL input, and review or save the results.",
+      "queryHistory": "Search and review the history of previously executed queries.",
+      "users": "Manage accounts: invite users, review roles, and deactivate/reactivate them.",
+      "connections": "Register target RDBMS connections and import their schema.",
+      "groups": "Organize users into groups to manage access permissions collectively.",
+      "permissions": "Set table/column access permissions per user or group.",
+      "customizations": "Customize display labels and input appearance per table/column.",
+      "auditLog": "Review the audit log of operations such as user registration and query execution."
+    }
+  },
   "nav": {
     "home": "Home",
     "users": "User Management",

@@ -1,0 +1,57 @@
+/*
+ * Copyright 2026 agwlvssainokuni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.mm5-home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.mm5-home-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mm5-home-card-link .mycui-card {
+  height: 100%;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.mm5-home-card-link:hover .mycui-card {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+}
+
+.mm5-home-card-link:focus-visible .mycui-card {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.mm5-home-card-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.mm5-home-card-description {
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
