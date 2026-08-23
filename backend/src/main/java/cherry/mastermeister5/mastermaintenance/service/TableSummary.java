@@ -18,6 +18,12 @@ package cherry.mastermeister5.mastermaintenance.service;
 
 import cherry.mastermeister5.connectionschema.entity.DbTable;
 
-/** frontend-components.md MasterDataScreen table selector (US-3.1). */
-public record TableSummary(String schemaName, String tableName, DbTable.Type tableType, String comment) {
+/**
+ * frontend-components.md MasterDataScreen table selector (US-3.1).
+ * {@code canCreate}/{@code canDelete} are the resolved table-level aux
+ * permissions, fetched here as metadata alongside the table listing rather
+ * than with every record page (they don't vary by page/filter/sort).
+ */
+public record TableSummary(
+        String schemaName, String tableName, DbTable.Type tableType, String comment, boolean canCreate, boolean canDelete) {
 }

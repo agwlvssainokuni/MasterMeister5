@@ -136,12 +136,6 @@ class MasterMaintenanceServiceImplTest {
             var schema = new DbSchema(1L, "public");
             setId(schema, 100L);
             when(schemaRepository.findByConnectionIdAndSchemaName(1L, "public")).thenReturn(Optional.of(schema));
-
-            // listRecords always resolves the table-level permission now (for
-            // RecordPage.canCreate()/canDelete()); tests that care about a
-            // specific value re-stub this themselves.
-            when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
-                    .thenReturn(new EffectivePermission(PrimaryLevel.NONE, false, false));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -290,23 +284,29 @@ class MasterMaintenanceServiceImplTest {
                 .recordEvent(eq(AuditEventType.BULK_DATA_ACCESSED), eq(9L), isNull(), any());
     }
 
+    // --- listTables ---
+
     @Test
-    void listRecordsReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
-        mockTable("t1", List.of(column("id", true), column("name", false)), true);
+    void listTablesReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
+        var schema = new DbSchema(1L, "public");
+        setId(schema, 100L);
+        when(schemaRepository.findAllByConnectionId(1L)).thenReturn(List.of(schema));
+        var table = new DbTable(100L, "t1", DbTable.Type.TABLE, null);
+        setId(table, 200L);
+        when(tableRepository.findAllBySchemaId(100L)).thenReturn(List.of(table));
+        when(columnRepository.findAllByTableId(200L)).thenReturn(List.of(column("id", true)));
         when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
-                .thenReturn(
-                        Map.of(
-                                "id", new EffectivePermission(PrimaryLevel.READ, false, false),
-                                "name", new EffectivePermission(PrimaryLevel.READ, false, false)));
+                .thenReturn(Map.of("id", new EffectivePermission(PrimaryLevel.READ, false, false)));
         when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
                 .thenReturn(new EffectivePermission(PrimaryLevel.READ, true, false));
 
-        var page =
-                service.listRecords(
-                        new ListRecordsCommand(1L, "public", "t1", 9L, new FilterCriteria(List.of(), null), null, 0, 50));
+        var tables = service.listTables(1L, 9L);
 
-        assertThat(page.canCreate()).isTrue();
-        assertThat(page.canDelete()).isFalse();
+        assertThat(tables).singleElement().satisfies(
+                t -> {
+                    assertThat(t.canCreate()).isTrue();
+                    assertThat(t.canDelete()).isFalse();
+                });
     }
 
     // --- applyChanges ---

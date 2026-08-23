@@ -27,6 +27,9 @@ export interface TableSummaryDto {
   tableName: string;
   tableType: "TABLE" | "VIEW";
   comment: string | null;
+  /** Resolved table-level aux permissions; fetched as metadata alongside the table listing, not with each record page. */
+  canCreate: boolean;
+  canDelete: boolean;
 }
 
 export interface ColumnDefDto {
@@ -46,8 +49,6 @@ export interface RecordPageDto {
   page: number;
   pageSize: number;
   totalCount: number;
-  canCreate: boolean;
-  canDelete: boolean;
 }
 
 export interface FilterConditionDto {

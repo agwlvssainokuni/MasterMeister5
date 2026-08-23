@@ -191,7 +191,7 @@ export function MasterDataScreen(): React.JSX.Element {
       sortable: true,
       editable: editableColumnKeys.includes(c.columnName),
     }));
-    if (recordPage.canDelete) {
+    if (selectedTable?.canDelete) {
       columns.push({
         key: "__actions__",
         header: t("admin.masterData.columns.actions"),
@@ -212,9 +212,9 @@ export function MasterDataScreen(): React.JSX.Element {
     }
     return columns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns]);
+  }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns, selectedTable]);
 
-  const canCreate = recordPage !== null && recordPage.canCreate;
+  const canCreate = selectedTable?.canCreate ?? false;
 
   return (
     <div>

@@ -19,9 +19,16 @@ package cherry.mastermeister5.mastermaintenance.controller.dto;
 import cherry.mastermeister5.connectionschema.entity.DbTable;
 import cherry.mastermeister5.mastermaintenance.service.TableSummary;
 
-public record TableSummaryResponse(String schemaName, String tableName, DbTable.Type tableType, String comment) {
+public record TableSummaryResponse(
+        String schemaName, String tableName, DbTable.Type tableType, String comment, boolean canCreate, boolean canDelete) {
 
     public static TableSummaryResponse from(TableSummary summary) {
-        return new TableSummaryResponse(summary.schemaName(), summary.tableName(), summary.tableType(), summary.comment());
+        return new TableSummaryResponse(
+                summary.schemaName(),
+                summary.tableName(),
+                summary.tableType(),
+                summary.comment(),
+                summary.canCreate(),
+                summary.canDelete());
     }
 }

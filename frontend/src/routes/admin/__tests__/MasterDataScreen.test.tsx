@@ -24,7 +24,9 @@ import "../../../i18n/i18n";
 const CONNECTIONS = [
   { id: 1, name: "conn1", rdbmsType: "MYSQL", host: "localhost", port: 3306, databaseName: "db", status: "ACTIVE" },
 ];
-const TABLES = [{ schemaName: "public", tableName: "t1", tableType: "TABLE", comment: null }];
+const TABLES = [
+  { schemaName: "public", tableName: "t1", tableType: "TABLE", comment: null, canCreate: true, canDelete: true },
+];
 const RECORD_PAGE = {
   columns: [
     {
@@ -52,8 +54,6 @@ const RECORD_PAGE = {
   page: 0,
   pageSize: 50,
   totalCount: 1,
-  canCreate: true,
-  canDelete: true,
 };
 
 function installFetch(routes: Array<{ url: string; method?: string; respond: () => Promise<unknown> }>) {
@@ -131,13 +131,14 @@ describe("MasterDataScreen", () => {
   });
 
   it("hides the create and delete controls when the user lacks that permission", async () => {
+    const restrictedTables = [{ ...TABLES[0], canCreate: false, canDelete: false }];
     installFetch([
       {
         url: "/tables/public/t1/records",
         method: "POST",
-        respond: async () => ({ ok: true, json: async () => ({ ...RECORD_PAGE, canCreate: false, canDelete: false }) }),
+        respond: async () => ({ ok: true, json: async () => RECORD_PAGE }),
       },
-      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => restrictedTables }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
 
