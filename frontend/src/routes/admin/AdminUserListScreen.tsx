@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, Modal, Select, TextInput } from "make-you-chic-ui";
+import { Button, FormField, Modal, Select, Table, TextInput, type TableColumn } from "make-you-chic-ui";
 import {
   changeRole,
   deactivateUser,
@@ -29,17 +29,15 @@ import {
 import type { UserRole } from "../../api/auth";
 import { ApiError } from "../../api/auth";
 
-/**
- * frontend-components.md AdminUserListScreen (US-1.1〜1.5). The user list is
- * small (invite-only accounts, no pagination requirement in Unit 2 scope),
- * so a plain table is used instead of make-you-chic-ui's Table component
- * (whose sort/select/inline-edit machinery would be unused overhead here).
- */
+const PAGE_SIZE = 20;
+
+/** frontend-components.md AdminUserListScreen (US-1.1〜1.5). listUsers() returns the full, unpaginated list; paging below is client-side over that array. */
 export function AdminUserListScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
   const [users, setUsers] = useState<UserSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
 
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
@@ -95,6 +93,75 @@ export function AdminUserListScreen(): React.JSX.Element {
     reload();
   }
 
+  const columns: TableColumn<UserSummaryDto>[] = useMemo(
+    () => [
+      { key: "email", header: t("admin.users.columns.email") },
+      { key: "name", header: t("admin.users.columns.name") },
+      {
+        key: "role",
+        header: t("admin.users.columns.role"),
+        render: (row) => (
+          <Select
+            aria-label={t("admin.users.columns.role")}
+            options={[
+              { label: t("admin.users.role.admin"), value: "ADMIN" },
+              { label: t("admin.users.role.general"), value: "GENERAL" },
+            ]}
+            value={row.role}
+            onChange={(value) => handleChangeRole(row.id, value as UserRole)}
+            data-testid={`admin-users-row-${row.id}-role-select`}
+          />
+        ),
+      },
+      {
+        key: "status",
+        header: t("admin.users.columns.status"),
+        render: (row) => t(`admin.users.status.${row.status.toLowerCase()}`),
+      },
+      {
+        key: "actions",
+        header: t("admin.users.columns.actions"),
+        render: (row) => (
+          <>
+            {row.status === "INVITED" && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => handleResend(row.id)}
+                data-testid={`admin-users-row-${row.id}-resend-button`}
+              >
+                {t("admin.users.resendButton")}
+              </Button>
+            )}
+            {row.status === "ACTIVE" && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => handleDeactivate(row.id)}
+                data-testid={`admin-users-row-${row.id}-deactivate-button`}
+              >
+                {t("admin.users.deactivateButton")}
+              </Button>
+            )}
+            {row.status === "DEACTIVATED" && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => handleReactivate(row.id)}
+                data-testid={`admin-users-row-${row.id}-reactivate-button`}
+              >
+                {t("admin.users.reactivateButton")}
+              </Button>
+            )}
+          </>
+        ),
+      },
+    ],
+    [t],
+  );
+
+  const pagedUsers = users.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div>
       <h1>{t("admin.users.title")}</h1>
@@ -105,70 +172,18 @@ export function AdminUserListScreen(): React.JSX.Element {
       {loading ? (
         <p>{t("common.loading")}</p>
       ) : (
-        <table data-testid="admin-users-table">
-          <thead>
-            <tr>
-              <th>{t("admin.users.columns.email")}</th>
-              <th>{t("admin.users.columns.name")}</th>
-              <th>{t("admin.users.columns.role")}</th>
-              <th>{t("admin.users.columns.status")}</th>
-              <th>{t("admin.users.columns.actions")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} data-testid={`admin-users-row-${user.id}`}>
-                <td>{user.email}</td>
-                <td>{user.name ?? ""}</td>
-                <td>
-                  <Select
-                    aria-label={t("admin.users.columns.role")}
-                    options={[
-                      { label: t("admin.users.role.admin"), value: "ADMIN" },
-                      { label: t("admin.users.role.general"), value: "GENERAL" },
-                    ]}
-                    value={user.role}
-                    onChange={(value) => handleChangeRole(user.id, value as UserRole)}
-                    data-testid={`admin-users-row-${user.id}-role-select`}
-                  />
-                </td>
-                <td>{t(`admin.users.status.${user.status.toLowerCase()}`)}</td>
-                <td>
-                  {user.status === "INVITED" && (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleResend(user.id)}
-                      data-testid={`admin-users-row-${user.id}-resend-button`}
-                    >
-                      {t("admin.users.resendButton")}
-                    </Button>
-                  )}
-                  {user.status === "ACTIVE" && (
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDeactivate(user.id)}
-                      data-testid={`admin-users-row-${user.id}-deactivate-button`}
-                    >
-                      {t("admin.users.deactivateButton")}
-                    </Button>
-                  )}
-                  {user.status === "DEACTIVATED" && (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleReactivate(user.id)}
-                      data-testid={`admin-users-row-${user.id}-reactivate-button`}
-                    >
-                      {t("admin.users.reactivateButton")}
-                    </Button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div data-testid="admin-users-table">
+          <Table
+            columns={columns}
+            data={pagedUsers}
+            totalCount={users.length}
+            getRowId={(row) => String(row.id)}
+            page={page}
+            pageSize={PAGE_SIZE}
+            onPageChange={setPage}
+            aria-label={t("admin.users.title")}
+          />
+        </div>
       )}
 
       <Modal open={inviteOpen} onClose={() => setInviteOpen(false)} title={t("admin.users.invite.title")}>
