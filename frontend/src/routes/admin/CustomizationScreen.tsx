@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Select } from "make-you-chic-ui";
+import { Button, Select, Table, type TableColumn } from "make-you-chic-ui";
 import { listConnections, type ConnectionSummaryDto } from "../../api/connections";
 import { listTables, type TableSummaryDto } from "../../api/masterData";
 import { exportCustomizationDefinition, importCustomizationDefinition } from "../../api/customizations";
 import { ApiError } from "../../api/auth";
+
+const PAGE_SIZE = 20;
 
 function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -39,12 +41,14 @@ export function CustomizationScreen(): React.JSX.Element {
   const [selectedConnectionId, setSelectedConnectionId] = useState("");
   const [tables, setTables] = useState<TableSummaryDto[]>([]);
   const [importErrorMessage, setImportErrorMessage] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     listConnections().then((all) => setConnections(all.filter((c) => c.status === "ACTIVE")));
   }, []);
 
   useEffect(() => {
+    setPage(0);
     if (!selectedConnectionId) {
       setTables([]);
       return;
@@ -81,6 +85,16 @@ export function CustomizationScreen(): React.JSX.Element {
     }
   }
 
+  const columns: TableColumn<TableSummaryDto>[] = useMemo(
+    () => [
+      { key: "schemaName", header: t("admin.customizations.columns.schemaName") },
+      { key: "tableName", header: t("admin.customizations.columns.tableName") },
+    ],
+    [t],
+  );
+
+  const pagedTables = tables.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div>
       <h1>{t("admin.customizations.title")}</h1>
@@ -111,22 +125,18 @@ export function CustomizationScreen(): React.JSX.Element {
           />
           {importErrorMessage && <p role="alert">{importErrorMessage}</p>}
 
-          <table data-testid="customizations-tables">
-            <thead>
-              <tr>
-                <th>{t("admin.customizations.columns.schemaName")}</th>
-                <th>{t("admin.customizations.columns.tableName")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tables.map((table) => (
-                <tr key={`${table.schemaName}.${table.tableName}`}>
-                  <td>{table.schemaName}</td>
-                  <td>{table.tableName}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div data-testid="customizations-tables">
+            <Table
+              columns={columns}
+              data={pagedTables}
+              totalCount={tables.length}
+              getRowId={(row) => `${row.schemaName}.${row.tableName}`}
+              page={page}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              aria-label={t("admin.customizations.title")}
+            />
+          </div>
         </div>
       )}
     </div>

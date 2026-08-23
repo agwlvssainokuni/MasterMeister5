@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, Modal, Select, TextInput } from "make-you-chic-ui";
+import { Button, FormField, Modal, Select, Table, TextInput, type TableColumn } from "make-you-chic-ui";
 import {
   addMember,
   createGroup,
@@ -31,12 +31,15 @@ import {
 import { listUsers, type UserSummaryDto } from "../../api/adminUsers";
 import { ApiError } from "../../api/auth";
 
-/** frontend-components.md GroupManagementScreen (US-2.7). */
+const PAGE_SIZE = 20;
+
+/** frontend-components.md GroupManagementScreen (US-2.7). listGroups() returns the full, unpaginated list; paging below is client-side over that array. */
 export function GroupManagementScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
   const [groups, setGroups] = useState<GroupSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
   const [users, setUsers] = useState<UserSummaryDto[]>([]);
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -135,6 +138,51 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   const userOptions = users.map((u) => ({ label: `${u.name ?? ""} <${u.email}>`, value: String(u.id) }));
 
+  const columns: TableColumn<GroupSummaryDto>[] = useMemo(
+    () => [
+      { key: "name", header: t("admin.groups.columns.name") },
+      { key: "memberCount", header: t("admin.groups.columns.memberCount") },
+      {
+        key: "actions",
+        header: t("admin.groups.columns.actions"),
+        render: (row) => (
+          <>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleSelect(row.id)}
+              data-testid={`groups-row-${row.id}-select-button`}
+            >
+              {t("admin.groups.selectButton")}
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                setRenameTarget(row);
+                setGroupName(row.name);
+              }}
+              data-testid={`groups-row-${row.id}-rename-button`}
+            >
+              {t("admin.groups.renameButton")}
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => handleDelete(row.id)}
+              data-testid={`groups-row-${row.id}-delete-button`}
+            >
+              {t("admin.groups.deleteButton")}
+            </Button>
+          </>
+        ),
+      },
+    ],
+    [t],
+  );
+
+  const pagedGroups = groups.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div>
       <h1>{t("admin.groups.title")}</h1>
@@ -145,52 +193,18 @@ export function GroupManagementScreen(): React.JSX.Element {
       {loading ? (
         <p>{t("common.loading")}</p>
       ) : (
-        <table data-testid="groups-table">
-          <thead>
-            <tr>
-              <th>{t("admin.groups.columns.name")}</th>
-              <th>{t("admin.groups.columns.memberCount")}</th>
-              <th>{t("admin.groups.columns.actions")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groups.map((group) => (
-              <tr key={group.id} data-testid={`groups-row-${group.id}`}>
-                <td>{group.name}</td>
-                <td>{group.memberCount}</td>
-                <td>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => handleSelect(group.id)}
-                    data-testid={`groups-row-${group.id}-select-button`}
-                  >
-                    {t("admin.groups.selectButton")}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      setRenameTarget(group);
-                      setGroupName(group.name);
-                    }}
-                    data-testid={`groups-row-${group.id}-rename-button`}
-                  >
-                    {t("admin.groups.renameButton")}
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(group.id)}
-                    data-testid={`groups-row-${group.id}-delete-button`}
-                  >
-                    {t("admin.groups.deleteButton")}
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div data-testid="groups-table">
+          <Table
+            columns={columns}
+            data={pagedGroups}
+            totalCount={groups.length}
+            getRowId={(row) => String(row.id)}
+            page={page}
+            pageSize={PAGE_SIZE}
+            onPageChange={setPage}
+            aria-label={t("admin.groups.title")}
+          />
+        </div>
       )}
 
       {selectedGroupId !== null && (
