@@ -50,6 +50,7 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [members, setMembers] = useState<GroupMemberDto[]>([]);
+  const [memberPage, setMemberPage] = useState(0);
   const [addUserId, setAddUserId] = useState("");
 
   const reload = useCallback(() => {
@@ -114,6 +115,7 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   function handleSelect(groupId: number) {
     setSelectedGroupId(groupId);
+    setMemberPage(0);
     reloadMembers(groupId);
   }
 
@@ -178,10 +180,38 @@ export function GroupManagementScreen(): React.JSX.Element {
         ),
       },
     ],
-    [t],
+    [t, selectedGroupId],
   );
 
   const pagedGroups = groups.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  const memberColumns: TableColumn<GroupMemberDto>[] = useMemo(
+    () => [
+      {
+        key: "name",
+        header: t("admin.users.columns.name"),
+        render: (row) => <span data-testid={`groups-member-${row.userId}`}>{row.name}</span>,
+      },
+      { key: "email", header: t("admin.users.columns.email") },
+      {
+        key: "actions",
+        header: t("admin.groups.columns.actions"),
+        render: (row) => (
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => handleRemoveMember(row.userId)}
+            data-testid={`groups-member-${row.userId}-remove-button`}
+          >
+            {t("admin.groups.members.removeButton")}
+          </Button>
+        ),
+      },
+    ],
+    [t, selectedGroupId],
+  );
+
+  const pagedMembers = members.slice(memberPage * PAGE_SIZE, (memberPage + 1) * PAGE_SIZE);
 
   return (
     <div>
@@ -210,21 +240,16 @@ export function GroupManagementScreen(): React.JSX.Element {
       {selectedGroupId !== null && (
         <div data-testid="groups-members-panel">
           <h2>{t("admin.groups.members.title")}</h2>
-          <ul>
-            {members.map((member) => (
-              <li key={member.userId} data-testid={`groups-member-${member.userId}`}>
-                {member.name} &lt;{member.email}&gt;
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleRemoveMember(member.userId)}
-                  data-testid={`groups-member-${member.userId}-remove-button`}
-                >
-                  {t("admin.groups.members.removeButton")}
-                </Button>
-              </li>
-            ))}
-          </ul>
+          <Table
+            columns={memberColumns}
+            data={pagedMembers}
+            totalCount={members.length}
+            getRowId={(row) => String(row.userId)}
+            page={memberPage}
+            pageSize={PAGE_SIZE}
+            onPageChange={setMemberPage}
+            aria-label={t("admin.groups.members.title")}
+          />
           <Select
             options={userOptions}
             value={addUserId}
