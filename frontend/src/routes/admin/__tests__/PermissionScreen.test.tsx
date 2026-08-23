@@ -75,7 +75,10 @@ describe("PermissionScreen", () => {
     await userEvent.selectOptions(screen.getByTestId("permissions-subject-select"), "5");
 
     await waitFor(() => expect(screen.getByTestId("permissions-tree")).toBeInTheDocument());
+    // Schemas and tables start collapsed; expand both to reach the column.
+    await userEvent.click(screen.getByRole("button", { name: "展開する" }));
     expect(screen.getByTestId("permissions-table-public-t1")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "展開する" }));
     expect(screen.getByTestId("permissions-column-public-t1-id")).toBeInTheDocument();
   });
 

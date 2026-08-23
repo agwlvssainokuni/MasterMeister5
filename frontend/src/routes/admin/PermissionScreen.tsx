@@ -77,13 +77,21 @@ export function PermissionScreen(): React.JSX.Element {
   }, []);
 
   const reloadTree = useCallback(() => {
-    setCollapsedSchemas(new Set());
-    setCollapsedTables(new Set());
     if (!selectedConnectionId) {
       setSchema([]);
+      setCollapsedSchemas(new Set());
+      setCollapsedTables(new Set());
       return;
     }
-    getSchema(Number(selectedConnectionId)).then(setSchema);
+    getSchema(Number(selectedConnectionId)).then((result) => {
+      setSchema(result);
+      // Start fully collapsed (schemas and tables alike) so a large schema
+      // doesn't dump its whole table/column tree on screen at once.
+      setCollapsedSchemas(new Set(result.map((s) => s.schemaName)));
+      setCollapsedTables(
+        new Set(result.flatMap((s) => s.tables.map((table) => `${s.schemaName}.${table.tableName}`))),
+      );
+    });
   }, [selectedConnectionId]);
 
   function toggleSchema(schemaName: string) {
