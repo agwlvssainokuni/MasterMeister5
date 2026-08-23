@@ -318,6 +318,20 @@ export function PermissionScreen(): React.JSX.Element {
                       data-testid={`permissions-schema-${s.schemaName}-primary-select`}
                     />
                   </span>
+                  <span className="mm5-permissions-aux">
+                    <Checkbox
+                      label={t("admin.permissions.auxCreate")}
+                      checked={entries.get(entryKey("SCHEMA", null, null))?.auxCreate ?? false}
+                      onChange={(checked) => handleAuxChange("SCHEMA", s.schemaName, undefined, "auxCreate", checked)}
+                      data-testid={`permissions-schema-${s.schemaName}-aux-create-checkbox`}
+                    />
+                    <Checkbox
+                      label={t("admin.permissions.auxDelete")}
+                      checked={entries.get(entryKey("SCHEMA", null, null))?.auxDelete ?? false}
+                      onChange={(checked) => handleAuxChange("SCHEMA", s.schemaName, undefined, "auxDelete", checked)}
+                      data-testid={`permissions-schema-${s.schemaName}-aux-delete-checkbox`}
+                    />
+                  </span>
                 </div>
 
                 {!schemaCollapsed &&
