@@ -31,7 +31,8 @@ export function AuditLogScreen(): React.JSX.Element {
   const [actorUserId, setActorUserId] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract); converted to 0-origin only for the API call.
+  const [page, setPage] = useState(1);
   const pageSize = 50;
   const [eventPage, setEventPage] = useState<AuditEventPageDto | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -42,7 +43,7 @@ export function AuditLogScreen(): React.JSX.Element {
       actorUserId: actorUserId ? Number(actorUserId) : undefined,
       fromDate: fromDate ? new Date(fromDate).toISOString() : undefined,
       toDate: toDate ? new Date(toDate).toISOString() : undefined,
-      page,
+      page: page - 1,
       size: pageSize,
     }).then(setEventPage);
   }, [eventType, actorUserId, fromDate, toDate, page]);
@@ -53,7 +54,7 @@ export function AuditLogScreen(): React.JSX.Element {
 
   function updateFilter(setter: (value: string) => void, value: string) {
     setter(value);
-    setPage(0);
+    setPage(1);
   }
 
   const expandedEvent = useMemo(

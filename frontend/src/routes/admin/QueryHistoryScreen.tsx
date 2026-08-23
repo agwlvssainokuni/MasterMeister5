@@ -30,7 +30,8 @@ export function QueryHistoryScreen(): React.JSX.Element {
   const [sqlTextContains, setSqlTextContains] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract); converted to 0-origin only for the API call.
+  const [page, setPage] = useState(1);
   const pageSize = 50;
   const [historyPage, setHistoryPage] = useState<ExecutionHistoryPageDto | null>(null);
 
@@ -45,7 +46,7 @@ export function QueryHistoryScreen(): React.JSX.Element {
       sqlTextContains: sqlTextContains || undefined,
       fromDate: fromDate ? new Date(fromDate).toISOString() : undefined,
       toDate: toDate ? new Date(toDate).toISOString() : undefined,
-      page,
+      page: page - 1,
       size: pageSize,
     }).then(setHistoryPage);
   }, [selectedConnectionId, schemaName, sqlTextContains, fromDate, toDate, page]);
@@ -56,7 +57,7 @@ export function QueryHistoryScreen(): React.JSX.Element {
 
   function updateFilter(setter: (value: string) => void, value: string) {
     setter(value);
-    setPage(0);
+    setPage(1);
   }
 
   const columns: TableColumn<ExecutionHistoryDto>[] = useMemo(

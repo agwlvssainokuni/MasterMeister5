@@ -41,14 +41,15 @@ export function CustomizationScreen(): React.JSX.Element {
   const [selectedConnectionId, setSelectedConnectionId] = useState("");
   const [tables, setTables] = useState<TableSummaryDto[]>([]);
   const [importErrorMessage, setImportErrorMessage] = useState<string | null>(null);
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract).
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     listConnections().then((all) => setConnections(all.filter((c) => c.status === "ACTIVE")));
   }, []);
 
   useEffect(() => {
-    setPage(0);
+    setPage(1);
     if (!selectedConnectionId) {
       setTables([]);
       return;
@@ -93,7 +94,7 @@ export function CustomizationScreen(): React.JSX.Element {
     [t],
   );
 
-  const pagedTables = tables.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const pagedTables = tables.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>

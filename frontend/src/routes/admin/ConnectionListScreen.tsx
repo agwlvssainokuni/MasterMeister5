@@ -54,7 +54,8 @@ export function ConnectionListScreen(): React.JSX.Element {
 
   const [connections, setConnections] = useState<AdminConnectionSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract).
+  const [page, setPage] = useState(1);
 
   const [registerOpen, setRegisterOpen] = useState(false);
   const [name, setName] = useState("");
@@ -257,7 +258,7 @@ export function ConnectionListScreen(): React.JSX.Element {
     [t],
   );
 
-  const pagedConnections = connections.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const pagedConnections = connections.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>

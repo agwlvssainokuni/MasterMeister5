@@ -330,7 +330,7 @@ export function QueryScreen(): React.JSX.Element {
             data={queryResult.rows}
             totalCount={queryResult.rowCount}
             getRowId={(row) => JSON.stringify(row)}
-            page={0}
+            page={1}
             pageSize={Math.max(queryResult.rows.length, 1)}
             onPageChange={() => {}}
             aria-label={t("admin.query.result.title")}

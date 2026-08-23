@@ -39,7 +39,8 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   const [groups, setGroups] = useState<GroupSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract).
+  const [page, setPage] = useState(1);
   const [users, setUsers] = useState<UserSummaryDto[]>([]);
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -50,7 +51,7 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [members, setMembers] = useState<GroupMemberDto[]>([]);
-  const [memberPage, setMemberPage] = useState(0);
+  const [memberPage, setMemberPage] = useState(1);
   const [addUserId, setAddUserId] = useState("");
 
   const reload = useCallback(() => {
@@ -115,7 +116,7 @@ export function GroupManagementScreen(): React.JSX.Element {
 
   function handleSelect(groupId: number) {
     setSelectedGroupId(groupId);
-    setMemberPage(0);
+    setMemberPage(1);
     reloadMembers(groupId);
   }
 
@@ -186,7 +187,7 @@ export function GroupManagementScreen(): React.JSX.Element {
     [t, selectedGroupId],
   );
 
-  const pagedGroups = groups.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const pagedGroups = groups.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const memberColumns: TableColumn<GroupMemberDto>[] = useMemo(
     () => [
@@ -214,7 +215,7 @@ export function GroupManagementScreen(): React.JSX.Element {
     [t, selectedGroupId],
   );
 
-  const pagedMembers = members.slice(memberPage * PAGE_SIZE, (memberPage + 1) * PAGE_SIZE);
+  const pagedMembers = members.slice((memberPage - 1) * PAGE_SIZE, memberPage * PAGE_SIZE);
 
   return (
     <div>

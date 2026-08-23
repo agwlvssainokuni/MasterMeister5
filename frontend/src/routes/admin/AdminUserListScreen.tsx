@@ -37,7 +37,8 @@ export function AdminUserListScreen(): React.JSX.Element {
 
   const [users, setUsers] = useState<UserSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract).
+  const [page, setPage] = useState(1);
 
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
@@ -160,7 +161,7 @@ export function AdminUserListScreen(): React.JSX.Element {
     [t],
   );
 
-  const pagedUsers = users.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const pagedUsers = users.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>

@@ -61,7 +61,8 @@ export function MasterDataScreen(): React.JSX.Element {
 
   const [rawWhereClause, setRawWhereClause] = useState("");
   const [sortState, setSortState] = useState<SortState | null>(null);
-  const [page, setPage] = useState(0);
+  // 1-origin for display (make-you-chic-ui's Table pagination contract); converted to 0-origin only for the API call.
+  const [page, setPage] = useState(1);
   const pageSize = 50;
 
   const [recordPage, setRecordPage] = useState<RecordPageDto | null>(null);
@@ -103,7 +104,7 @@ export function MasterDataScreen(): React.JSX.Element {
       rawWhereClause: rawWhereClause || undefined,
       sortColumn: sortState?.direction ? sortState.key : undefined,
       sortDirection: sortState?.direction === "desc" ? "DESC" : sortState?.direction === "asc" ? "ASC" : undefined,
-      page,
+      page: page - 1,
       pageSize,
     }).then(setRecordPage);
   }, [selectedConnectionId, selectedTable, rawWhereClause, sortState, page]);
@@ -267,7 +268,7 @@ export function MasterDataScreen(): React.JSX.Element {
             value={rawWhereClause}
             onChange={(value) => {
               setRawWhereClause(value);
-              setPage(0);
+              setPage(1);
             }}
             data-testid="master-data-raw-where-input"
           />
