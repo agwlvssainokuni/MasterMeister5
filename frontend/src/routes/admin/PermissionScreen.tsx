@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, RadioGroup, Select } from "make-you-chic-ui";
+import { Button, Card, Checkbox, FormField, Icon, RadioGroup, Select } from "make-you-chic-ui";
 import { getSchema, listConnections, type ConnectionSummaryDto, type SchemaViewDto } from "../../api/connections";
 import { listUsers, type UserSummaryDto } from "../../api/adminUsers";
 import { listGroups, type GroupSummaryDto } from "../../api/groups";
@@ -31,6 +31,7 @@ import {
   type SubjectType,
 } from "../../api/permissions";
 import { ApiError } from "../../api/auth";
+import "./PermissionScreen.css";
 
 const PRIMARY_OPTIONS: { label: string; value: string }[] = [
   { label: "-", value: "" },
@@ -66,6 +67,8 @@ export function PermissionScreen(): React.JSX.Element {
   const [schema, setSchema] = useState<SchemaViewDto[]>([]);
   const [entries, setEntries] = useState<Map<string, PermissionEntryDto>>(new Map());
   const [importErrorMessage, setImportErrorMessage] = useState<string | null>(null);
+  const [collapsedSchemas, setCollapsedSchemas] = useState<Set<string>>(new Set());
+  const [collapsedTables, setCollapsedTables] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     listConnections().then((all) => setConnections(all.filter((c) => c.status === "ACTIVE")));
@@ -74,12 +77,39 @@ export function PermissionScreen(): React.JSX.Element {
   }, []);
 
   const reloadTree = useCallback(() => {
+    setCollapsedSchemas(new Set());
+    setCollapsedTables(new Set());
     if (!selectedConnectionId) {
       setSchema([]);
       return;
     }
     getSchema(Number(selectedConnectionId)).then(setSchema);
   }, [selectedConnectionId]);
+
+  function toggleSchema(schemaName: string) {
+    setCollapsedSchemas((prev) => {
+      const next = new Set(prev);
+      if (next.has(schemaName)) {
+        next.delete(schemaName);
+      } else {
+        next.add(schemaName);
+      }
+      return next;
+    });
+  }
+
+  function toggleTable(schemaName: string, tableName: string) {
+    const key = `${schemaName}.${tableName}`;
+    setCollapsedTables((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  }
 
   const reloadEntries = useCallback(() => {
     if (!selectedConnectionId || !selectedSubjectId) {
@@ -191,57 +221,67 @@ export function PermissionScreen(): React.JSX.Element {
     <div>
       <h1>{t("admin.permissions.title")}</h1>
 
-      <Select
-        options={[
-          { label: t("common.selectPlaceholder"), value: "" },
-          ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
-        ]}
-        value={selectedConnectionId}
-        onChange={(value) => {
-          setSelectedConnectionId(value);
-          setSelectedSubjectId("");
-        }}
-        data-testid="permissions-connection-select"
-      />
+      <Card className="mm5-permissions-controls">
+        <FormField label={t("admin.permissions.connection")}>
+          <Select
+            options={[
+              { label: t("common.selectPlaceholder"), value: "" },
+              ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+            ]}
+            value={selectedConnectionId}
+            onChange={(value) => {
+              setSelectedConnectionId(value);
+              setSelectedSubjectId("");
+            }}
+            data-testid="permissions-connection-select"
+          />
+        </FormField>
 
-      <RadioGroup
-        name="subject-type"
-        options={[
-          { label: t("admin.permissions.subjectType.user"), value: "USER" },
-          { label: t("admin.permissions.subjectType.group"), value: "GROUP" },
-        ]}
-        value={subjectType}
-        onChange={(value) => {
-          setSubjectType(value as SubjectType);
-          setSelectedSubjectId("");
-        }}
-      />
+        <FormField label={t("admin.permissions.subjectTypeLabel")}>
+          <RadioGroup
+            name="subject-type"
+            options={[
+              { label: t("admin.permissions.subjectType.user"), value: "USER" },
+              { label: t("admin.permissions.subjectType.group"), value: "GROUP" },
+            ]}
+            value={subjectType}
+            onChange={(value) => {
+              setSubjectType(value as SubjectType);
+              setSelectedSubjectId("");
+            }}
+          />
+        </FormField>
 
-      <Select
-        options={subjectOptions}
-        value={selectedSubjectId}
-        onChange={setSelectedSubjectId}
-        data-testid="permissions-subject-select"
-      />
+        <FormField label={t(`admin.permissions.subjectType.${subjectType.toLowerCase()}`)}>
+          <Select
+            options={subjectOptions}
+            value={selectedSubjectId}
+            onChange={setSelectedSubjectId}
+            data-testid="permissions-subject-select"
+          />
+        </FormField>
+      </Card>
 
       {selectedConnectionId && (
-        <div>
+        <div className="mm5-permissions-actions">
           <Button onClick={handleExport} data-testid="permissions-export-button">
             {t("admin.permissions.exportButton")}
           </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".yaml,.yml"
-            data-testid="permissions-import-input"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                handleImportFileChange(file);
-              }
-              e.target.value = "";
-            }}
-          />
+          <FormField label={t("admin.permissions.importButton")}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".yaml,.yml"
+              data-testid="permissions-import-input"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  handleImportFileChange(file);
+                }
+                e.target.value = "";
+              }}
+            />
+          </FormField>
           {importErrorMessage && <p role="alert">{importErrorMessage}</p>}
         </div>
       )}
@@ -251,81 +291,124 @@ export function PermissionScreen(): React.JSX.Element {
       )}
 
       {readyToEdit && (
-        <div data-testid="permissions-tree">
-          {schema.map((s) => (
-            <div key={s.schemaName} data-testid={`permissions-schema-${s.schemaName}`}>
-              <strong>{s.schemaName}</strong>
-              <Select
-                options={PRIMARY_OPTIONS}
-                value={entries.get(entryKey("SCHEMA", null, null))?.primaryLevel ?? ""}
-                onChange={(value) => handlePrimaryChange("SCHEMA", s.schemaName, undefined, undefined, value)}
-                data-testid={`permissions-schema-${s.schemaName}-primary-select`}
-              />
-              <ul>
-                {s.tables.map((table) => (
-                  <li key={table.tableName} data-testid={`permissions-table-${s.schemaName}-${table.tableName}`}>
-                    {table.tableName}
+        <div className="mm5-permissions-tree" data-testid="permissions-tree">
+          {schema.map((s) => {
+            const schemaCollapsed = collapsedSchemas.has(s.schemaName);
+            return (
+              <div key={s.schemaName} className="mm5-permissions-schema">
+                <div
+                  className="mm5-permissions-row mm5-permissions-schema-row"
+                  data-testid={`permissions-schema-${s.schemaName}`}
+                >
+                  <button
+                    type="button"
+                    className={schemaCollapsed ? "mm5-permissions-toggle collapsed" : "mm5-permissions-toggle"}
+                    onClick={() => toggleSchema(s.schemaName)}
+                    aria-label={schemaCollapsed ? t("admin.permissions.expand") : t("admin.permissions.collapse")}
+                  >
+                    <Icon name="chevron-down" size={16} />
+                  </button>
+                  <span className="mm5-permissions-name">{s.schemaName}</span>
+                  <span className="mm5-permissions-primary-select">
                     <Select
+                      aria-label={t("admin.permissions.primaryLevelFor", { name: s.schemaName })}
                       options={PRIMARY_OPTIONS}
-                      value={entries.get(entryKey("TABLE", table.tableName, null))?.primaryLevel ?? ""}
-                      onChange={(value) =>
-                        handlePrimaryChange("TABLE", s.schemaName, table.tableName, undefined, value)
-                      }
-                      data-testid={`permissions-table-${s.schemaName}-${table.tableName}-primary-select`}
+                      value={entries.get(entryKey("SCHEMA", null, null))?.primaryLevel ?? ""}
+                      onChange={(value) => handlePrimaryChange("SCHEMA", s.schemaName, undefined, undefined, value)}
+                      data-testid={`permissions-schema-${s.schemaName}-primary-select`}
                     />
-                    <label>
-                      {t("admin.permissions.auxCreate")}
-                      <input
-                        type="checkbox"
-                        checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxCreate ?? false}
-                        onChange={(e) =>
-                          handleAuxChange("TABLE", s.schemaName, table.tableName, "auxCreate", e.target.checked)
-                        }
-                        data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-create-checkbox`}
-                      />
-                    </label>
-                    <label>
-                      {t("admin.permissions.auxDelete")}
-                      <input
-                        type="checkbox"
-                        checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxDelete ?? false}
-                        onChange={(e) =>
-                          handleAuxChange("TABLE", s.schemaName, table.tableName, "auxDelete", e.target.checked)
-                        }
-                        data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-delete-checkbox`}
-                      />
-                    </label>
-                    <ul>
-                      {table.columns.map((column) => (
-                        <li
-                          key={column.columnName}
-                          data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}`}
+                  </span>
+                </div>
+
+                {!schemaCollapsed &&
+                  s.tables.map((table) => {
+                    const tableCollapsed = collapsedTables.has(`${s.schemaName}.${table.tableName}`);
+                    return (
+                      <div key={table.tableName}>
+                        <div
+                          className="mm5-permissions-row mm5-permissions-table-row"
+                          data-testid={`permissions-table-${s.schemaName}-${table.tableName}`}
                         >
-                          {column.columnName}
-                          <Select
-                            options={PRIMARY_OPTIONS}
-                            value={
-                              entries.get(entryKey("COLUMN", table.tableName, column.columnName))?.primaryLevel ?? ""
+                          <button
+                            type="button"
+                            className={
+                              tableCollapsed ? "mm5-permissions-toggle collapsed" : "mm5-permissions-toggle"
                             }
-                            onChange={(value) =>
-                              handlePrimaryChange(
-                                "COLUMN",
-                                s.schemaName,
-                                table.tableName,
-                                column.columnName,
-                                value,
-                              )
+                            onClick={() => toggleTable(s.schemaName, table.tableName)}
+                            aria-label={
+                              tableCollapsed ? t("admin.permissions.expand") : t("admin.permissions.collapse")
                             }
-                            data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}-primary-select`}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                          >
+                            <Icon name="chevron-down" size={16} />
+                          </button>
+                          <span className="mm5-permissions-name">{table.tableName}</span>
+                          <span className="mm5-permissions-primary-select">
+                            <Select
+                              aria-label={t("admin.permissions.primaryLevelFor", { name: table.tableName })}
+                              options={PRIMARY_OPTIONS}
+                              value={entries.get(entryKey("TABLE", table.tableName, null))?.primaryLevel ?? ""}
+                              onChange={(value) =>
+                                handlePrimaryChange("TABLE", s.schemaName, table.tableName, undefined, value)
+                              }
+                              data-testid={`permissions-table-${s.schemaName}-${table.tableName}-primary-select`}
+                            />
+                          </span>
+                          <span className="mm5-permissions-aux">
+                            <Checkbox
+                              label={t("admin.permissions.auxCreate")}
+                              checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxCreate ?? false}
+                              onChange={(checked) =>
+                                handleAuxChange("TABLE", s.schemaName, table.tableName, "auxCreate", checked)
+                              }
+                              data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-create-checkbox`}
+                            />
+                            <Checkbox
+                              label={t("admin.permissions.auxDelete")}
+                              checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxDelete ?? false}
+                              onChange={(checked) =>
+                                handleAuxChange("TABLE", s.schemaName, table.tableName, "auxDelete", checked)
+                              }
+                              data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-delete-checkbox`}
+                            />
+                          </span>
+                        </div>
+
+                        {!tableCollapsed &&
+                          table.columns.map((column) => (
+                            <div
+                              key={column.columnName}
+                              className="mm5-permissions-row mm5-permissions-column-row"
+                              data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}`}
+                            >
+                              <span className="mm5-permissions-name">{column.columnName}</span>
+                              <span className="mm5-permissions-primary-select">
+                                <Select
+                                  aria-label={t("admin.permissions.primaryLevelFor", { name: column.columnName })}
+                                  options={PRIMARY_OPTIONS}
+                                  value={
+                                    entries.get(entryKey("COLUMN", table.tableName, column.columnName))
+                                      ?.primaryLevel ?? ""
+                                  }
+                                  onChange={(value) =>
+                                    handlePrimaryChange(
+                                      "COLUMN",
+                                      s.schemaName,
+                                      table.tableName,
+                                      column.columnName,
+                                      value,
+                                    )
+                                  }
+                                  data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}-primary-select`}
+                                />
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    );
+                  })}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

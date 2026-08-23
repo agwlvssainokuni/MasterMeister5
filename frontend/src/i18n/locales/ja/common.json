@@ -176,11 +176,17 @@
     },
     "permissions": {
       "title": "アクセス権限",
+      "connection": "接続",
+      "subjectTypeLabel": "対象種別",
       "subjectType": {
         "user": "ユーザ",
         "group": "グループ"
       },
+      "primaryLevelFor": "{{name}}の権限レベル",
+      "collapse": "折りたたむ",
+      "expand": "展開する",
       "exportButton": "YAMLエクスポート",
+      "importButton": "YAMLインポート",
       "auxCreate": "作成可",
       "auxDelete": "削除可",
       "noSchemaImported": "この接続はまだスキーマが取り込まれていません。接続管理画面から取込を行ってください。",

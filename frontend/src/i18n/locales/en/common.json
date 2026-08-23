@@ -176,11 +176,17 @@
     },
     "permissions": {
       "title": "Access Permissions",
+      "connection": "Connection",
+      "subjectTypeLabel": "Subject Type",
       "subjectType": {
         "user": "User",
         "group": "Group"
       },
+      "primaryLevelFor": "Permission level for {{name}}",
+      "collapse": "Collapse",
+      "expand": "Expand",
       "exportButton": "Export YAML",
+      "importButton": "Import YAML",
       "auxCreate": "Can Create",
       "auxDelete": "Can Delete",
       "noSchemaImported": "This connection has no imported schema yet. Please import it from the Connections screen.",
