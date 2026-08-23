@@ -17,7 +17,14 @@
     "logout": "Log Out"
   },
   "theme": {
-    "settingsTitle": "Theme Settings"
+    "settingsTitle": "Theme Settings",
+    "mode": "Theme",
+    "modeLight": "Light",
+    "modeDark": "Dark",
+    "fontSize": "Font Size",
+    "fontSizeSm": "Small",
+    "fontSizeMd": "Medium",
+    "fontSizeLg": "Large"
   },
   "common": {
     "loading": "Loading..."

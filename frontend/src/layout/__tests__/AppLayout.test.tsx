@@ -17,6 +17,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "make-you-chic-ui";
 import { AppLayout } from "../AppLayout";
 import { AuthProvider } from "../../auth/AuthContext";
 import "../../i18n/i18n";
@@ -32,20 +33,25 @@ describe("AppLayout", () => {
     globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 401 }) as unknown as typeof fetch;
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
-        <AuthProvider>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<div>page content</div>} />
-            </Route>
-          </Routes>
-        </AuthProvider>
-      </MemoryRouter>,
+      <ThemeProvider>
+        <MemoryRouter initialEntries={["/"]}>
+          <AuthProvider>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<div>page content</div>} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </MemoryRouter>
+      </ThemeProvider>,
     );
 
     await waitFor(() => expect(screen.getByTestId("app-shell")).toBeInTheDocument());
     expect(screen.getByText("page content")).toBeInTheDocument();
     expect(screen.getByText("ホーム")).toBeInTheDocument();
+    expect(screen.getByText("MasterMeister5")).toBeInTheDocument();
+    expect(screen.getByTestId("topbar-theme-mode-select")).toBeInTheDocument();
+    expect(screen.getByTestId("topbar-font-size-select")).toBeInTheDocument();
   });
 
   it("shows the admin-only nav item once an ADMIN user is loaded", async () => {
@@ -55,15 +61,17 @@ describe("AppLayout", () => {
       .mockResolvedValue({ ok: true, json: async () => ({ accessToken: "tok", user }) }) as unknown as typeof fetch;
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
-        <AuthProvider>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<div>page content</div>} />
-            </Route>
-          </Routes>
-        </AuthProvider>
-      </MemoryRouter>,
+      <ThemeProvider>
+        <MemoryRouter initialEntries={["/"]}>
+          <AuthProvider>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<div>page content</div>} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </MemoryRouter>
+      </ThemeProvider>,
     );
 
     await waitFor(() => expect(screen.getByText("ユーザー管理")).toBeInTheDocument());

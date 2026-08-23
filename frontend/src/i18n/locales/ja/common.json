@@ -17,7 +17,14 @@
     "logout": "ログアウト"
   },
   "theme": {
-    "settingsTitle": "テーマ設定"
+    "settingsTitle": "テーマ設定",
+    "mode": "テーマ",
+    "modeLight": "ライト",
+    "modeDark": "ダーク",
+    "fontSize": "文字サイズ",
+    "fontSizeSm": "小",
+    "fontSizeMd": "標準",
+    "fontSizeLg": "大"
   },
   "common": {
     "loading": "読み込み中..."

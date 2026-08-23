@@ -15,9 +15,17 @@
  */
 
 import { useNavigate, Outlet } from "react-router-dom";
-import { AppShell, type AppShellNavItem } from "make-you-chic-ui";
+import {
+  AppShell,
+  Select,
+  useTheme,
+  type AppShellNavItem,
+  type ThemeFontSize,
+  type ThemeMode,
+} from "make-you-chic-ui";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../auth/AuthContext";
+import "./AppLayout.css";
 
 /**
  * Common layout for every authenticated screen — integration-guide.md's
@@ -29,6 +37,7 @@ export function AppLayout(): React.JSX.Element {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { theme, fontSize, setTheme, setFontSize } = useTheme();
 
   // Sidebar renders navItems as plain <a href> (make-you-chic-ui's
   // AppShellNavItem.onClick exists precisely for this: "call
@@ -78,6 +87,32 @@ export function AppLayout(): React.JSX.Element {
         { label: t("nav.changePassword"), onClick: () => navigate("/settings/password") },
         { label: t("nav.logout"), onClick: handleLogout },
       ]}
+      topbarStart={<span className="mm5-topbar-app-name">{t("app.name")}</span>}
+      topbarEnd={
+        <div className="mm5-topbar-controls">
+          <Select
+            aria-label={t("theme.mode")}
+            data-testid="topbar-theme-mode-select"
+            value={theme}
+            onChange={(value) => setTheme(value as ThemeMode)}
+            options={[
+              { value: "light", label: t("theme.modeLight") },
+              { value: "dark", label: t("theme.modeDark") },
+            ]}
+          />
+          <Select
+            aria-label={t("theme.fontSize")}
+            data-testid="topbar-font-size-select"
+            value={fontSize}
+            onChange={(value) => setFontSize(value as ThemeFontSize)}
+            options={[
+              { value: "sm", label: t("theme.fontSizeSm") },
+              { value: "md", label: t("theme.fontSizeMd") },
+              { value: "lg", label: t("theme.fontSizeLg") },
+            ]}
+          />
+        </div>
+      }
     >
       <Outlet />
     </AppShell>
