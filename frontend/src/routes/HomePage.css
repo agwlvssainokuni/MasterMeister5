@@ -27,6 +27,10 @@
 }
 
 .mm5-home-card-link .mycui-card {
+  /* mycui-card has border+padding but the library never resets box-sizing,
+     so the default content-box would add them on top of height:100% and
+     overflow the grid row, overlapping the row below. */
+  box-sizing: border-box;
   height: 100%;
   transition:
     border-color 0.15s ease,
