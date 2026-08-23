@@ -29,6 +29,7 @@ import {
   type TableSummaryDto,
 } from "../../api/masterData";
 import { ApiError } from "../../api/auth";
+import "./MasterDataScreen.css";
 
 type Row = Record<string, unknown>;
 

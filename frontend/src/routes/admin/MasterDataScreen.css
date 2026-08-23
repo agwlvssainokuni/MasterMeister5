@@ -1,0 +1,36 @@
+/*
+ * Copyright 2026 agwlvssainokuni
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * make-you-chic-ui's Table swaps a cell's display text for a TextInput while
+ * editing; the TextInput's own border/padding/font-size stack on top of the
+ * cell's own padding, so the cell visibly jumps in size on entering/leaving
+ * edit mode. Zero out the cell's padding only while it holds the editor
+ * (:has scopes this to that one cell, not every editable-column cell) and
+ * let the input's own box match what the cell's padding used to provide, so
+ * the rendered box stays the same size as the plain-text display.
+ */
+.mycui-table-cell-editable:has(.mycui-text-input) {
+  padding: 0;
+}
+
+.mycui-table-cell-editable .mycui-text-input {
+  box-sizing: border-box;
+  width: 100%;
+  font-size: var(--font-size-sm);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 0;
+}
