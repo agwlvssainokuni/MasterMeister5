@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, Modal, Select, TextInput } from "make-you-chic-ui";
+import { Button, FormField, Modal, Select, Table, TextInput, type TableColumn } from "make-you-chic-ui";
 import {
   deactivateConnection,
   importSchema,
@@ -36,12 +36,15 @@ const RDBMS_OPTIONS: { label: string; value: RdbmsType }[] = [
   { label: "H2", value: "H2" },
 ];
 
-/** frontend-components.md ConnectionListScreen (US-2.1〜2.3). */
+const PAGE_SIZE = 20;
+
+/** frontend-components.md ConnectionListScreen (US-2.1〜2.3). listConnections() returns the full, unpaginated list; paging below is client-side over that array. */
 export function ConnectionListScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
   const [connections, setConnections] = useState<ConnectionSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
 
   const [registerOpen, setRegisterOpen] = useState(false);
   const [name, setName] = useState("");
@@ -114,6 +117,65 @@ export function ConnectionListScreen(): React.JSX.Element {
     reload();
   }
 
+  const columns: TableColumn<ConnectionSummaryDto>[] = useMemo(
+    () => [
+      { key: "name", header: t("admin.connections.columns.name") },
+      { key: "rdbmsType", header: t("admin.connections.columns.rdbmsType") },
+      {
+        key: "hostPort",
+        header: t("admin.connections.columns.hostPort"),
+        render: (row) => `${row.host}:${row.port}`,
+      },
+      { key: "databaseName", header: t("admin.connections.columns.databaseName") },
+      {
+        key: "status",
+        header: t("admin.connections.columns.status"),
+        render: (row) => t(`admin.connections.status.${row.status.toLowerCase()}`),
+      },
+      {
+        key: "actions",
+        header: t("admin.connections.columns.actions"),
+        render: (row) => (
+          <>
+            {row.status === "ACTIVE" && (
+              <>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => handleImportSchema(row.id)}
+                  data-testid={`connections-row-${row.id}-import-button`}
+                >
+                  {t("admin.connections.importButton")}
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleDeactivate(row.id)}
+                  data-testid={`connections-row-${row.id}-deactivate-button`}
+                >
+                  {t("admin.connections.deactivateButton")}
+                </Button>
+              </>
+            )}
+            {row.status === "DEACTIVATED" && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => handleReactivate(row.id)}
+                data-testid={`connections-row-${row.id}-reactivate-button`}
+              >
+                {t("admin.connections.reactivateButton")}
+              </Button>
+            )}
+          </>
+        ),
+      },
+    ],
+    [t],
+  );
+
+  const pagedConnections = connections.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div>
       <h1>{t("admin.connections.title")}</h1>
@@ -124,63 +186,18 @@ export function ConnectionListScreen(): React.JSX.Element {
       {loading ? (
         <p>{t("common.loading")}</p>
       ) : (
-        <table data-testid="connections-table">
-          <thead>
-            <tr>
-              <th>{t("admin.connections.columns.name")}</th>
-              <th>{t("admin.connections.columns.rdbmsType")}</th>
-              <th>{t("admin.connections.columns.hostPort")}</th>
-              <th>{t("admin.connections.columns.databaseName")}</th>
-              <th>{t("admin.connections.columns.status")}</th>
-              <th>{t("admin.connections.columns.actions")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {connections.map((connection) => (
-              <tr key={connection.id} data-testid={`connections-row-${connection.id}`}>
-                <td>{connection.name}</td>
-                <td>{connection.rdbmsType}</td>
-                <td>
-                  {connection.host}:{connection.port}
-                </td>
-                <td>{connection.databaseName}</td>
-                <td>{t(`admin.connections.status.${connection.status.toLowerCase()}`)}</td>
-                <td>
-                  {connection.status === "ACTIVE" && (
-                    <>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handleImportSchema(connection.id)}
-                        data-testid={`connections-row-${connection.id}-import-button`}
-                      >
-                        {t("admin.connections.importButton")}
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDeactivate(connection.id)}
-                        data-testid={`connections-row-${connection.id}-deactivate-button`}
-                      >
-                        {t("admin.connections.deactivateButton")}
-                      </Button>
-                    </>
-                  )}
-                  {connection.status === "DEACTIVATED" && (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleReactivate(connection.id)}
-                      data-testid={`connections-row-${connection.id}-reactivate-button`}
-                    >
-                      {t("admin.connections.reactivateButton")}
-                    </Button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div data-testid="connections-table">
+          <Table
+            columns={columns}
+            data={pagedConnections}
+            totalCount={connections.length}
+            getRowId={(row) => String(row.id)}
+            page={page}
+            pageSize={PAGE_SIZE}
+            onPageChange={setPage}
+            aria-label={t("admin.connections.title")}
+          />
+        </div>
       )}
 
       <Modal
