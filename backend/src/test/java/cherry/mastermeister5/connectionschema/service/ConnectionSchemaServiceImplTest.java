@@ -111,7 +111,7 @@ class ConnectionSchemaServiceImplTest {
     void registerConnectionEncryptsThePasswordAndSaves() throws SQLException {
         when(connectionRepository.findByName("conn1")).thenReturn(Optional.empty());
         var dataSource = mock(HikariDataSource.class);
-        when(poolRegistry.transientDataSourceFor(RdbmsType.MYSQL, "localhost", 3306, "db", "user", "pass"))
+        when(poolRegistry.transientDataSourceFor(RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"))
                 .thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(mock(Connection.class));
         when(secretCipher.encrypt("pass")).thenReturn("encrypted-pass");
@@ -126,7 +126,7 @@ class ConnectionSchemaServiceImplTest {
         var id =
                 service.registerConnection(
                         new RegisterConnectionCommand(
-                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"),
+                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "pass"),
                         99L);
 
         assertThat(id).isEqualTo(1L);
@@ -141,7 +141,7 @@ class ConnectionSchemaServiceImplTest {
                         () ->
                                 service.registerConnection(
                                         new RegisterConnectionCommand(
-                                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"),
+                                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "pass"),
                                         99L))
                 .isInstanceOf(ConnectionException.class)
                 .extracting("errorCode")
@@ -154,7 +154,7 @@ class ConnectionSchemaServiceImplTest {
                         () ->
                                 service.registerConnection(
                                         new RegisterConnectionCommand(
-                                                "conn1", RdbmsType.MYSQL, "bad host!", 3306, "db", null, "user", "pass"),
+                                                "conn1", RdbmsType.MYSQL, "bad host!", 3306, "db", null, null, "user", "pass"),
                                         99L))
                 .isInstanceOf(ConnectionException.class)
                 .extracting("errorCode")
@@ -165,7 +165,7 @@ class ConnectionSchemaServiceImplTest {
     void registerConnectionClassifiesAConnectionTestFailure() throws SQLException {
         when(connectionRepository.findByName("conn1")).thenReturn(Optional.empty());
         var dataSource = mock(HikariDataSource.class);
-        when(poolRegistry.transientDataSourceFor(RdbmsType.MYSQL, "localhost", 3306, "db", "user", "pass"))
+        when(poolRegistry.transientDataSourceFor(RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"))
                 .thenReturn(dataSource);
         when(dataSource.getConnection())
                 .thenThrow(new SQLException("Connection refused by host", "08001"));
@@ -174,7 +174,7 @@ class ConnectionSchemaServiceImplTest {
                         () ->
                                 service.registerConnection(
                                         new RegisterConnectionCommand(
-                                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"),
+                                                "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "pass"),
                                         99L))
                 .isInstanceOf(ConnectionException.class)
                 .extracting("errorCode")
@@ -383,7 +383,7 @@ class ConnectionSchemaServiceImplTest {
     private TargetConnection activeConnection(Long id, String name) {
         var connection =
                 new TargetConnection(
-                        name, RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "encrypted");
+                        name, RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "encrypted");
         setId(connection, id);
         return connection;
     }

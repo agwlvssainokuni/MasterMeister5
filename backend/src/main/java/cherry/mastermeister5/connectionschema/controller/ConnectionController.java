@@ -66,6 +66,7 @@ public class ConnectionController {
                         request.port(),
                         request.databaseName(),
                         request.schemaNameHint(),
+                        request.extraParams(),
                         request.username(),
                         request.password()),
                 actorUserId);

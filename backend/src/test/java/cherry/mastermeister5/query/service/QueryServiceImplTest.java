@@ -109,7 +109,7 @@ class QueryServiceImplTest {
             when(poolRegistry.dataSourceFor(any())).thenReturn(dataSource);
             when(connectionRepository.findById(1L))
                     .thenReturn(
-                            Optional.of(new TargetConnection("conn1", RdbmsType.H2, "localhost", 9092, dbName, null, "sa", "enc")));
+                            Optional.of(new TargetConnection("conn1", RdbmsType.H2, "localhost", 9092, dbName, null, null, "sa", "enc")));
             when(connectionSchemaService.isSchemaAllowed(1L, "PUBLIC")).thenReturn(true);
         } catch (Exception e) {
             throw new IllegalStateException(e);

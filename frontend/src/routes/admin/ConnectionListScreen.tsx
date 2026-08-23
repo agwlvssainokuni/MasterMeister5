@@ -36,6 +36,15 @@ const RDBMS_OPTIONS: { label: string; value: RdbmsType }[] = [
   { label: "H2", value: "H2" },
 ];
 
+// Each RDBMS's own conventional default port, so switching RDBMS種別 doesn't
+// leave a stale port (e.g. MySQL's 3306) behind for e.g. PostgreSQL.
+const RDBMS_DEFAULT_PORTS: Record<RdbmsType, string> = {
+  MYSQL: "3306",
+  MARIADB: "3306",
+  POSTGRESQL: "5432",
+  H2: "9092",
+};
+
 const PAGE_SIZE = 20;
 
 /** frontend-components.md ConnectionListScreen (US-2.1〜2.3). listConnections() returns the full, unpaginated list; paging below is client-side over that array. */
@@ -53,6 +62,7 @@ export function ConnectionListScreen(): React.JSX.Element {
   const [port, setPort] = useState("3306");
   const [databaseName, setDatabaseName] = useState("");
   const [schemaNameHint, setSchemaNameHint] = useState("");
+  const [extraParams, setExtraParams] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [registerSubmitting, setRegisterSubmitting] = useState(false);
@@ -83,6 +93,7 @@ export function ConnectionListScreen(): React.JSX.Element {
         port: Number(port),
         databaseName,
         schemaNameHint: schemaNameHint || undefined,
+        extraParams: extraParams || undefined,
         username,
         password,
       });
@@ -91,6 +102,7 @@ export function ConnectionListScreen(): React.JSX.Element {
       setHost("");
       setDatabaseName("");
       setSchemaNameHint("");
+      setExtraParams("");
       setUsername("");
       setPassword("");
       reload();
@@ -213,7 +225,11 @@ export function ConnectionListScreen(): React.JSX.Element {
             <Select
               options={RDBMS_OPTIONS}
               value={rdbmsType}
-              onChange={(value) => setRdbmsType(value as RdbmsType)}
+              onChange={(value) => {
+                const nextType = value as RdbmsType;
+                setRdbmsType(nextType);
+                setPort(RDBMS_DEFAULT_PORTS[nextType]);
+              }}
               data-testid="connections-register-form-rdbms-select"
             />
           </FormField>
@@ -242,6 +258,13 @@ export function ConnectionListScreen(): React.JSX.Element {
               value={schemaNameHint}
               onChange={setSchemaNameHint}
               data-testid="connections-register-form-schema-hint-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.extraParams")} helperText={t("admin.connections.extraParamsHint")}>
+            <TextInput
+              value={extraParams}
+              onChange={setExtraParams}
+              data-testid="connections-register-form-extra-params-input"
             />
           </FormField>
           <FormField label={t("admin.connections.username")} required>

@@ -37,7 +37,7 @@ class TargetConnectionJpaRepositoryTest {
     void findByNameReturnsTheSavedConnection() {
         repository.save(
                 new TargetConnection(
-                        "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "encrypted"));
+                        "conn1", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "encrypted"));
 
         assertThat(repository.findByName("conn1")).isPresent();
         assertThat(repository.findByName("unknown")).isEmpty();
@@ -47,14 +47,14 @@ class TargetConnectionJpaRepositoryTest {
     void savingADuplicateNameFails() {
         repository.save(
                 new TargetConnection(
-                        "dup", RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "encrypted"));
+                        "dup", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "encrypted"));
         repository.flush();
 
         assertThatThrownBy(
                         () -> {
                             repository.save(
                                     new TargetConnection(
-                                            "dup", RdbmsType.POSTGRESQL, "otherhost", 5432, "db2", null, "user2", "encrypted2"));
+                                            "dup", RdbmsType.POSTGRESQL, "otherhost", 5432, "db2", null, null, "user2", "encrypted2"));
                             repository.flush();
                         })
                 .isInstanceOf(RuntimeException.class);

@@ -112,6 +112,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                         command.host(),
                         command.port(),
                         command.databaseName(),
+                        command.extraParams(),
                         command.username(),
                         command.password())) {
             try (var ignored = dataSource.getConnection()) {
@@ -129,6 +130,7 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                         command.port(),
                         command.databaseName(),
                         command.schemaNameHint(),
+                        command.extraParams(),
                         command.username(),
                         secretCipher.encrypt(command.password()));
         connectionRepository.save(connection);

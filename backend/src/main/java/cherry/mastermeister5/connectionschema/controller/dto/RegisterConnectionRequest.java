@@ -21,6 +21,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public record RegisterConnectionRequest(
         @NotBlank String name,
@@ -29,6 +30,8 @@ public record RegisterConnectionRequest(
         @Min(1) @Max(65535) int port,
         @NotBlank String databaseName,
         String schemaNameHint,
+        /** Appended verbatim to the JDBC URL; printable-ASCII allowlist only (no control chars/quotes). */
+        @Pattern(regexp = "^[A-Za-z0-9?&=;:./%+,_-]*$") String extraParams,
         @NotBlank String username,
         @NotBlank String password) {
 }

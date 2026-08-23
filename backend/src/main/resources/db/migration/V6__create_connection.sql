@@ -6,6 +6,7 @@ CREATE TABLE connection (
     port INT NOT NULL,
     database_name VARCHAR(255) NOT NULL,
     schema_name_hint VARCHAR(255),
+    extra_params VARCHAR(255),
     username VARCHAR(255) NOT NULL,
     encrypted_password VARCHAR(255) NOT NULL,
     status VARCHAR(20) NOT NULL,

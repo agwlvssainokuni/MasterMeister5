@@ -25,6 +25,7 @@ public record RegisterConnectionCommand(
         int port,
         String databaseName,
         String schemaNameHint,
+        String extraParams,
         String username,
         String password) {
 }

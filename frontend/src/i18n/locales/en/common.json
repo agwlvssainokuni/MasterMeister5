@@ -121,6 +121,8 @@
       "host": "Host",
       "port": "Port",
       "schemaNameHint": "Target Schema Name (optional)",
+      "extraParams": "Extra Parameters (optional)",
+      "extraParamsHint": "Appended verbatim to the JDBC URL (e.g. ?useSSL=true&serverTimezone=UTC; H2 uses semicolons, e.g. ;MODE=MySQL)",
       "username": "Username",
       "password": "Password",
       "columns": {

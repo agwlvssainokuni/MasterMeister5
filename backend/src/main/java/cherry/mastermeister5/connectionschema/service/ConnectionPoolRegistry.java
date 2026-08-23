@@ -47,8 +47,14 @@ public class ConnectionPoolRegistry {
 
     /** Not pooled: used for the one-off connection test at registration time. */
     public HikariDataSource transientDataSourceFor(
-            RdbmsType rdbmsType, String host, int port, String databaseName, String username, String rawPassword) {
-        var config = baseConfig(rdbmsType, host, port, databaseName, username, rawPassword);
+            RdbmsType rdbmsType,
+            String host,
+            int port,
+            String databaseName,
+            String extraParams,
+            String username,
+            String rawPassword) {
+        var config = baseConfig(rdbmsType, host, port, databaseName, extraParams, username, rawPassword);
         config.setMaximumPoolSize(1);
         config.setMinimumIdle(0);
         return new HikariDataSource(config);
@@ -69,6 +75,7 @@ public class ConnectionPoolRegistry {
                         connection.getHost(),
                         connection.getPort(),
                         connection.getDatabaseName(),
+                        connection.getExtraParams(),
                         connection.getUsername(),
                         password);
         config.setMaximumPoolSize(5);
@@ -78,21 +85,30 @@ public class ConnectionPoolRegistry {
     }
 
     private HikariConfig baseConfig(
-            RdbmsType rdbmsType, String host, int port, String databaseName, String username, String password) {
+            RdbmsType rdbmsType,
+            String host,
+            int port,
+            String databaseName,
+            String extraParams,
+            String username,
+            String password) {
         var config = new HikariConfig();
-        config.setJdbcUrl(buildJdbcUrl(rdbmsType, host, port, databaseName));
+        config.setJdbcUrl(buildJdbcUrl(rdbmsType, host, port, databaseName, extraParams));
         config.setUsername(username);
         config.setPassword(password);
         config.setConnectionTimeout(5_000);
         return config;
     }
 
-    private String buildJdbcUrl(RdbmsType rdbmsType, String host, int port, String databaseName) {
-        return switch (rdbmsType) {
-            case MYSQL -> "jdbc:mysql://" + host + ":" + port + "/" + databaseName;
-            case MARIADB -> "jdbc:mariadb://" + host + ":" + port + "/" + databaseName;
-            case POSTGRESQL -> "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
-            case H2 -> "jdbc:h2:tcp://" + host + ":" + port + "/" + databaseName;
-        };
+    /** extraParams is appended verbatim (already includes its own leading "?"/";" separator). */
+    private String buildJdbcUrl(RdbmsType rdbmsType, String host, int port, String databaseName, String extraParams) {
+        var base =
+                switch (rdbmsType) {
+                    case MYSQL -> "jdbc:mysql://" + host + ":" + port + "/" + databaseName;
+                    case MARIADB -> "jdbc:mariadb://" + host + ":" + port + "/" + databaseName;
+                    case POSTGRESQL -> "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
+                    case H2 -> "jdbc:h2:tcp://" + host + ":" + port + "/" + databaseName;
+                };
+        return extraParams == null || extraParams.isBlank() ? base : base + extraParams;
     }
 }

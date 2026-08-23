@@ -36,6 +36,8 @@ export interface RegisterConnectionRequest {
   port: number;
   databaseName: string;
   schemaNameHint?: string;
+  /** Appended verbatim to the JDBC URL (e.g. "?useSSL=true&serverTimezone=UTC" for MySQL, ";MODE=MySQL" for H2). */
+  extraParams?: string;
   username: string;
   password: string;
 }

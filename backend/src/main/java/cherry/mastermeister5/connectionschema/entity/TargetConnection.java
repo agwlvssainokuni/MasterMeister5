@@ -57,6 +57,9 @@ public class TargetConnection {
 
     private String schemaNameHint;
 
+    /** Appended verbatim to the JDBC URL (e.g. "?useSSL=true&serverTimezone=UTC" for MySQL, ";MODE=MySQL" for H2). */
+    private String extraParams;
+
     @Column(nullable = false)
     private String username;
 
@@ -83,6 +86,7 @@ public class TargetConnection {
             int port,
             String databaseName,
             String schemaNameHint,
+            String extraParams,
             String username,
             String encryptedPassword) {
         this.name = name;
@@ -91,6 +95,7 @@ public class TargetConnection {
         this.port = port;
         this.databaseName = databaseName;
         this.schemaNameHint = schemaNameHint;
+        this.extraParams = extraParams;
         this.username = username;
         this.encryptedPassword = encryptedPassword;
         this.status = ConnectionStatus.ACTIVE;
@@ -125,6 +130,10 @@ public class TargetConnection {
 
     public String getSchemaNameHint() {
         return schemaNameHint;
+    }
+
+    public String getExtraParams() {
+        return extraParams;
     }
 
     public String getUsername() {

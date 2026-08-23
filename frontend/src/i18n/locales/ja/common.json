@@ -121,6 +121,8 @@
       "host": "ホスト",
       "port": "ポート",
       "schemaNameHint": "対象スキーマ名（任意）",
+      "extraParams": "追加パラメータ（任意）",
+      "extraParamsHint": "JDBC URLにそのまま付加されます（例: ?useSSL=true&serverTimezone=UTC、H2は;MODE=MySQLのようにセミコロン区切り）",
       "username": "ユーザ名",
       "password": "パスワード",
       "columns": {
