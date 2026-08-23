@@ -415,6 +415,7 @@ export function PermissionScreen(): React.JSX.Element {
                                   data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}-primary-select`}
                                 />
                               </span>
+                              <span className="mm5-permissions-aux" aria-hidden="true" />
                             </div>
                           ))}
                       </div>

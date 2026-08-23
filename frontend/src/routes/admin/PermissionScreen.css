@@ -105,4 +105,8 @@
   display: flex;
   gap: var(--space-3);
   flex-shrink: 0;
+  /* Fixed width (present even when empty, on column rows) keeps the primary
+     Select column-aligned across all 3 tree levels regardless of whether
+     this row has aux checkboxes trailing it. */
+  width: 190px;
 }
