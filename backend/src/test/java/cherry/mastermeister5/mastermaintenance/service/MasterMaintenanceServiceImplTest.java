@@ -328,6 +328,67 @@ class MasterMaintenanceServiceImplTest {
         assertThat(metadata.primaryKeyColumns()).containsExactly("id");
     }
 
+    /**
+     * business-rules.md BR-13 already blocks DELETE unless every primary key
+     * column is at least READ, so the caller can identify the row; UPDATE of
+     * an existing row's other columns needs that same identifiability —
+     * found live when a column with its own UPDATE permission still rendered
+     * an editable TextField even though the primary key was NONE.
+     */
+    @Test
+    void resolveTableMetadataMakesEveryColumnReadOnlyWhenAPrimaryKeyColumnIsNotAtLeastRead() {
+        mockTable("t1", List.of(column("id", true), column("name", false)), true);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(
+                        Map.of(
+                                "id", new EffectivePermission(PrimaryLevel.NONE, false, false),
+                                "name", new EffectivePermission(PrimaryLevel.UPDATE, false, false)));
+        when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
+                .thenReturn(new EffectivePermission(PrimaryLevel.NONE, false, false));
+
+        var metadata = service.resolveTableMetadata(1L, "public", "t1", 9L);
+
+        assertThat(metadata.columns())
+                .filteredOn(c -> c.columnName().equals("name"))
+                .singleElement()
+                .satisfies(c -> assertThat(c.readOnly()).isTrue());
+    }
+
+    @Test
+    void resolveTableMetadataKeepsAColumnEditableWhenAllPrimaryKeyColumnsAreAtLeastRead() {
+        mockTable("t1", List.of(column("id", true), column("name", false)), true);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(
+                        Map.of(
+                                "id", new EffectivePermission(PrimaryLevel.READ, false, false),
+                                "name", new EffectivePermission(PrimaryLevel.UPDATE, false, false)));
+        when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
+                .thenReturn(new EffectivePermission(PrimaryLevel.READ, false, false));
+
+        var metadata = service.resolveTableMetadata(1L, "public", "t1", 9L);
+
+        assertThat(metadata.columns())
+                .filteredOn(c -> c.columnName().equals("name"))
+                .singleElement()
+                .satisfies(c -> assertThat(c.readOnly()).isFalse());
+    }
+
+    @Test
+    void resolveTableMetadataMakesEveryColumnReadOnlyWhenTheTableHasNoPrimaryKey() {
+        mockTable("no_pk_table", List.of(column("label", false)), false);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(Map.of("label", new EffectivePermission(PrimaryLevel.UPDATE, false, false)));
+        when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
+                .thenReturn(new EffectivePermission(PrimaryLevel.UPDATE, false, false));
+
+        var metadata = service.resolveTableMetadata(1L, "public", "no_pk_table", 9L);
+
+        assertThat(metadata.columns())
+                .filteredOn(c -> c.columnName().equals("label"))
+                .singleElement()
+                .satisfies(c -> assertThat(c.readOnly()).isTrue());
+    }
+
     // --- applyChanges ---
 
     @Test

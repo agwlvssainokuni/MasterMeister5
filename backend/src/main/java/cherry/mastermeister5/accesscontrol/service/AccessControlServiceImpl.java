@@ -192,7 +192,7 @@ class AccessControlServiceImpl implements AccessControlService {
                         command.tableName(),
                         command.columnName());
         entry.setPrimaryLevel(command.primaryLevel());
-        permissionRepository.save(entry);
+        saveOrDeleteIfUnset(entry);
         invalidateForSubject(command.subjectType(), command.subjectId());
         recordPermissionChanged(command.subjectType(), command.subjectId(), command.connectionId(), actorUserId);
     }
@@ -214,7 +214,7 @@ class AccessControlServiceImpl implements AccessControlService {
                         command.tableName(),
                         null);
         entry.setAuxiliary(command.auxCreate(), command.auxDelete());
-        permissionRepository.save(entry);
+        saveOrDeleteIfUnset(entry);
         invalidateForSubject(command.subjectType(), command.subjectId());
         recordPermissionChanged(command.subjectType(), command.subjectId(), command.connectionId(), actorUserId);
     }
@@ -571,6 +571,24 @@ class AccessControlServiceImpl implements AccessControlService {
                         () ->
                                 new PermissionEntry(
                                         subjectType, subjectId, connectionId, resourceLevel, schemaName, tableName, columnName));
+    }
+
+    /**
+     * A row with no primary level and no auxiliary flags left set carries no
+     * information (its fallback behavior is already identical to having no
+     * row at all — {@link #resolvePrimaryLevel}/{@link #resolveAux} treat a
+     * null value the same as a missing entry). Delete it once it reaches
+     * that state (or skip creating it, if it was never persisted) instead of
+     * leaving an all-null row behind.
+     */
+    private void saveOrDeleteIfUnset(PermissionEntry entry) {
+        if (entry.getPrimaryLevel() == null && entry.getAuxCreate() == null && entry.getAuxDelete() == null) {
+            if (entry.getId() != null) {
+                permissionRepository.delete(entry);
+            }
+            return;
+        }
+        permissionRepository.save(entry);
     }
 
     private void invalidateForSubject(SubjectType subjectType, Long subjectId) {

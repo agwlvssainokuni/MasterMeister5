@@ -199,6 +199,84 @@ class AccessControlServiceImplTest {
         assertThat(existing.getPrimaryLevel()).isNull();
     }
 
+    /**
+     * A row with nothing left set carries no information — once cleared back
+     * to "-" with no auxiliary flags set either, the row itself should be
+     * deleted rather than left behind as an all-null entry.
+     */
+    @Test
+    void setPrimaryPermissionDeletesAnExistingEntryOnceItHasNothingLeftSet() {
+        var existing =
+                new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null);
+        existing.setPrimaryLevel(PrimaryLevel.READ);
+        setId(existing, 42L);
+        when(permissionRepository
+                        .findBySubjectTypeAndSubjectIdAndConnectionIdAndResourceLevelAndSchemaNameAndTableNameAndColumnName(
+                                SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null))
+                .thenReturn(Optional.of(existing));
+
+        service.setPrimaryPermission(
+                new SetPrimaryPermissionCommand(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null, null),
+                99L);
+
+        verify(permissionRepository).delete(existing);
+        verify(permissionRepository, never()).save(any());
+    }
+
+    @Test
+    void setPrimaryPermissionKeepsAnExistingEntryWhenAuxiliaryFlagsAreStillSet() {
+        var existing =
+                new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null);
+        existing.setPrimaryLevel(PrimaryLevel.READ);
+        existing.setAuxiliary(true, null);
+        setId(existing, 42L);
+        when(permissionRepository
+                        .findBySubjectTypeAndSubjectIdAndConnectionIdAndResourceLevelAndSchemaNameAndTableNameAndColumnName(
+                                SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null))
+                .thenReturn(Optional.of(existing));
+
+        service.setPrimaryPermission(
+                new SetPrimaryPermissionCommand(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null, null),
+                99L);
+
+        verify(permissionRepository).save(existing);
+        verify(permissionRepository, never()).delete(any());
+    }
+
+    @Test
+    void setPrimaryPermissionSkipsPersistingABrandNewEntryWhenGivenNull() {
+        when(permissionRepository
+                        .findBySubjectTypeAndSubjectIdAndConnectionIdAndResourceLevelAndSchemaNameAndTableNameAndColumnName(
+                                SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null))
+                .thenReturn(Optional.empty());
+
+        service.setPrimaryPermission(
+                new SetPrimaryPermissionCommand(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null, null),
+                99L);
+
+        verify(permissionRepository, never()).save(any());
+        verify(permissionRepository, never()).delete(any());
+    }
+
+    @Test
+    void setAuxiliaryPermissionDeletesAnExistingEntryOnceItHasNothingLeftSet() {
+        var existing =
+                new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.TABLE, "public", "t1", null);
+        existing.setAuxiliary(true, false);
+        setId(existing, 43L);
+        when(permissionRepository
+                        .findBySubjectTypeAndSubjectIdAndConnectionIdAndResourceLevelAndSchemaNameAndTableNameAndColumnName(
+                                SubjectType.USER, 5L, 1L, ResourceLevel.TABLE, "public", "t1", null))
+                .thenReturn(Optional.of(existing));
+
+        service.setAuxiliaryPermission(
+                new SetAuxiliaryPermissionCommand(SubjectType.USER, 5L, 1L, ResourceLevel.TABLE, "public", "t1", null, null),
+                99L);
+
+        verify(permissionRepository).delete(existing);
+        verify(permissionRepository, never()).save(any());
+    }
+
     @Test
     void setAuxiliaryPermissionRejectsColumnLevel() {
         assertThatThrownBy(

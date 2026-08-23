@@ -297,6 +297,18 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                         .stream()
                         .collect(Collectors.toMap(ColumnCustomization::getColumnName, c -> c));
 
+        var pkColumns = dbColumns.stream().filter(DbColumn::isPrimaryKey).map(DbColumn::getColumnName).toList();
+        // business-rules.md BR-13 gates DELETE on every primary key column
+        // being at least READ so the row can be identified; UPDATE of an
+        // existing row's other columns needs the same identifiability, so it
+        // shares the same threshold (a table without a primary key is never
+        // update-identifiable either).
+        var recordsIdentifiable =
+                !pkColumns.isEmpty()
+                        && pkColumns.stream()
+                                .allMatch(
+                                        col -> permissions.get(col).primaryLevel().compareTo(PrimaryLevel.READ) >= 0);
+
         var selectColumnNames = new ArrayList<String>();
         var visibleColumns = new ArrayList<ColumnDef>();
         var displayOrderByColumn = new HashMap<String, Integer>();
@@ -319,7 +331,10 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                     customization != null && customization.getDisplayLabel() != null
                             ? customization.getDisplayLabel()
                             : dbColumn.getColumnName();
-            var readOnly = level != PrimaryLevel.UPDATE || (customization != null && customization.isReadOnly());
+            var readOnly =
+                    level != PrimaryLevel.UPDATE
+                            || !recordsIdentifiable
+                            || (customization != null && customization.isReadOnly());
             var widget =
                     customization != null && customization.getInputWidget() != null
                             ? customization.getInputWidget()
