@@ -3,28 +3,29 @@
     "name": "MasterMeister5"
   },
   "home": {
+    "adminBadge": "管理者",
     "cards": {
       "masterData": "登録済みのテーブルデータを検索・閲覧し、権限に応じて追加・編集・削除を行います。",
       "query": "クエリビルダーまたはSQL直接入力でデータを検索し、結果の確認・保存を行います。",
       "queryHistory": "過去に実行したクエリの履歴を検索・参照します。",
-      "users": "ユーザーの招待、ロールの確認、無効化などアカウントを管理します。",
       "connections": "接続先RDBMSの登録とスキーマ取込を行います。",
-      "groups": "ユーザーをグループにまとめ、アクセス権限をまとめて管理します。",
       "permissions": "ユーザー・グループ単位でテーブル・カラムへのアクセス権限を設定します。",
       "customizations": "テーブル・カラム単位で表示名や入力項目の見た目をカスタマイズします。",
+      "users": "ユーザーの招待、ロールの確認、無効化などアカウントを管理します。",
+      "groups": "ユーザーをグループにまとめ、アクセス権限をまとめて管理します。",
       "auditLog": "ユーザー登録やクエリ実行などの操作履歴を確認します。"
     }
   },
   "nav": {
     "home": "ホーム",
-    "users": "ユーザー管理",
-    "connections": "接続管理",
-    "groups": "グループ管理",
-    "permissions": "アクセス権限",
     "masterData": "データ表示",
-    "customizations": "表示・入力カスタマイズ",
     "query": "クエリ",
     "queryHistory": "クエリ履歴",
+    "connections": "接続管理",
+    "permissions": "アクセス権限",
+    "customizations": "表示・入力カスタマイズ",
+    "users": "ユーザー管理",
+    "groups": "グループ管理",
     "auditLog": "監査ログ",
     "changePassword": "パスワード変更",
     "logout": "ログアウト"

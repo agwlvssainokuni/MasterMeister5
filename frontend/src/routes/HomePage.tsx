@@ -16,7 +16,7 @@
 
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Card } from "make-you-chic-ui";
+import { Badge, Card } from "make-you-chic-ui";
 import { useAuth } from "../auth/AuthContext";
 import "./HomePage.css";
 
@@ -38,24 +38,10 @@ const HOME_CARDS: HomeCard[] = [
     descriptionKey: "home.cards.queryHistory",
   },
   {
-    id: "users",
-    href: "/users",
-    titleKey: "nav.users",
-    descriptionKey: "home.cards.users",
-    adminOnly: true,
-  },
-  {
     id: "connections",
     href: "/connections",
     titleKey: "nav.connections",
     descriptionKey: "home.cards.connections",
-    adminOnly: true,
-  },
-  {
-    id: "groups",
-    href: "/groups",
-    titleKey: "nav.groups",
-    descriptionKey: "home.cards.groups",
     adminOnly: true,
   },
   {
@@ -70,6 +56,20 @@ const HOME_CARDS: HomeCard[] = [
     href: "/data/customization",
     titleKey: "nav.customizations",
     descriptionKey: "home.cards.customizations",
+    adminOnly: true,
+  },
+  {
+    id: "users",
+    href: "/users",
+    titleKey: "nav.users",
+    descriptionKey: "home.cards.users",
+    adminOnly: true,
+  },
+  {
+    id: "groups",
+    href: "/groups",
+    titleKey: "nav.groups",
+    descriptionKey: "home.cards.groups",
     adminOnly: true,
   },
   {
@@ -100,7 +100,10 @@ export function HomePage(): React.JSX.Element {
             data-testid={`home-card-${card.id}`}
           >
             <Card>
-              <h2 className="mm5-home-card-title">{t(card.titleKey)}</h2>
+              <h2 className="mm5-home-card-title">
+                {t(card.titleKey)}
+                {card.adminOnly && <Badge variant="secondary">{t("home.adminBadge")}</Badge>}
+              </h2>
               <p className="mm5-home-card-description">{t(card.descriptionKey)}</p>
             </Card>
           </Link>

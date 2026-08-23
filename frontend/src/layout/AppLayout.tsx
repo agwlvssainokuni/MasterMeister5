@@ -62,15 +62,20 @@ export function AppLayout(): React.JSX.Element {
     { label: t("nav.queryHistory"), href: "/queries/history", onClick: goTo("/queries/history") },
   ];
   if (user?.role === "ADMIN") {
-    navItems.push({ label: t("nav.users"), href: "/users", onClick: goTo("/users") });
+    // Grouped by relevance rather than alphabetically: connections/
+    // permissions/customizations all revolve around a registered
+    // connection's schema (register → grant access → customize display),
+    // users/groups manage "who" next, and auditLog stands alone as a
+    // cross-cutting log.
     navItems.push({ label: t("nav.connections"), href: "/connections", onClick: goTo("/connections") });
-    navItems.push({ label: t("nav.groups"), href: "/groups", onClick: goTo("/groups") });
     navItems.push({ label: t("nav.permissions"), href: "/permissions", onClick: goTo("/permissions") });
     navItems.push({
       label: t("nav.customizations"),
       href: "/data/customization",
       onClick: goTo("/data/customization"),
     });
+    navItems.push({ label: t("nav.users"), href: "/users", onClick: goTo("/users") });
+    navItems.push({ label: t("nav.groups"), href: "/groups", onClick: goTo("/groups") });
     navItems.push({ label: t("nav.auditLog"), href: "/audit-log", onClick: goTo("/audit-log") });
   }
 
