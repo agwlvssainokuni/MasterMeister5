@@ -84,7 +84,11 @@ class ConnectionControllerTest {
                                         "localhost",
                                         3306,
                                         "db",
-                                        ConnectionStatus.ACTIVE)));
+                                        null,
+                                        null,
+                                        "user",
+                                        ConnectionStatus.ACTIVE,
+                                        null)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/connections"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -128,6 +132,25 @@ class ConnectionControllerTest {
                                                 + "\"port\":3306,\"databaseName\":\"db\",\"username\":\"user\","
                                                 + "\"password\":\"pass\"}"))
                 .andExpect(MockMvcResultMatchers.status().isConflict());
+    }
+
+    @Test
+    void updateConnectionPassesTheAuthenticatedAdminAsActor() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put("/api/admin/connections/2")
+                                .principal(adminAuthentication)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        "{\"name\":\"conn1\",\"rdbmsType\":\"MYSQL\",\"host\":\"localhost\","
+                                                + "\"port\":3306,\"databaseName\":\"db\",\"username\":\"user\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(connectionSchemaService)
+                .updateConnection(
+                        org.mockito.ArgumentMatchers.eq(2L),
+                        org.mockito.ArgumentMatchers.any(
+                                cherry.mastermeister5.connectionschema.service.UpdateConnectionCommand.class),
+                        org.mockito.ArgumentMatchers.eq(1L));
     }
 
     @Test

@@ -19,33 +19,40 @@ package cherry.mastermeister5.connectionschema.controller.dto;
 import cherry.mastermeister5.connectionschema.entity.ConnectionStatus;
 import cherry.mastermeister5.connectionschema.entity.RdbmsType;
 import cherry.mastermeister5.connectionschema.service.ConnectionSummary;
+import java.time.Instant;
 
 /**
- * Used by both the ADMIN-only and general-user connection listing endpoints
- * (see {@link cherry.mastermeister5.connectionschema.controller.ConnectionViewController}) —
- * deliberately excludes {@code username}/{@code schemaNameHint}/{@code
- * extraParams}/{@code lastSchemaImportAt}, which the ADMIN-only
- * {@link AdminConnectionSummaryResponse} carries instead, so general users
- * never see target-RDBMS connection detail beyond what a connection picker
- * needs.
+ * ADMIN-only listing response for ConnectionListScreen: carries the fields
+ * the connection-edit form needs to pre-fill (everything except the
+ * password, which is never returned) plus the last schema-import timestamp.
+ * Never exposed on the general-user {@code /api/connections} endpoint —
+ * see {@link ConnectionSummaryResponse}.
  */
-public record ConnectionSummaryResponse(
+public record AdminConnectionSummaryResponse(
         Long id,
         String name,
         RdbmsType rdbmsType,
         String host,
         int port,
         String databaseName,
-        ConnectionStatus status) {
+        String schemaNameHint,
+        String extraParams,
+        String username,
+        ConnectionStatus status,
+        Instant lastSchemaImportAt) {
 
-    public static ConnectionSummaryResponse from(ConnectionSummary summary) {
-        return new ConnectionSummaryResponse(
+    public static AdminConnectionSummaryResponse from(ConnectionSummary summary) {
+        return new AdminConnectionSummaryResponse(
                 summary.id(),
                 summary.name(),
                 summary.rdbmsType(),
                 summary.host(),
                 summary.port(),
                 summary.databaseName(),
-                summary.status());
+                summary.schemaNameHint(),
+                summary.extraParams(),
+                summary.username(),
+                summary.status(),
+                summary.lastSchemaImportAt());
     }
 }

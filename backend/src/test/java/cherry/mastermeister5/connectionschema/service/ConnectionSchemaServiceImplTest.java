@@ -181,6 +181,92 @@ class ConnectionSchemaServiceImplTest {
                 .isEqualTo("CONNECTION_TEST_FAILED_UNREACHABLE_HOST");
     }
 
+    // --- updateConnection ---
+
+    @Test
+    void updateConnectionEncryptsANewPasswordWhenProvided() throws SQLException {
+        var connection = activeConnection(8L, "conn8");
+        when(connectionRepository.findById(8L)).thenReturn(Optional.of(connection));
+        when(connectionRepository.findByName("conn8")).thenReturn(Optional.of(connection));
+        var dataSource = mock(HikariDataSource.class);
+        when(poolRegistry.transientDataSourceFor(
+                        RdbmsType.MYSQL, "otherhost", 3306, "db", null, "user", "newpass"))
+                .thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(mock(Connection.class));
+        when(secretCipher.encrypt("newpass")).thenReturn("encrypted-newpass");
+
+        service.updateConnection(
+                8L,
+                new UpdateConnectionCommand(
+                        "conn8", RdbmsType.MYSQL, "otherhost", 3306, "db", null, null, "user", "newpass"),
+                99L);
+
+        assertThat(connection.getHost()).isEqualTo("otherhost");
+        assertThat(connection.getEncryptedPassword()).isEqualTo("encrypted-newpass");
+        org.mockito.Mockito.verify(poolRegistry).evict(8L);
+    }
+
+    @Test
+    void updateConnectionKeepsTheExistingPasswordWhenBlank() throws SQLException {
+        var connection = activeConnection(9L, "conn9");
+        when(connectionRepository.findById(9L)).thenReturn(Optional.of(connection));
+        when(connectionRepository.findByName("conn9")).thenReturn(Optional.of(connection));
+        when(secretCipher.decrypt("encrypted")).thenReturn("currentpass");
+        var dataSource = mock(HikariDataSource.class);
+        when(poolRegistry.transientDataSourceFor(
+                        RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "currentpass"))
+                .thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(mock(Connection.class));
+        when(secretCipher.encrypt("currentpass")).thenReturn("re-encrypted");
+
+        service.updateConnection(
+                9L,
+                new UpdateConnectionCommand(
+                        "conn9", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", ""),
+                99L);
+
+        assertThat(connection.getEncryptedPassword()).isEqualTo("re-encrypted");
+    }
+
+    @Test
+    void updateConnectionRejectsANameAlreadyUsedByAnotherConnection() {
+        var connection = activeConnection(10L, "conn10");
+        when(connectionRepository.findById(10L)).thenReturn(Optional.of(connection));
+        when(connectionRepository.findByName("taken")).thenReturn(Optional.of(activeConnection(11L, "taken")));
+
+        assertThatThrownBy(
+                        () ->
+                                service.updateConnection(
+                                        10L,
+                                        new UpdateConnectionCommand(
+                                                "taken", RdbmsType.MYSQL, "localhost", 3306, "db", null, null,
+                                                "user", "pass"),
+                                        99L))
+                .isInstanceOf(ConnectionException.class)
+                .extracting("errorCode")
+                .isEqualTo("CONNECTION_NAME_ALREADY_EXISTS");
+    }
+
+    @Test
+    void updateConnectionAllowsKeepingItsOwnUnchangedName() throws SQLException {
+        var connection = activeConnection(12L, "conn12");
+        when(connectionRepository.findById(12L)).thenReturn(Optional.of(connection));
+        when(connectionRepository.findByName("conn12")).thenReturn(Optional.of(connection));
+        var dataSource = mock(HikariDataSource.class);
+        when(poolRegistry.transientDataSourceFor(
+                        RdbmsType.MYSQL, "localhost", 3306, "db", null, "user", "pass"))
+                .thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(mock(Connection.class));
+
+        service.updateConnection(
+                12L,
+                new UpdateConnectionCommand(
+                        "conn12", RdbmsType.MYSQL, "localhost", 3306, "db", null, null, "user", "pass"),
+                99L);
+
+        assertThat(connection.getName()).isEqualTo("conn12");
+    }
+
     // --- deactivate / reactivate: state transition guards ---
 
     @Test

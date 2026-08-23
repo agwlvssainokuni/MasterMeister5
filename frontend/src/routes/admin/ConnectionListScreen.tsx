@@ -20,10 +20,11 @@ import { Button, FormField, Modal, Select, Table, TextInput, type TableColumn } 
 import {
   deactivateConnection,
   importSchema,
-  listConnections,
+  listAdminConnections,
   reactivateConnection,
   registerConnection,
-  type ConnectionSummaryDto,
+  updateConnection,
+  type AdminConnectionSummaryDto,
   type RdbmsType,
   type SchemaImportResultDto,
 } from "../../api/connections";
@@ -51,7 +52,7 @@ const PAGE_SIZE = 20;
 export function ConnectionListScreen(): React.JSX.Element {
   const { t } = useTranslation();
 
-  const [connections, setConnections] = useState<ConnectionSummaryDto[]>([]);
+  const [connections, setConnections] = useState<AdminConnectionSummaryDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
 
@@ -68,11 +69,25 @@ export function ConnectionListScreen(): React.JSX.Element {
   const [registerSubmitting, setRegisterSubmitting] = useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = useState<string | null>(null);
 
+  const [editOpen, setEditOpen] = useState(false);
+  const [editConnectionId, setEditConnectionId] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editRdbmsType, setEditRdbmsType] = useState<RdbmsType>("MYSQL");
+  const [editHost, setEditHost] = useState("");
+  const [editPort, setEditPort] = useState("3306");
+  const [editDatabaseName, setEditDatabaseName] = useState("");
+  const [editSchemaNameHint, setEditSchemaNameHint] = useState("");
+  const [editExtraParams, setEditExtraParams] = useState("");
+  const [editUsername, setEditUsername] = useState("");
+  const [editPassword, setEditPassword] = useState("");
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [editErrorMessage, setEditErrorMessage] = useState<string | null>(null);
+
   const [importResult, setImportResult] = useState<SchemaImportResultDto | null>(null);
 
   const reload = useCallback(() => {
     setLoading(true);
-    listConnections()
+    listAdminConnections()
       .then(setConnections)
       .finally(() => setLoading(false));
   }, []);
@@ -113,6 +128,49 @@ export function ConnectionListScreen(): React.JSX.Element {
     }
   }
 
+  function handleEditOpen(row: AdminConnectionSummaryDto) {
+    setEditConnectionId(row.id);
+    setEditName(row.name);
+    setEditRdbmsType(row.rdbmsType);
+    setEditHost(row.host);
+    setEditPort(String(row.port));
+    setEditDatabaseName(row.databaseName);
+    setEditSchemaNameHint(row.schemaNameHint ?? "");
+    setEditExtraParams(row.extraParams ?? "");
+    setEditUsername(row.username);
+    setEditPassword("");
+    setEditErrorMessage(null);
+    setEditOpen(true);
+  }
+
+  async function handleEditSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (editConnectionId === null) {
+      return;
+    }
+    setEditSubmitting(true);
+    setEditErrorMessage(null);
+    try {
+      await updateConnection(editConnectionId, {
+        name: editName,
+        rdbmsType: editRdbmsType,
+        host: editHost,
+        port: Number(editPort),
+        databaseName: editDatabaseName,
+        schemaNameHint: editSchemaNameHint || undefined,
+        extraParams: editExtraParams || undefined,
+        username: editUsername,
+        password: editPassword || undefined,
+      });
+      setEditOpen(false);
+      reload();
+    } catch (err) {
+      setEditErrorMessage(err instanceof ApiError ? err.message : t("admin.connections.edit.error"));
+    } finally {
+      setEditSubmitting(false);
+    }
+  }
+
   async function handleDeactivate(connectionId: number) {
     await deactivateConnection(connectionId);
     reload();
@@ -129,7 +187,7 @@ export function ConnectionListScreen(): React.JSX.Element {
     reload();
   }
 
-  const columns: TableColumn<ConnectionSummaryDto>[] = useMemo(
+  const columns: TableColumn<AdminConnectionSummaryDto>[] = useMemo(
     () => [
       { key: "name", header: t("admin.connections.columns.name") },
       { key: "rdbmsType", header: t("admin.connections.columns.rdbmsType") },
@@ -145,10 +203,23 @@ export function ConnectionListScreen(): React.JSX.Element {
         render: (row) => t(`admin.connections.status.${row.status.toLowerCase()}`),
       },
       {
+        key: "lastSchemaImportAt",
+        header: t("admin.connections.columns.lastSchemaImportAt"),
+        render: (row) => row.lastSchemaImportAt ?? t("admin.connections.notImported"),
+      },
+      {
         key: "actions",
         header: t("admin.connections.columns.actions"),
         render: (row) => (
           <>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleEditOpen(row)}
+              data-testid={`connections-row-${row.id}-edit-button`}
+            >
+              {t("admin.connections.editButton")}
+            </Button>
             {row.status === "ACTIVE" && (
               <>
                 <Button
@@ -291,6 +362,90 @@ export function ConnectionListScreen(): React.JSX.Element {
             data-testid="connections-register-form-submit-button"
           >
             {t("admin.connections.register.submit")}
+          </Button>
+        </form>
+      </Modal>
+
+      <Modal open={editOpen} onClose={() => setEditOpen(false)} title={t("admin.connections.edit.title")}>
+        <form onSubmit={handleEditSubmit} data-testid="connections-edit-form">
+          <FormField label={t("admin.connections.columns.name")} required>
+            <TextInput
+              value={editName}
+              onChange={setEditName}
+              required
+              data-testid="connections-edit-form-name-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.columns.rdbmsType")} required>
+            <Select
+              options={RDBMS_OPTIONS}
+              value={editRdbmsType}
+              onChange={(value) => {
+                const nextType = value as RdbmsType;
+                setEditRdbmsType(nextType);
+                setEditPort(RDBMS_DEFAULT_PORTS[nextType]);
+              }}
+              data-testid="connections-edit-form-rdbms-select"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.host")} required>
+            <TextInput
+              value={editHost}
+              onChange={setEditHost}
+              required
+              data-testid="connections-edit-form-host-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.port")} required>
+            <TextInput
+              type="number"
+              value={editPort}
+              onChange={setEditPort}
+              required
+              data-testid="connections-edit-form-port-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.columns.databaseName")} required>
+            <TextInput
+              value={editDatabaseName}
+              onChange={setEditDatabaseName}
+              required
+              data-testid="connections-edit-form-database-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.schemaNameHint")}>
+            <TextInput
+              value={editSchemaNameHint}
+              onChange={setEditSchemaNameHint}
+              data-testid="connections-edit-form-schema-hint-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.extraParams")} helperText={t("admin.connections.extraParamsHint")}>
+            <TextInput
+              value={editExtraParams}
+              onChange={setEditExtraParams}
+              data-testid="connections-edit-form-extra-params-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.username")} required>
+            <TextInput
+              value={editUsername}
+              onChange={setEditUsername}
+              required
+              data-testid="connections-edit-form-username-input"
+            />
+          </FormField>
+          <FormField label={t("admin.connections.password")} helperText={t("admin.connections.edit.passwordHint")}>
+            <TextInput
+              type="password"
+              value={editPassword}
+              onChange={setEditPassword}
+              data-testid="connections-edit-form-password-input"
+            />
+          </FormField>
+          {editErrorMessage && <p role="alert">{editErrorMessage}</p>}
+          <Button type="submit" loading={editSubmitting} data-testid="connections-edit-form-submit-button">
+            {t("admin.connections.edit.submit")}
           </Button>
         </form>
       </Modal>

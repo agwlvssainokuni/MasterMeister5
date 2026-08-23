@@ -57,7 +57,7 @@ describe("ConnectionListScreen", () => {
       if (url.includes("/api/admin/connections") && init?.method === "POST") {
         return Promise.resolve({ ok: true });
       }
-      if (url.includes("/api/connections")) {
+      if (url.endsWith("/api/admin/connections")) {
         listCallCount += 1;
         return Promise.resolve({ ok: true, json: async () => [] });
       }
@@ -78,6 +78,51 @@ describe("ConnectionListScreen", () => {
     await waitFor(() => expect(listCallCount).toBe(2));
   });
 
+  it("submits an edit with the password left blank and reloads the list", async () => {
+    let listCallCount = 0;
+    let putBody: string | undefined;
+    globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.includes("/api/admin/connections/1") && init?.method === "PUT") {
+        putBody = String(init?.body);
+        return Promise.resolve({ ok: true });
+      }
+      if (url.endsWith("/api/admin/connections")) {
+        listCallCount += 1;
+        return Promise.resolve({
+          ok: true,
+          json: async () => [
+            {
+              id: 1,
+              name: "conn1",
+              rdbmsType: "MYSQL",
+              host: "localhost",
+              port: 3306,
+              databaseName: "db",
+              schemaNameHint: null,
+              extraParams: null,
+              username: "user",
+              status: "ACTIVE",
+              lastSchemaImportAt: null,
+            },
+          ],
+        });
+      }
+      throw new Error(`unexpected fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    render(<ConnectionListScreen />);
+    await waitFor(() => expect(listCallCount).toBe(1));
+
+    await userEvent.click(screen.getByTestId("connections-row-1-edit-button"));
+    expect(screen.getByTestId("connections-edit-form-name-input")).toHaveValue("conn1");
+    await userEvent.click(screen.getByTestId("connections-edit-form-submit-button"));
+
+    await waitFor(() => expect(listCallCount).toBe(2));
+    expect(putBody).toBeDefined();
+    expect(JSON.parse(putBody as string).password).toBeUndefined();
+  });
+
   it("shows the schema import result summary", async () => {
     globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL) => {
       const url = String(input);
@@ -95,7 +140,7 @@ describe("ConnectionListScreen", () => {
           }),
         });
       }
-      if (url.includes("/api/connections")) {
+      if (url.endsWith("/api/admin/connections")) {
         return Promise.resolve({
           ok: true,
           json: async () => [

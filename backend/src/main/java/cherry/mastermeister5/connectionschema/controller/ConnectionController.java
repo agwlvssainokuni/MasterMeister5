@@ -16,12 +16,14 @@
 
 package cherry.mastermeister5.connectionschema.controller;
 
-import cherry.mastermeister5.connectionschema.controller.dto.ConnectionSummaryResponse;
+import cherry.mastermeister5.connectionschema.controller.dto.AdminConnectionSummaryResponse;
 import cherry.mastermeister5.connectionschema.controller.dto.RegisterConnectionRequest;
 import cherry.mastermeister5.connectionschema.controller.dto.SchemaImportResultResponse;
 import cherry.mastermeister5.connectionschema.controller.dto.SchemaViewResponse;
+import cherry.mastermeister5.connectionschema.controller.dto.UpdateConnectionRequest;
 import cherry.mastermeister5.connectionschema.service.ConnectionSchemaService;
 import cherry.mastermeister5.connectionschema.service.RegisterConnectionCommand;
+import cherry.mastermeister5.connectionschema.service.UpdateConnectionCommand;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,9 +51,9 @@ public class ConnectionController {
     }
 
     @GetMapping("/api/admin/connections")
-    public List<ConnectionSummaryResponse> listConnections() {
+    public List<AdminConnectionSummaryResponse> listConnections() {
         return connectionSchemaService.listConnections().stream()
-                .map(ConnectionSummaryResponse::from)
+                .map(AdminConnectionSummaryResponse::from)
                 .toList();
     }
 
@@ -60,6 +63,27 @@ public class ConnectionController {
         var actorUserId = Long.valueOf(authentication.getName());
         connectionSchemaService.registerConnection(
                 new RegisterConnectionCommand(
+                        request.name(),
+                        request.rdbmsType(),
+                        request.host(),
+                        request.port(),
+                        request.databaseName(),
+                        request.schemaNameHint(),
+                        request.extraParams(),
+                        request.username(),
+                        request.password()),
+                actorUserId);
+    }
+
+    @PutMapping("/api/admin/connections/{connectionId}")
+    public void updateConnection(
+            @PathVariable Long connectionId,
+            @Valid @RequestBody UpdateConnectionRequest request,
+            Authentication authentication) {
+        var actorUserId = Long.valueOf(authentication.getName());
+        connectionSchemaService.updateConnection(
+                connectionId,
+                new UpdateConnectionCommand(
                         request.name(),
                         request.rdbmsType(),
                         request.host(),

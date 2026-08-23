@@ -153,6 +153,28 @@ public class TargetConnection {
         touch();
     }
 
+    public void update(
+            String name,
+            RdbmsType rdbmsType,
+            String host,
+            int port,
+            String databaseName,
+            String schemaNameHint,
+            String extraParams,
+            String username,
+            String encryptedPassword) {
+        this.name = name;
+        this.rdbmsType = rdbmsType;
+        this.host = host;
+        this.port = port;
+        this.databaseName = databaseName;
+        this.schemaNameHint = schemaNameHint;
+        this.extraParams = extraParams;
+        this.username = username;
+        this.encryptedPassword = encryptedPassword;
+        touch();
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }

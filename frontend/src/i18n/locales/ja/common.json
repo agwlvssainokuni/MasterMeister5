@@ -115,6 +115,7 @@
     "connections": {
       "title": "接続管理",
       "registerButton": "接続を登録",
+      "editButton": "修正",
       "importButton": "スキーマ取込",
       "deactivateButton": "無効化",
       "reactivateButton": "再有効化",
@@ -125,12 +126,14 @@
       "extraParamsHint": "JDBC URLにそのまま付加されます（例: ?useSSL=true&serverTimezone=UTC、H2は;MODE=MySQLのようにセミコロン区切り）",
       "username": "ユーザ名",
       "password": "パスワード",
+      "notImported": "未取込",
       "columns": {
         "name": "接続名",
         "rdbmsType": "RDBMS種別",
         "hostPort": "ホスト:ポート",
         "databaseName": "データベース名",
         "status": "状態",
+        "lastSchemaImportAt": "取込日時",
         "actions": "操作"
       },
       "status": {
@@ -141,6 +144,12 @@
         "title": "接続を登録",
         "submit": "登録する",
         "error": "登録に失敗しました。"
+      },
+      "edit": {
+        "title": "接続を修正",
+        "submit": "更新する",
+        "passwordHint": "変更する場合のみ入力してください（空欄なら現在のパスワードを維持します）",
+        "error": "更新に失敗しました。"
       },
       "importResult": {
         "title": "スキーマ取込結果",

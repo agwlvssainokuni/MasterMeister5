@@ -29,6 +29,26 @@ export interface ConnectionSummaryDto {
   status: ConnectionStatus;
 }
 
+/**
+ * ADMIN-only listing (`/api/admin/connections`), carrying the fields
+ * ConnectionListScreen's edit form needs to pre-fill (everything but the
+ * password, which is never returned) plus the last schema-import timestamp.
+ * Not exposed on the general-user {@link ConnectionSummaryDto}/`/api/connections`.
+ */
+export interface AdminConnectionSummaryDto {
+  id: number;
+  name: string;
+  rdbmsType: RdbmsType;
+  host: string;
+  port: number;
+  databaseName: string;
+  schemaNameHint: string | null;
+  extraParams: string | null;
+  username: string;
+  status: ConnectionStatus;
+  lastSchemaImportAt: string | null;
+}
+
 export interface RegisterConnectionRequest {
   name: string;
   rdbmsType: RdbmsType;
@@ -40,6 +60,19 @@ export interface RegisterConnectionRequest {
   extraParams?: string;
   username: string;
   password: string;
+}
+
+export interface UpdateConnectionRequest {
+  name: string;
+  rdbmsType: RdbmsType;
+  host: string;
+  port: number;
+  databaseName: string;
+  schemaNameHint?: string;
+  extraParams?: string;
+  username: string;
+  /** Blank/omitted keeps the current password unchanged. */
+  password?: string;
 }
 
 export interface SchemaImportFailureDto {
@@ -88,9 +121,22 @@ export function listConnections(): Promise<ConnectionSummaryDto[]> {
   return authenticatedJson<ConnectionSummaryDto[]>("/api/connections");
 }
 
+/** ADMIN-only richer listing for ConnectionListScreen; see {@link AdminConnectionSummaryDto}. */
+export function listAdminConnections(): Promise<AdminConnectionSummaryDto[]> {
+  return authenticatedJson<AdminConnectionSummaryDto[]>("/api/admin/connections");
+}
+
 export function registerConnection(request: RegisterConnectionRequest): Promise<void> {
   return authenticatedVoid("/api/admin/connections", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+}
+
+export function updateConnection(connectionId: number, request: UpdateConnectionRequest): Promise<void> {
+  return authenticatedVoid(`/api/admin/connections/${connectionId}`, {
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
   });

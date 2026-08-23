@@ -23,6 +23,8 @@ public interface ConnectionSchemaService {
 
     Long registerConnection(RegisterConnectionCommand command, Long actorUserId);
 
+    void updateConnection(Long connectionId, UpdateConnectionCommand command, Long actorUserId);
+
     void deactivateConnection(Long connectionId, Long actorUserId);
 
     void reactivateConnection(Long connectionId, Long actorUserId);

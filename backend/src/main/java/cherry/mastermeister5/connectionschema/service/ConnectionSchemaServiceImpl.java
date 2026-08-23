@@ -32,6 +32,7 @@ import cherry.mastermeister5.connectionschema.repository.ForeignKeyConstraintJpa
 import cherry.mastermeister5.connectionschema.repository.TargetConnectionJpaRepository;
 import cherry.mastermeister5.platform.security.ConnectionSecretCipher;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,6 +142,64 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                 null,
                 Map.of("connectionName", command.name()));
         return connection.getId();
+    }
+
+    @Override
+    @Transactional
+    public void updateConnection(Long connectionId, UpdateConnectionCommand command, Long actorUserId) {
+        validateIdentifier(command.host());
+        validateIdentifier(command.databaseName());
+        if (command.schemaNameHint() != null && !command.schemaNameHint().isBlank()) {
+            validateIdentifier(command.schemaNameHint());
+        }
+        var connection = findConnectionOrThrow(connectionId);
+        connectionRepository
+                .findByName(command.name())
+                .filter(existing -> !existing.getId().equals(connectionId))
+                .ifPresent(
+                        existing -> {
+                            throw ConnectionException.nameAlreadyExists();
+                        });
+
+        var rawPassword =
+                (command.password() == null || command.password().isBlank())
+                        ? secretCipher.decrypt(connection.getEncryptedPassword())
+                        : command.password();
+
+        try (var dataSource =
+                poolRegistry.transientDataSourceFor(
+                        command.rdbmsType(),
+                        command.host(),
+                        command.port(),
+                        command.databaseName(),
+                        command.extraParams(),
+                        command.username(),
+                        rawPassword)) {
+            try (var ignored = dataSource.getConnection()) {
+                // BR-2: connection test only; nothing else to do on success.
+            }
+        } catch (SQLException e) {
+            throw ConnectionException.connectionTestFailed(classifyFailure(e));
+        }
+
+        connection.update(
+                command.name(),
+                command.rdbmsType(),
+                command.host(),
+                command.port(),
+                command.databaseName(),
+                command.schemaNameHint(),
+                command.extraParams(),
+                command.username(),
+                secretCipher.encrypt(rawPassword));
+        connectionRepository.save(connection);
+        poolRegistry.evict(connectionId);
+
+        auditLogService.recordEvent(
+                AuditEventType.CONNECTION_UPDATED,
+                actorUserId,
+                null,
+                Map.of("connectionId", connectionId, "connectionName", command.name()));
     }
 
     @Override
@@ -381,8 +440,19 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                                         c.getHost(),
                                         c.getPort(),
                                         c.getDatabaseName(),
-                                        c.getStatus()))
+                                        c.getSchemaNameHint(),
+                                        c.getExtraParams(),
+                                        c.getUsername(),
+                                        c.getStatus(),
+                                        lastSchemaImportAt(c.getId())))
                 .toList();
+    }
+
+    private Instant lastSchemaImportAt(Long connectionId) {
+        return schemaRepository.findAllByConnectionId(connectionId).stream()
+                .map(DbSchema::getImportedAt)
+                .max(Instant::compareTo)
+                .orElse(null);
     }
 
     private TargetConnection findConnectionOrThrow(Long connectionId) {

@@ -115,6 +115,7 @@
     "connections": {
       "title": "Connections",
       "registerButton": "Register Connection",
+      "editButton": "Edit",
       "importButton": "Import Schema",
       "deactivateButton": "Deactivate",
       "reactivateButton": "Reactivate",
@@ -125,12 +126,14 @@
       "extraParamsHint": "Appended verbatim to the JDBC URL (e.g. ?useSSL=true&serverTimezone=UTC; H2 uses semicolons, e.g. ;MODE=MySQL)",
       "username": "Username",
       "password": "Password",
+      "notImported": "Not imported yet",
       "columns": {
         "name": "Connection Name",
         "rdbmsType": "RDBMS Type",
         "hostPort": "Host:Port",
         "databaseName": "Database Name",
         "status": "Status",
+        "lastSchemaImportAt": "Last Imported At",
         "actions": "Actions"
       },
       "status": {
@@ -141,6 +144,12 @@
         "title": "Register Connection",
         "submit": "Register",
         "error": "Failed to register the connection."
+      },
+      "edit": {
+        "title": "Edit Connection",
+        "submit": "Update",
+        "passwordHint": "Leave blank to keep the current password unchanged.",
+        "error": "Failed to update the connection."
       },
       "importResult": {
         "title": "Schema Import Result",

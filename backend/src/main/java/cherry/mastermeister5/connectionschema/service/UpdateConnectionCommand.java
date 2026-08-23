@@ -16,12 +16,10 @@
 
 package cherry.mastermeister5.connectionschema.service;
 
-import cherry.mastermeister5.connectionschema.entity.ConnectionStatus;
 import cherry.mastermeister5.connectionschema.entity.RdbmsType;
-import java.time.Instant;
 
-public record ConnectionSummary(
-        Long id,
+/** {@code password} may be blank/null, meaning "keep the current password unchanged". */
+public record UpdateConnectionCommand(
         String name,
         RdbmsType rdbmsType,
         String host,
@@ -30,6 +28,5 @@ public record ConnectionSummary(
         String schemaNameHint,
         String extraParams,
         String username,
-        ConnectionStatus status,
-        Instant lastSchemaImportAt) {
+        String password) {
 }
