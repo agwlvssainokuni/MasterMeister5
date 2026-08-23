@@ -103,10 +103,26 @@
 
 .mm5-permissions-aux {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   flex-shrink: 0;
   /* Fixed width (present even when empty, on column rows) keeps the primary
      Select column-aligned across all 3 tree levels regardless of whether
-     this row has aux checkboxes trailing it. */
-  width: 190px;
+     this row has aux selects trailing it. */
+  width: 260px;
+}
+
+.mm5-permissions-aux-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.mm5-permissions-aux-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.mm5-permissions-aux-item .mycui-select-wrapper {
+  width: 70px;
 }

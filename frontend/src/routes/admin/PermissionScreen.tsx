@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Card, Checkbox, FormField, Icon, RadioGroup, Select } from "make-you-chic-ui";
+import { Button, Card, FormField, Icon, RadioGroup, Select } from "make-you-chic-ui";
 import { getSchema, listConnections, type ConnectionSummaryDto, type SchemaViewDto } from "../../api/connections";
 import { listUsers, type UserSummaryDto } from "../../api/adminUsers";
 import { listGroups, type GroupSummaryDto } from "../../api/groups";
@@ -39,6 +39,26 @@ const PRIMARY_OPTIONS: { label: string; value: string }[] = [
   { label: "READ", value: "READ" },
   { label: "UPDATE", value: "UPDATE" },
 ];
+
+// "-" means unset (falls back to the enclosing schema/table, per BR-11),
+// distinct from an explicit false — a plain checkbox can't represent that.
+const AUX_OPTIONS: { label: string; value: string }[] = [
+  { label: "-", value: "" },
+  { label: "true", value: "true" },
+  { label: "false", value: "false" },
+];
+
+function auxValueToOption(value: boolean | null | undefined): string {
+  if (value === true) return "true";
+  if (value === false) return "false";
+  return "";
+}
+
+function auxOptionToValue(option: string): boolean | undefined {
+  if (option === "true") return true;
+  if (option === "false") return false;
+  return undefined;
+}
 
 function entryKey(resourceLevel: string, tableName: string | null, columnName: string | null): string {
   return `${resourceLevel}:${tableName ?? ""}:${columnName ?? ""}`;
@@ -169,7 +189,7 @@ export function PermissionScreen(): React.JSX.Element {
     schemaName: string,
     tableName: string | undefined,
     field: "auxCreate" | "auxDelete",
-    checked: boolean,
+    value: boolean | undefined,
   ) {
     if (!selectedConnectionId || !selectedSubjectId) {
       return;
@@ -182,8 +202,8 @@ export function PermissionScreen(): React.JSX.Element {
       resourceLevel,
       schemaName,
       tableName,
-      auxCreate: field === "auxCreate" ? checked : (existing?.auxCreate ?? undefined),
-      auxDelete: field === "auxDelete" ? checked : (existing?.auxDelete ?? undefined),
+      auxCreate: field === "auxCreate" ? value : (existing?.auxCreate ?? undefined),
+      auxDelete: field === "auxDelete" ? value : (existing?.auxDelete ?? undefined),
     });
     reloadEntries();
   }
@@ -327,18 +347,30 @@ export function PermissionScreen(): React.JSX.Element {
                     />
                   </span>
                   <span className="mm5-permissions-aux">
-                    <Checkbox
-                      label={t("admin.permissions.auxCreate")}
-                      checked={entries.get(entryKey("SCHEMA", null, null))?.auxCreate ?? false}
-                      onChange={(checked) => handleAuxChange("SCHEMA", s.schemaName, undefined, "auxCreate", checked)}
-                      data-testid={`permissions-schema-${s.schemaName}-aux-create-checkbox`}
-                    />
-                    <Checkbox
-                      label={t("admin.permissions.auxDelete")}
-                      checked={entries.get(entryKey("SCHEMA", null, null))?.auxDelete ?? false}
-                      onChange={(checked) => handleAuxChange("SCHEMA", s.schemaName, undefined, "auxDelete", checked)}
-                      data-testid={`permissions-schema-${s.schemaName}-aux-delete-checkbox`}
-                    />
+                    <span className="mm5-permissions-aux-item">
+                      <span className="mm5-permissions-aux-label">{t("admin.permissions.auxCreate")}</span>
+                      <Select
+                        aria-label={t("admin.permissions.auxCreate")}
+                        options={AUX_OPTIONS}
+                        value={auxValueToOption(entries.get(entryKey("SCHEMA", null, null))?.auxCreate)}
+                        onChange={(value) =>
+                          handleAuxChange("SCHEMA", s.schemaName, undefined, "auxCreate", auxOptionToValue(value))
+                        }
+                        data-testid={`permissions-schema-${s.schemaName}-aux-create-select`}
+                      />
+                    </span>
+                    <span className="mm5-permissions-aux-item">
+                      <span className="mm5-permissions-aux-label">{t("admin.permissions.auxDelete")}</span>
+                      <Select
+                        aria-label={t("admin.permissions.auxDelete")}
+                        options={AUX_OPTIONS}
+                        value={auxValueToOption(entries.get(entryKey("SCHEMA", null, null))?.auxDelete)}
+                        onChange={(value) =>
+                          handleAuxChange("SCHEMA", s.schemaName, undefined, "auxDelete", auxOptionToValue(value))
+                        }
+                        data-testid={`permissions-schema-${s.schemaName}-aux-delete-select`}
+                      />
+                    </span>
                   </span>
                 </div>
 
@@ -376,22 +408,46 @@ export function PermissionScreen(): React.JSX.Element {
                             />
                           </span>
                           <span className="mm5-permissions-aux">
-                            <Checkbox
-                              label={t("admin.permissions.auxCreate")}
-                              checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxCreate ?? false}
-                              onChange={(checked) =>
-                                handleAuxChange("TABLE", s.schemaName, table.tableName, "auxCreate", checked)
-                              }
-                              data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-create-checkbox`}
-                            />
-                            <Checkbox
-                              label={t("admin.permissions.auxDelete")}
-                              checked={entries.get(entryKey("TABLE", table.tableName, null))?.auxDelete ?? false}
-                              onChange={(checked) =>
-                                handleAuxChange("TABLE", s.schemaName, table.tableName, "auxDelete", checked)
-                              }
-                              data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-delete-checkbox`}
-                            />
+                            <span className="mm5-permissions-aux-item">
+                              <span className="mm5-permissions-aux-label">{t("admin.permissions.auxCreate")}</span>
+                              <Select
+                                aria-label={t("admin.permissions.auxCreate")}
+                                options={AUX_OPTIONS}
+                                value={auxValueToOption(
+                                  entries.get(entryKey("TABLE", table.tableName, null))?.auxCreate,
+                                )}
+                                onChange={(value) =>
+                                  handleAuxChange(
+                                    "TABLE",
+                                    s.schemaName,
+                                    table.tableName,
+                                    "auxCreate",
+                                    auxOptionToValue(value),
+                                  )
+                                }
+                                data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-create-select`}
+                              />
+                            </span>
+                            <span className="mm5-permissions-aux-item">
+                              <span className="mm5-permissions-aux-label">{t("admin.permissions.auxDelete")}</span>
+                              <Select
+                                aria-label={t("admin.permissions.auxDelete")}
+                                options={AUX_OPTIONS}
+                                value={auxValueToOption(
+                                  entries.get(entryKey("TABLE", table.tableName, null))?.auxDelete,
+                                )}
+                                onChange={(value) =>
+                                  handleAuxChange(
+                                    "TABLE",
+                                    s.schemaName,
+                                    table.tableName,
+                                    "auxDelete",
+                                    auxOptionToValue(value),
+                                  )
+                                }
+                                data-testid={`permissions-table-${s.schemaName}-${table.tableName}-aux-delete-select`}
+                              />
+                            </span>
                           </span>
                         </div>
 
