@@ -16,10 +16,14 @@
 
 package cherry.mastermeister5.mastermaintenance.service;
 
+import java.util.List;
+
 /**
- * {@code resolveTablePermission} return value: the caller's resolved
- * table-level aux permissions, fetched as metadata separate from record
- * data (not tied to any particular page/filter/sort of listRecords).
+ * {@code resolveTableMetadata} return value: everything about a table that
+ * the caller needs before/around fetching its record data but that doesn't
+ * vary by page/filter/sort — column definitions (visibility, editability,
+ * widget) and the caller's resolved table-level aux permissions. Fetched via
+ * its own endpoint, separate from both the table listing and record data.
  */
-public record TablePermission(boolean canCreate, boolean canDelete) {
+public record TableMetadata(List<ColumnDef> columns, boolean canCreate, boolean canDelete) {
 }

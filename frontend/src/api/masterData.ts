@@ -29,12 +29,6 @@ export interface TableSummaryDto {
   comment: string | null;
 }
 
-/** Resolved table-level aux permissions; fetched via its own endpoint, separate from both the table listing and record data. */
-export interface TablePermissionDto {
-  canCreate: boolean;
-  canDelete: boolean;
-}
-
 export interface ColumnDefDto {
   columnName: string;
   displayLabel: string;
@@ -46,8 +40,18 @@ export interface ColumnDefDto {
   selectOptionsJson: string | null;
 }
 
-export interface RecordPageDto {
+/**
+ * Column definitions and resolved table-level aux permissions; fetched via
+ * its own endpoint, separate from both the table listing and record data —
+ * none of this varies by page/filter/sort.
+ */
+export interface TableMetadataDto {
   columns: ColumnDefDto[];
+  canCreate: boolean;
+  canDelete: boolean;
+}
+
+export interface RecordPageDto {
   rows: Record<string, unknown>[];
   page: number;
   pageSize: number;
@@ -86,13 +90,13 @@ export function listTables(connectionId: number): Promise<TableSummaryDto[]> {
   return authenticatedJson<TableSummaryDto[]>(`/api/data/connections/${connectionId}/tables`, { method: "POST" });
 }
 
-export function getTablePermission(
+export function getTableMetadata(
   connectionId: number,
   schemaName: string,
   tableName: string,
-): Promise<TablePermissionDto> {
-  return authenticatedJson<TablePermissionDto>(
-    `/api/data/connections/${connectionId}/tables/${schemaName}/${tableName}/permissions`,
+): Promise<TableMetadataDto> {
+  return authenticatedJson<TableMetadataDto>(
+    `/api/data/connections/${connectionId}/tables/${schemaName}/${tableName}/metadata`,
   );
 }
 

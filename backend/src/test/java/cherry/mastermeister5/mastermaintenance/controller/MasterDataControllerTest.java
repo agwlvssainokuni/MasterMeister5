@@ -25,7 +25,7 @@ import cherry.mastermeister5.mastermaintenance.service.ApplyResult;
 import cherry.mastermeister5.mastermaintenance.service.MasterMaintenanceException;
 import cherry.mastermeister5.mastermaintenance.service.MasterMaintenanceService;
 import cherry.mastermeister5.mastermaintenance.service.RecordPage;
-import cherry.mastermeister5.mastermaintenance.service.TablePermission;
+import cherry.mastermeister5.mastermaintenance.service.TableMetadata;
 import cherry.mastermeister5.mastermaintenance.service.TableSummary;
 import cherry.mastermeister5.platform.web.ErrorResponse;
 import cherry.mastermeister5.platform.web.ErrorResponseFactory;
@@ -86,7 +86,7 @@ class MasterDataControllerTest {
 
     @Test
     void listRecordsPassesTheAuthenticatedUserAsActor() throws Exception {
-        given(masterMaintenanceService.listRecords(any())).willReturn(new RecordPage(List.of(), List.of(), 0, 50, 0));
+        given(masterMaintenanceService.listRecords(any())).willReturn(new RecordPage(List.of(), 0, 50, 0));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/data/connections/1/tables/public/t1/records")
@@ -102,12 +102,12 @@ class MasterDataControllerTest {
     }
 
     @Test
-    void getTablePermissionPassesTheAuthenticatedUserAsActor() throws Exception {
-        given(masterMaintenanceService.resolveTablePermission(1L, "public", "t1", 9L))
-                .willReturn(new TablePermission(true, false));
+    void getTableMetadataPassesTheAuthenticatedUserAsActor() throws Exception {
+        given(masterMaintenanceService.resolveTableMetadata(1L, "public", "t1", 9L))
+                .willReturn(new TableMetadata(List.of(), true, false));
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/data/connections/1/tables/public/t1/permissions")
+                        MockMvcRequestBuilders.get("/api/data/connections/1/tables/public/t1/metadata")
                                 .principal(userAuthentication))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.canCreate", org.hamcrest.Matchers.is(true)))

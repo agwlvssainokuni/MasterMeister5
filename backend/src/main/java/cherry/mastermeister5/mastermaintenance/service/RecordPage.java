@@ -19,7 +19,10 @@ package cherry.mastermeister5.mastermaintenance.service;
 import java.util.List;
 import java.util.Map;
 
-/** component-methods.md: {@code listRecords} return value. */
-public record RecordPage(
-        List<ColumnDef> columns, List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
+/**
+ * component-methods.md: {@code listRecords} return value. Column
+ * definitions are not included here — see {@link TableMetadata}, fetched
+ * separately since they don't vary by page/filter/sort.
+ */
+public record RecordPage(List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
 }

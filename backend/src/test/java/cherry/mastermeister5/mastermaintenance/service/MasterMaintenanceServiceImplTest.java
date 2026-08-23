@@ -170,7 +170,6 @@ class MasterMaintenanceServiceImplTest {
                 service.listRecords(
                         new ListRecordsCommand(1L, "public", "t1", 9L, new FilterCriteria(List.of(), null), null, 0, 50));
 
-        assertThat(page.columns()).extracting(ColumnDef::columnName).containsExactlyInAnyOrder("id", "name");
         assertThat(page.rows()).allSatisfy(row -> assertThat(row).doesNotContainKey("secret"));
         assertThat(page.totalCount()).isEqualTo(2);
     }
@@ -250,10 +249,12 @@ class MasterMaintenanceServiceImplTest {
                         Map.of(
                                 "id", new EffectivePermission(PrimaryLevel.READ, false, false),
                                 "name", new EffectivePermission(level, false, false)));
+        when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
+                .thenReturn(new EffectivePermission(level, false, false));
 
-        var page = service.listRecords(new ListRecordsCommand(1L, "public", "t1", 9L, new FilterCriteria(List.of(), null), null, 0, 50));
+        var metadata = service.resolveTableMetadata(1L, "public", "t1", 9L);
 
-        var nameVisible = page.columns().stream().anyMatch(c -> c.columnName().equals("name"));
+        var nameVisible = metadata.columns().stream().anyMatch(c -> c.columnName().equals("name"));
         assertThat(nameVisible).isEqualTo(level != PrimaryLevel.NONE);
     }
 
@@ -284,18 +285,24 @@ class MasterMaintenanceServiceImplTest {
                 .recordEvent(eq(AuditEventType.BULK_DATA_ACCESSED), eq(9L), isNull(), any());
     }
 
-    // --- resolveTablePermission ---
+    // --- resolveTableMetadata ---
 
     @Test
-    void resolveTablePermissionReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
-        mockTable("t1", List.of(column("id", true)), true);
+    void resolveTableMetadataReflectsTheResolvedTableLevelCreateAndDeletePermissions() {
+        mockTable("t1", List.of(column("id", true), column("name", false)), true);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(
+                        Map.of(
+                                "id", new EffectivePermission(PrimaryLevel.READ, false, false),
+                                "name", new EffectivePermission(PrimaryLevel.READ, false, false)));
         when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
                 .thenReturn(new EffectivePermission(PrimaryLevel.READ, true, false));
 
-        var permission = service.resolveTablePermission(1L, "public", "t1", 9L);
+        var metadata = service.resolveTableMetadata(1L, "public", "t1", 9L);
 
-        assertThat(permission.canCreate()).isTrue();
-        assertThat(permission.canDelete()).isFalse();
+        assertThat(metadata.columns()).extracting(ColumnDef::columnName).containsExactlyInAnyOrder("id", "name");
+        assertThat(metadata.canCreate()).isTrue();
+        assertThat(metadata.canDelete()).isFalse();
     }
 
     // --- applyChanges ---

@@ -155,57 +155,12 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
         var tableCustomization =
                 tableCustomizationRepository.findByConnectionIdAndSchemaNameAndTableName(
                         command.connectionId(), command.schemaName(), command.tableName());
-        var customizationByColumn =
-                tableCustomization
-                        .map(tc -> columnCustomizationRepository.findAllByTableCustomizationId(tc.getId()))
-                        .orElse(List.<ColumnCustomization>of())
-                        .stream()
-                        .collect(Collectors.toMap(ColumnCustomization::getColumnName, c -> c));
 
-        var selectColumnNames = new ArrayList<String>();
-        var visibleColumns = new ArrayList<ColumnDef>();
-        var displayOrderByColumn = new HashMap<String, Integer>();
-        for (var dbColumn : dbColumns) {
-            var level = permissions.get(dbColumn.getColumnName()).primaryLevel();
-            // BR-1: primary key columns are always fetched (never displayed if
-            // unauthorized) so a row remains identifiable for update/delete.
-            if (level == PrimaryLevel.NONE && !dbColumn.isPrimaryKey()) {
-                continue;
-            }
-            selectColumnNames.add(dbColumn.getColumnName());
-            if (level == PrimaryLevel.NONE) {
-                continue;
-            }
-            var customization = customizationByColumn.get(dbColumn.getColumnName());
-            if (customization != null && customization.isHidden()) {
-                continue;
-            }
-            var displayLabel =
-                    customization != null && customization.getDisplayLabel() != null
-                            ? customization.getDisplayLabel()
-                            : dbColumn.getColumnName();
-            var readOnly = level != PrimaryLevel.UPDATE || (customization != null && customization.isReadOnly());
-            var widget =
-                    customization != null && customization.getInputWidget() != null
-                            ? customization.getInputWidget()
-                            : defaultWidgetFor(dbColumn.getDataType());
-            visibleColumns.add(
-                    new ColumnDef(
-                            dbColumn.getColumnName(),
-                            displayLabel,
-                            dbColumn.getDataType(),
-                            dbColumn.isPrimaryKey(),
-                            level,
-                            readOnly,
-                            widget,
-                            customization != null ? customization.getSelectOptionsJson() : null));
-            if (customization != null && customization.getDisplayOrder() != null) {
-                displayOrderByColumn.put(dbColumn.getColumnName(), customization.getDisplayOrder());
-            }
-        }
-        visibleColumns.sort(
-                Comparator.comparing(c -> displayOrderByColumn.getOrDefault(c.columnName(), Integer.MAX_VALUE)));
-        var visibleColumnNames = visibleColumns.stream().map(ColumnDef::columnName).collect(Collectors.toSet());
+        var resolved =
+                resolveVisibleColumns(
+                        command.connectionId(), command.schemaName(), command.tableName(), dbColumns, permissions);
+        var selectColumnNames = resolved.selectColumnNames();
+        var visibleColumnNames = resolved.visibleColumns().stream().map(ColumnDef::columnName).collect(Collectors.toSet());
 
         var paramSource = new MapSqlParameterSource();
         String whereClause = null;
@@ -291,18 +246,95 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                             "totalCount", effectiveTotalCount));
         }
 
-        return new RecordPage(visibleColumns, rows, command.page(), command.pageSize(), effectiveTotalCount);
+        return new RecordPage(rows, command.page(), command.pageSize(), effectiveTotalCount);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public TablePermission resolveTablePermission(Long connectionId, String schemaName, String tableName, Long userId) {
+    public TableMetadata resolveTableMetadata(Long connectionId, String schemaName, String tableName, Long userId) {
         var schema = findSchemaOrThrow(connectionId, schemaName);
-        findTableOrThrow(schema.getId(), tableName);
-        var permission =
+        var table = findTableOrThrow(schema.getId(), tableName);
+        var dbColumns = columnRepository.findAllByTableId(table.getId());
+        var columnNames = dbColumns.stream().map(DbColumn::getColumnName).toList();
+        var permissions =
+                accessControlService.resolveEffectivePermissionsForTable(
+                        userId, connectionId, schemaName, tableName, columnNames);
+        var visibleColumns =
+                resolveVisibleColumns(connectionId, schemaName, tableName, dbColumns, permissions).visibleColumns();
+        var tablePermission =
                 accessControlService.resolveEffectivePermission(
                         userId, connectionId, ResourceLevel.TABLE, schemaName, tableName, null);
-        return new TablePermission(permission.canCreate(), permission.canDelete());
+        return new TableMetadata(visibleColumns, tablePermission.canCreate(), tablePermission.canDelete());
+    }
+
+    private record VisibleColumnsResult(List<ColumnDef> visibleColumns, List<String> selectColumnNames) {
+    }
+
+    /**
+     * Shared by {@link #listRecords} (which also needs {@code
+     * selectColumnNames} to build its SQL) and {@link #resolveTableMetadata}
+     * (which only needs the display-facing {@code visibleColumns}).
+     */
+    private VisibleColumnsResult resolveVisibleColumns(
+            Long connectionId,
+            String schemaName,
+            String tableName,
+            List<DbColumn> dbColumns,
+            Map<String, EffectivePermission> permissions) {
+        var tableCustomization =
+                tableCustomizationRepository.findByConnectionIdAndSchemaNameAndTableName(
+                        connectionId, schemaName, tableName);
+        var customizationByColumn =
+                tableCustomization
+                        .map(tc -> columnCustomizationRepository.findAllByTableCustomizationId(tc.getId()))
+                        .orElse(List.<ColumnCustomization>of())
+                        .stream()
+                        .collect(Collectors.toMap(ColumnCustomization::getColumnName, c -> c));
+
+        var selectColumnNames = new ArrayList<String>();
+        var visibleColumns = new ArrayList<ColumnDef>();
+        var displayOrderByColumn = new HashMap<String, Integer>();
+        for (var dbColumn : dbColumns) {
+            var level = permissions.get(dbColumn.getColumnName()).primaryLevel();
+            // BR-1: primary key columns are always fetched (never displayed if
+            // unauthorized) so a row remains identifiable for update/delete.
+            if (level == PrimaryLevel.NONE && !dbColumn.isPrimaryKey()) {
+                continue;
+            }
+            selectColumnNames.add(dbColumn.getColumnName());
+            if (level == PrimaryLevel.NONE) {
+                continue;
+            }
+            var customization = customizationByColumn.get(dbColumn.getColumnName());
+            if (customization != null && customization.isHidden()) {
+                continue;
+            }
+            var displayLabel =
+                    customization != null && customization.getDisplayLabel() != null
+                            ? customization.getDisplayLabel()
+                            : dbColumn.getColumnName();
+            var readOnly = level != PrimaryLevel.UPDATE || (customization != null && customization.isReadOnly());
+            var widget =
+                    customization != null && customization.getInputWidget() != null
+                            ? customization.getInputWidget()
+                            : defaultWidgetFor(dbColumn.getDataType());
+            visibleColumns.add(
+                    new ColumnDef(
+                            dbColumn.getColumnName(),
+                            displayLabel,
+                            dbColumn.getDataType(),
+                            dbColumn.isPrimaryKey(),
+                            level,
+                            readOnly,
+                            widget,
+                            customization != null ? customization.getSelectOptionsJson() : null));
+            if (customization != null && customization.getDisplayOrder() != null) {
+                displayOrderByColumn.put(dbColumn.getColumnName(), customization.getDisplayOrder());
+            }
+        }
+        visibleColumns.sort(
+                Comparator.comparing(c -> displayOrderByColumn.getOrDefault(c.columnName(), Integer.MAX_VALUE)));
+        return new VisibleColumnsResult(visibleColumns, selectColumnNames);
     }
 
     private String renderCondition(FilterCondition condition, String paramName, MapSqlParameterSource paramSource) {

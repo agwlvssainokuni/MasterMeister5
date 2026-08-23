@@ -20,15 +20,9 @@ import cherry.mastermeister5.mastermaintenance.service.RecordPage;
 import java.util.List;
 import java.util.Map;
 
-public record RecordPageResponse(
-        List<ColumnDefResponse> columns, List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
+public record RecordPageResponse(List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
 
     public static RecordPageResponse from(RecordPage page) {
-        return new RecordPageResponse(
-                page.columns().stream().map(ColumnDefResponse::from).toList(),
-                page.rows(),
-                page.page(),
-                page.pageSize(),
-                page.totalCount());
+        return new RecordPageResponse(page.rows(), page.page(), page.pageSize(), page.totalCount());
     }
 }

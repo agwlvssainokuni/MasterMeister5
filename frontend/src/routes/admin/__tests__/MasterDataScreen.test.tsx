@@ -25,30 +25,30 @@ const CONNECTIONS = [
   { id: 1, name: "conn1", rdbmsType: "MYSQL", host: "localhost", port: 3306, databaseName: "db", status: "ACTIVE" },
 ];
 const TABLES = [{ schemaName: "public", tableName: "t1", tableType: "TABLE", comment: null }];
-const TABLE_PERMISSION = { canCreate: true, canDelete: true };
+const COLUMNS = [
+  {
+    columnName: "id",
+    displayLabel: "id",
+    dataType: "BIGINT",
+    primaryKey: true,
+    effectiveLevel: "READ",
+    readOnly: true,
+    inputWidget: "TEXT",
+    selectOptionsJson: null,
+  },
+  {
+    columnName: "name",
+    displayLabel: "name",
+    dataType: "VARCHAR",
+    primaryKey: false,
+    effectiveLevel: "UPDATE",
+    readOnly: false,
+    inputWidget: "TEXT",
+    selectOptionsJson: null,
+  },
+];
+const TABLE_METADATA = { columns: COLUMNS, canCreate: true, canDelete: true };
 const RECORD_PAGE = {
-  columns: [
-    {
-      columnName: "id",
-      displayLabel: "id",
-      dataType: "BIGINT",
-      primaryKey: true,
-      effectiveLevel: "READ",
-      readOnly: true,
-      inputWidget: "TEXT",
-      selectOptionsJson: null,
-    },
-    {
-      columnName: "name",
-      displayLabel: "name",
-      dataType: "VARCHAR",
-      primaryKey: false,
-      effectiveLevel: "UPDATE",
-      readOnly: false,
-      inputWidget: "TEXT",
-      selectOptionsJson: null,
-    },
-  ],
   rows: [{ id: 1, name: "Alice" }],
   page: 0,
   pageSize: 50,
@@ -78,7 +78,7 @@ describe("MasterDataScreen", () => {
   it("renders records after selecting a connection and table", async () => {
     installFetch([
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
-      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
@@ -102,7 +102,7 @@ describe("MasterDataScreen", () => {
         respond: async () => ({ ok: true, json: async () => ({ createdCount: 0, updatedCount: 0, deletedCount: 1 }) }),
       },
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
-      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);
@@ -139,8 +139,8 @@ describe("MasterDataScreen", () => {
         respond: async () => ({ ok: true, json: async () => RECORD_PAGE }),
       },
       {
-        url: "/tables/public/t1/permissions",
-        respond: async () => ({ ok: true, json: async () => ({ canCreate: false, canDelete: false }) }),
+        url: "/tables/public/t1/metadata",
+        respond: async () => ({ ok: true, json: async () => ({ columns: COLUMNS, canCreate: false, canDelete: false }) }),
       },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
@@ -168,7 +168,7 @@ describe("MasterDataScreen", () => {
         }),
       },
       { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
-      { url: "/tables/public/t1/permissions", respond: async () => ({ ok: true, json: async () => TABLE_PERMISSION }) },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
     ]);

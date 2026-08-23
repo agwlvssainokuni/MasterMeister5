@@ -20,7 +20,7 @@ import cherry.mastermeister5.mastermaintenance.controller.dto.ApplyChangesReques
 import cherry.mastermeister5.mastermaintenance.controller.dto.ApplyResultResponse;
 import cherry.mastermeister5.mastermaintenance.controller.dto.ListRecordsRequest;
 import cherry.mastermeister5.mastermaintenance.controller.dto.RecordPageResponse;
-import cherry.mastermeister5.mastermaintenance.controller.dto.TablePermissionResponse;
+import cherry.mastermeister5.mastermaintenance.controller.dto.TableMetadataResponse;
 import cherry.mastermeister5.mastermaintenance.controller.dto.TableSummaryResponse;
 import cherry.mastermeister5.mastermaintenance.service.FilterCondition;
 import cherry.mastermeister5.mastermaintenance.service.FilterCriteria;
@@ -86,14 +86,14 @@ public class MasterDataController {
         return RecordPageResponse.from(masterMaintenanceService.listRecords(command));
     }
 
-    @GetMapping("/api/data/connections/{connectionId}/tables/{schemaName}/{tableName}/permissions")
-    public TablePermissionResponse getTablePermission(
+    @GetMapping("/api/data/connections/{connectionId}/tables/{schemaName}/{tableName}/metadata")
+    public TableMetadataResponse getTableMetadata(
             @PathVariable Long connectionId,
             @PathVariable String schemaName,
             @PathVariable String tableName,
             Authentication authentication) {
-        return TablePermissionResponse.from(
-                masterMaintenanceService.resolveTablePermission(
+        return TableMetadataResponse.from(
+                masterMaintenanceService.resolveTableMetadata(
                         connectionId, schemaName, tableName, Long.valueOf(authentication.getName())));
     }
 

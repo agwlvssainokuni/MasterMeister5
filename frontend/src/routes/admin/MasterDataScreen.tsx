@@ -20,13 +20,13 @@ import { Button, FormField, Modal, Select, Table, TextInput, useToast, type Sort
 import { listConnections, type ConnectionSummaryDto } from "../../api/connections";
 import {
   applyChanges,
-  getTablePermission,
+  getTableMetadata,
   listRecords,
   listTables,
   type ColumnDefDto,
   type RecordChangeDto,
   type RecordPageDto,
-  type TablePermissionDto,
+  type TableMetadataDto,
   type TableSummaryDto,
 } from "../../api/masterData";
 import { ApiError } from "../../api/auth";
@@ -65,7 +65,7 @@ export function MasterDataScreen(): React.JSX.Element {
   const pageSize = 50;
 
   const [recordPage, setRecordPage] = useState<RecordPageDto | null>(null);
-  const [tablePermission, setTablePermission] = useState<TablePermissionDto | null>(null);
+  const [tableMetadata, setTableMetadata] = useState<TableMetadataDto | null>(null);
   const [editsByRowId, setEditsByRowId] = useState<Map<string, Row>>(new Map());
   const [deletedRowIds, setDeletedRowIds] = useState<Set<string>>(new Set());
   const [newRows, setNewRows] = useState<Row[]>([]);
@@ -89,7 +89,10 @@ export function MasterDataScreen(): React.JSX.Element {
     [tables, selectedTableKey],
   );
 
-  const pkColumns = useMemo(() => (recordPage ? primaryKeyColumns(recordPage.columns) : []), [recordPage]);
+  const pkColumns = useMemo(
+    () => (tableMetadata ? primaryKeyColumns(tableMetadata.columns) : []),
+    [tableMetadata],
+  );
 
   const reloadRecords = useCallback(() => {
     if (!selectedConnectionId || !selectedTable) {
@@ -111,11 +114,11 @@ export function MasterDataScreen(): React.JSX.Element {
 
   useEffect(() => {
     if (!selectedConnectionId || !selectedTable) {
-      setTablePermission(null);
+      setTableMetadata(null);
       return;
     }
-    getTablePermission(Number(selectedConnectionId), selectedTable.schemaName, selectedTable.tableName).then(
-      setTablePermission,
+    getTableMetadata(Number(selectedConnectionId), selectedTable.schemaName, selectedTable.tableName).then(
+      setTableMetadata,
     );
   }, [selectedConnectionId, selectedTable]);
 
@@ -190,21 +193,21 @@ export function MasterDataScreen(): React.JSX.Element {
   }
 
   const editableColumnKeys = useMemo(
-    () => (recordPage ? recordPage.columns.filter((c) => !c.readOnly).map((c) => c.columnName) : []),
-    [recordPage],
+    () => (tableMetadata ? tableMetadata.columns.filter((c) => !c.readOnly).map((c) => c.columnName) : []),
+    [tableMetadata],
   );
 
   const tableColumns: TableColumn<Row>[] = useMemo(() => {
-    if (!recordPage) {
+    if (!tableMetadata) {
       return [];
     }
-    const columns: TableColumn<Row>[] = recordPage.columns.map((c) => ({
+    const columns: TableColumn<Row>[] = tableMetadata.columns.map((c) => ({
       key: c.columnName,
       header: c.displayLabel,
       sortable: true,
       editable: editableColumnKeys.includes(c.columnName),
     }));
-    if (tablePermission?.canDelete) {
+    if (tableMetadata.canDelete) {
       columns.push({
         key: "__actions__",
         header: t("admin.masterData.columns.actions"),
@@ -225,9 +228,9 @@ export function MasterDataScreen(): React.JSX.Element {
     }
     return columns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns, tablePermission]);
+  }, [tableMetadata, editableColumnKeys, deletedRowIds, pkColumns]);
 
-  const canCreate = tablePermission?.canCreate ?? false;
+  const canCreate = tableMetadata?.canCreate ?? false;
 
   return (
     <div>
@@ -302,9 +305,9 @@ export function MasterDataScreen(): React.JSX.Element {
       )}
 
       <Modal open={createOpen} onClose={() => setCreateOpen(false)} title={t("admin.masterData.create.title")}>
-        {recordPage && (
+        {tableMetadata && (
           <div data-testid="master-data-create-form">
-            {recordPage.columns
+            {tableMetadata.columns
               .filter((c) => editableColumnKeys.includes(c.columnName))
               .map((c) => (
                 <FormField key={c.columnName} label={c.displayLabel}>

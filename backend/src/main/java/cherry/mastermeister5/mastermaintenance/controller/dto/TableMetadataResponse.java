@@ -16,11 +16,15 @@
 
 package cherry.mastermeister5.mastermaintenance.controller.dto;
 
-import cherry.mastermeister5.mastermaintenance.service.TablePermission;
+import cherry.mastermeister5.mastermaintenance.service.TableMetadata;
+import java.util.List;
 
-public record TablePermissionResponse(boolean canCreate, boolean canDelete) {
+public record TableMetadataResponse(List<ColumnDefResponse> columns, boolean canCreate, boolean canDelete) {
 
-    public static TablePermissionResponse from(TablePermission permission) {
-        return new TablePermissionResponse(permission.canCreate(), permission.canDelete());
+    public static TableMetadataResponse from(TableMetadata metadata) {
+        return new TableMetadataResponse(
+                metadata.columns().stream().map(ColumnDefResponse::from).toList(),
+                metadata.canCreate(),
+                metadata.canDelete());
     }
 }
