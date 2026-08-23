@@ -95,6 +95,7 @@ export interface ColumnViewDto {
   dataType: string;
   nullable: boolean;
   primaryKey: boolean;
+  foreignKey: boolean;
   comment: string | null;
 }
 

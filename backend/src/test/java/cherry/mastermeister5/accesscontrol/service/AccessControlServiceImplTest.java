@@ -176,6 +176,29 @@ class AccessControlServiceImplTest {
         assertThat(existing.getPrimaryLevel()).isEqualTo(PrimaryLevel.UPDATE);
     }
 
+    /**
+     * Regression test: the UI's "-" option for the primary level select must
+     * clear an existing override back to unset (falls back to the enclosing
+     * schema/table, BR-11) rather than being rejected — found live when
+     * reverting NONE/READ/UPDATE back to "-" silently did nothing.
+     */
+    @Test
+    void setPrimaryPermissionClearsAnExistingEntryBackToUnsetWhenGivenNull() {
+        var existing =
+                new PermissionEntry(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null);
+        existing.setPrimaryLevel(PrimaryLevel.READ);
+        when(permissionRepository
+                        .findBySubjectTypeAndSubjectIdAndConnectionIdAndResourceLevelAndSchemaNameAndTableNameAndColumnName(
+                                SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null))
+                .thenReturn(Optional.of(existing));
+
+        service.setPrimaryPermission(
+                new SetPrimaryPermissionCommand(SubjectType.USER, 5L, 1L, ResourceLevel.SCHEMA, "public", null, null, null),
+                99L);
+
+        assertThat(existing.getPrimaryLevel()).isNull();
+    }
+
     @Test
     void setAuxiliaryPermissionRejectsColumnLevel() {
         assertThatThrownBy(

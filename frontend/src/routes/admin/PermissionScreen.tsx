@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Card, FormField, Icon, RadioGroup, Select } from "make-you-chic-ui";
+import { Badge, Button, Card, FormField, Icon, RadioGroup, Select } from "make-you-chic-ui";
 import { getSchema, listConnections, type ConnectionSummaryDto, type SchemaViewDto } from "../../api/connections";
 import { listUsers, type UserSummaryDto } from "../../api/adminUsers";
 import { listGroups, type GroupSummaryDto } from "../../api/groups";
@@ -168,7 +168,7 @@ export function PermissionScreen(): React.JSX.Element {
     columnName: string | undefined,
     value: string,
   ) {
-    if (!value || !selectedConnectionId || !selectedSubjectId) {
+    if (!selectedConnectionId || !selectedSubjectId) {
       return;
     }
     await setPrimaryPermission({
@@ -179,7 +179,8 @@ export function PermissionScreen(): React.JSX.Element {
       schemaName,
       tableName,
       columnName,
-      primaryLevel: value as PrimaryLevel,
+      // "-" clears the override back to unset (inherit), not a no-op.
+      primaryLevel: value ? (value as PrimaryLevel) : null,
     });
     reloadEntries();
   }
@@ -459,6 +460,11 @@ export function PermissionScreen(): React.JSX.Element {
                               data-testid={`permissions-column-${s.schemaName}-${table.tableName}-${column.columnName}`}
                             >
                               <span className="mm5-permissions-name">{column.columnName}</span>
+                              <span className="mm5-permissions-badges">
+                                {column.primaryKey && <Badge variant="primary">PK</Badge>}
+                                {column.foreignKey && <Badge variant="secondary">FK</Badge>}
+                                {!column.nullable && <Badge variant="secondary">NOT NULL</Badge>}
+                              </span>
                               <span className="mm5-permissions-primary-select">
                                 <Select
                                   aria-label={t("admin.permissions.primaryLevelFor", { name: column.columnName })}

@@ -19,10 +19,15 @@ package cherry.mastermeister5.connectionschema.controller.dto;
 import cherry.mastermeister5.connectionschema.service.ColumnView;
 
 public record ColumnViewResponse(
-        String columnName, String dataType, boolean nullable, boolean primaryKey, String comment) {
+        String columnName, String dataType, boolean nullable, boolean primaryKey, boolean foreignKey, String comment) {
 
     public static ColumnViewResponse from(ColumnView view) {
         return new ColumnViewResponse(
-                view.columnName(), view.dataType(), view.nullable(), view.primaryKey(), view.comment());
+                view.columnName(),
+                view.dataType(),
+                view.nullable(),
+                view.primaryKey(),
+                view.foreignKey(),
+                view.comment());
     }
 }

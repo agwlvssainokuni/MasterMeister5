@@ -93,6 +93,12 @@
   white-space: nowrap;
 }
 
+.mm5-permissions-badges {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
 .mm5-permissions-primary-select {
   flex-shrink: 0;
 }

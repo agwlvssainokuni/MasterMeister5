@@ -32,7 +32,17 @@ const SCHEMA = [
         tableName: "t1",
         tableType: "TABLE",
         comment: null,
-        columns: [{ columnName: "id", dataType: "BIGINT", nullable: false, primaryKey: true, comment: null }],
+        columns: [
+          { columnName: "id", dataType: "BIGINT", nullable: false, primaryKey: true, foreignKey: false, comment: null },
+          {
+            columnName: "customer_id",
+            dataType: "BIGINT",
+            nullable: true,
+            primaryKey: false,
+            foreignKey: true,
+            comment: null,
+          },
+        ],
       },
     ],
   },
@@ -82,6 +92,34 @@ describe("PermissionScreen", () => {
     expect(screen.getByTestId("permissions-column-public-t1-id")).toBeInTheDocument();
   });
 
+  it("shows constraint badges (PK, FK, NOT NULL) per column", async () => {
+    installFetch([
+      { url: "/api/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/admin/users", respond: async () => ({ ok: true, json: async () => USERS }) },
+      { url: "/api/admin/groups", respond: async () => ({ ok: true, json: async () => [] }) },
+      { url: "/api/admin/permissions", respond: async () => ({ ok: true, json: async () => [] }) },
+    ]);
+
+    render(<PermissionScreen />);
+    await waitFor(() => expect(screen.getByTestId("permissions-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("permissions-connection-select"), "1");
+    await userEvent.selectOptions(screen.getByTestId("permissions-subject-select"), "5");
+    await waitFor(() => expect(screen.getByTestId("permissions-tree")).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: "展開する" }));
+    await userEvent.click(screen.getByRole("button", { name: "展開する" }));
+
+    const idRow = screen.getByTestId("permissions-column-public-t1-id");
+    expect(idRow.textContent).toContain("PK");
+    expect(idRow.textContent).toContain("NOT NULL");
+    expect(idRow.textContent).not.toContain("FK");
+
+    const customerIdRow = screen.getByTestId("permissions-column-public-t1-customer_id");
+    expect(customerIdRow.textContent).toContain("FK");
+    expect(customerIdRow.textContent).not.toContain("PK");
+    expect(customerIdRow.textContent).not.toContain("NOT NULL");
+  });
+
   it("submits a primary permission change for the selected schema", async () => {
     let primaryCallBody: string | null = null;
     installFetch([
@@ -123,6 +161,64 @@ describe("PermissionScreen", () => {
       resourceLevel: "SCHEMA",
       schemaName: "public",
       primaryLevel: "READ",
+    });
+  });
+
+  it("submits a null primaryLevel when reverting the select back to \"-\"", async () => {
+    let primaryCallBody: string | null = null;
+    installFetch([
+      {
+        url: "/api/admin/permissions/primary",
+        method: "POST",
+        respond: async () => ({ ok: true }),
+      },
+      { url: "/api/connections/1/schema", respond: async () => ({ ok: true, json: async () => SCHEMA }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+      { url: "/api/admin/users", respond: async () => ({ ok: true, json: async () => USERS }) },
+      { url: "/api/admin/groups", respond: async () => ({ ok: true, json: async () => [] }) },
+      {
+        url: "/api/admin/permissions",
+        method: "GET",
+        respond: async () => ({
+          ok: true,
+          json: async () => [
+            {
+              subjectType: "USER",
+              subjectId: 5,
+              resourceLevel: "SCHEMA",
+              schemaName: "public",
+              tableName: null,
+              columnName: null,
+              primaryLevel: "READ",
+              auxCreate: null,
+              auxDelete: null,
+            },
+          ],
+        }),
+      },
+    ]);
+    const originalMock = globalThis.fetch as unknown as ReturnType<typeof vi.fn>;
+    globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).includes("/api/admin/permissions/primary")) {
+        primaryCallBody = String(init?.body);
+      }
+      return originalMock(input, init);
+    }) as unknown as typeof fetch;
+
+    render(<PermissionScreen />);
+    await waitFor(() => expect(screen.getByTestId("permissions-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("permissions-connection-select"), "1");
+    await userEvent.selectOptions(screen.getByTestId("permissions-subject-select"), "5");
+    await waitFor(() => expect(screen.getByTestId("permissions-schema-public-primary-select")).toBeInTheDocument());
+    expect(screen.getByTestId("permissions-schema-public-primary-select")).toHaveValue("READ");
+
+    await userEvent.selectOptions(screen.getByTestId("permissions-schema-public-primary-select"), "-");
+
+    await waitFor(() => expect(primaryCallBody).not.toBeNull());
+    expect(JSON.parse(primaryCallBody as unknown as string)).toMatchObject({
+      resourceLevel: "SCHEMA",
+      schemaName: "public",
+      primaryLevel: null,
     });
   });
 

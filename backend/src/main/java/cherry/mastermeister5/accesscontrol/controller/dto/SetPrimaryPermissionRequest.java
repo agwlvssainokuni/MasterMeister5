@@ -22,6 +22,7 @@ import cherry.mastermeister5.accesscontrol.entity.SubjectType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+/** {@code primaryLevel}: null clears the entry back to unset (falls back to the enclosing schema/table, per BR-11). */
 public record SetPrimaryPermissionRequest(
         @NotNull SubjectType subjectType,
         @NotNull Long subjectId,
@@ -30,5 +31,5 @@ public record SetPrimaryPermissionRequest(
         @NotBlank String schemaName,
         String tableName,
         String columnName,
-        @NotNull PrimaryLevel primaryLevel) {
+        PrimaryLevel primaryLevel) {
 }

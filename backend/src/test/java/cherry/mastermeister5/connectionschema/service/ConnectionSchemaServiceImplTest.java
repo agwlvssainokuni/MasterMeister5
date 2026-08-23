@@ -28,6 +28,7 @@ import cherry.mastermeister5.connectionschema.entity.ConnectionStatus;
 import cherry.mastermeister5.connectionschema.entity.DbColumn;
 import cherry.mastermeister5.connectionschema.entity.DbSchema;
 import cherry.mastermeister5.connectionschema.entity.DbTable;
+import cherry.mastermeister5.connectionschema.entity.ForeignKeyConstraint;
 import cherry.mastermeister5.connectionschema.entity.RdbmsType;
 import cherry.mastermeister5.connectionschema.entity.TargetConnection;
 import cherry.mastermeister5.connectionschema.repository.DbColumnJpaRepository;
@@ -453,6 +454,33 @@ class ConnectionSchemaServiceImplTest {
     }
 
     // --- getSchema / isSchemaAllowed ---
+
+    @Test
+    void getSchemaMarksOnlyColumnsWithAForeignKeyConstraint() {
+        var schema = new DbSchema(8L, "public");
+        setId(schema, 100L);
+        when(schemaRepository.findAllByConnectionId(8L)).thenReturn(List.of(schema));
+        var table = new DbTable(100L, "orders", DbTable.Type.TABLE, null);
+        setId(table, 200L);
+        when(tableRepository.findAllBySchemaId(100L)).thenReturn(List.of(table));
+        var idColumn = new DbColumn(200L, "id", 1, "BIGINT", false, true, null);
+        var customerIdColumn = new DbColumn(200L, "customer_id", 2, "BIGINT", false, false, null);
+        when(columnRepository.findAllByTableIdIn(List.of(200L))).thenReturn(List.of(idColumn, customerIdColumn));
+        when(foreignKeyRepository.findAllByFromTableIdIn(List.of(200L)))
+                .thenReturn(List.of(new ForeignKeyConstraint(200L, "customer_id", 300L, "id")));
+
+        var result = service.getSchema(8L);
+
+        var columns = result.get(0).tables().get(0).columns();
+        assertThat(columns)
+                .filteredOn(c -> c.columnName().equals("customer_id"))
+                .singleElement()
+                .satisfies(c -> assertThat(c.foreignKey()).isTrue());
+        assertThat(columns)
+                .filteredOn(c -> c.columnName().equals("id"))
+                .singleElement()
+                .satisfies(c -> assertThat(c.foreignKey()).isFalse());
+    }
 
     @Test
     void isSchemaAllowedReflectsWhetherTheSchemaWasImported() {

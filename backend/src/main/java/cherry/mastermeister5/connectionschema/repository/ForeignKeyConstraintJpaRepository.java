@@ -18,9 +18,12 @@ package cherry.mastermeister5.connectionschema.repository;
 
 import cherry.mastermeister5.connectionschema.entity.ForeignKeyConstraint;
 import java.util.Collection;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ForeignKeyConstraintJpaRepository extends JpaRepository<ForeignKeyConstraint, Long> {
+
+    List<ForeignKeyConstraint> findAllByFromTableIdIn(Collection<Long> fromTableIds);
 
     void deleteAllByFromTableIdIn(Collection<Long> fromTableIds);
 }

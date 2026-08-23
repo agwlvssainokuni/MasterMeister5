@@ -18,5 +18,5 @@ package cherry.mastermeister5.connectionschema.service;
 
 /** getSchema() view (Unit 4/5/6 consume this). */
 public record ColumnView(
-        String columnName, String dataType, boolean nullable, boolean primaryKey, String comment) {
+        String columnName, String dataType, boolean nullable, boolean primaryKey, boolean foreignKey, String comment) {
 }

@@ -53,7 +53,8 @@ export interface SetPrimaryPermissionRequest {
   schemaName: string;
   tableName?: string;
   columnName?: string;
-  primaryLevel: PrimaryLevel;
+  /** null clears the entry back to unset (falls back to the enclosing schema/table, per BR-11). */
+  primaryLevel: PrimaryLevel | null;
 }
 
 export function setPrimaryPermission(request: SetPrimaryPermissionRequest): Promise<void> {

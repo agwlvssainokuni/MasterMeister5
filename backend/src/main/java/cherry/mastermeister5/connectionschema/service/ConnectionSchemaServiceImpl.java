@@ -397,6 +397,12 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
             var columnsByTableId =
                     columnRepository.findAllByTableIdIn(tableIds).stream()
                             .collect(Collectors.groupingBy(DbColumn::getTableId));
+            var foreignKeyColumnNamesByTableId =
+                    foreignKeyRepository.findAllByFromTableIdIn(tableIds).stream()
+                            .collect(
+                                    Collectors.groupingBy(
+                                            ForeignKeyConstraint::getFromTableId,
+                                            Collectors.mapping(ForeignKeyConstraint::getFromColumnName, Collectors.toSet())));
             var tableViews =
                     tables.stream()
                             .map(
@@ -413,6 +419,9 @@ class ConnectionSchemaServiceImpl implements ConnectionSchemaService {
                                                                                     c.getDataType(),
                                                                                     c.isNullable(),
                                                                                     c.isPrimaryKey(),
+                                                                                    foreignKeyColumnNamesByTableId
+                                                                                            .getOrDefault(table.getId(), Set.of())
+                                                                                            .contains(c.getColumnName()),
                                                                                     c.getComment()))
                                                             .toList()))
                             .toList();
