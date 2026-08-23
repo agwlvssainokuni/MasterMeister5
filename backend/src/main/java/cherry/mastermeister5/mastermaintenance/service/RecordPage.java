@@ -21,5 +21,11 @@ import java.util.Map;
 
 /** component-methods.md: {@code listRecords} return value. */
 public record RecordPage(
-        List<ColumnDef> columns, List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
+        List<ColumnDef> columns,
+        List<Map<String, Object>> rows,
+        int page,
+        int pageSize,
+        long totalCount,
+        boolean canCreate,
+        boolean canDelete) {
 }

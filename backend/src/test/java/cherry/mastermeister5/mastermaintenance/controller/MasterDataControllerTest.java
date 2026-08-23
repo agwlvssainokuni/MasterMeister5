@@ -85,7 +85,8 @@ class MasterDataControllerTest {
 
     @Test
     void listRecordsPassesTheAuthenticatedUserAsActor() throws Exception {
-        given(masterMaintenanceService.listRecords(any())).willReturn(new RecordPage(List.of(), List.of(), 0, 50, 0));
+        given(masterMaintenanceService.listRecords(any()))
+                .willReturn(new RecordPage(List.of(), List.of(), 0, 50, 0, true, true));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/data/connections/1/tables/public/t1/records")

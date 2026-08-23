@@ -21,7 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 public record RecordPageResponse(
-        List<ColumnDefResponse> columns, List<Map<String, Object>> rows, int page, int pageSize, long totalCount) {
+        List<ColumnDefResponse> columns,
+        List<Map<String, Object>> rows,
+        int page,
+        int pageSize,
+        long totalCount,
+        boolean canCreate,
+        boolean canDelete) {
 
     public static RecordPageResponse from(RecordPage page) {
         return new RecordPageResponse(
@@ -29,6 +35,8 @@ public record RecordPageResponse(
                 page.rows(),
                 page.page(),
                 page.pageSize(),
-                page.totalCount());
+                page.totalCount(),
+                page.canCreate(),
+                page.canDelete());
     }
 }

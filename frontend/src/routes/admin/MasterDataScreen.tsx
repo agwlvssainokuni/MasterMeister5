@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, Modal, Select, Table, TextInput, type SortState, type TableColumn } from "make-you-chic-ui";
+import { Button, FormField, Modal, Select, Table, TextInput, useToast, type SortState, type TableColumn } from "make-you-chic-ui";
 import { listConnections, type ConnectionSummaryDto } from "../../api/connections";
 import {
   applyChanges,
@@ -50,6 +50,7 @@ function primaryKeyValuesOf(row: Row, pkColumns: string[]): Record<string, unkno
 /** frontend-components.md MasterDataScreen (US-3.1〜US-3.6). */
 export function MasterDataScreen(): React.JSX.Element {
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [connections, setConnections] = useState<ConnectionSummaryDto[]>([]);
   const [selectedConnectionId, setSelectedConnectionId] = useState("");
@@ -67,7 +68,6 @@ export function MasterDataScreen(): React.JSX.Element {
   const [newRows, setNewRows] = useState<Row[]>([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [createDraft, setCreateDraft] = useState<Row>({});
-  const [applyErrorMessage, setApplyErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     listConnections().then((all) => setConnections(all.filter((c) => c.status === "ACTIVE")));
@@ -138,7 +138,6 @@ export function MasterDataScreen(): React.JSX.Element {
     if (!selectedConnectionId || !selectedTable || !recordPage) {
       return;
     }
-    setApplyErrorMessage(null);
     const changes: RecordChangeDto[] = [];
     for (const [rowId, edits] of editsByRowId.entries()) {
       if (deletedRowIds.has(rowId)) {
@@ -170,7 +169,10 @@ export function MasterDataScreen(): React.JSX.Element {
       setNewRows([]);
       reloadRecords();
     } catch (err) {
-      setApplyErrorMessage(err instanceof ApiError ? err.message : t("admin.masterData.apply.error"));
+      toast.show({
+        message: err instanceof ApiError ? err.message : t("admin.masterData.apply.error"),
+        variant: "danger",
+      });
     }
   }
 
@@ -189,28 +191,30 @@ export function MasterDataScreen(): React.JSX.Element {
       sortable: true,
       editable: editableColumnKeys.includes(c.columnName),
     }));
-    columns.push({
-      key: "__actions__",
-      header: t("admin.masterData.columns.actions"),
-      render: (row) => {
-        const rowId = rowIdOf(row, pkColumns);
-        return (
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => handleToggleDelete(rowId)}
-            data-testid={`master-data-row-${rowId}-delete-button`}
-          >
-            {deletedRowIds.has(rowId) ? t("admin.masterData.undoDeleteButton") : t("admin.masterData.deleteButton")}
-          </Button>
-        );
-      },
-    });
+    if (recordPage.canDelete) {
+      columns.push({
+        key: "__actions__",
+        header: t("admin.masterData.columns.actions"),
+        render: (row) => {
+          const rowId = rowIdOf(row, pkColumns);
+          return (
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => handleToggleDelete(rowId)}
+              data-testid={`master-data-row-${rowId}-delete-button`}
+            >
+              {deletedRowIds.has(rowId) ? t("admin.masterData.undoDeleteButton") : t("admin.masterData.deleteButton")}
+            </Button>
+          );
+        },
+      });
+    }
     return columns;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordPage, editableColumnKeys, deletedRowIds, pkColumns]);
 
-  const canCreate = recordPage !== null && recordPage.columns.length > 0;
+  const canCreate = recordPage !== null && recordPage.canCreate;
 
   return (
     <div>
@@ -253,8 +257,6 @@ export function MasterDataScreen(): React.JSX.Element {
           />
         </FormField>
       )}
-
-      {applyErrorMessage && <p role="alert">{applyErrorMessage}</p>}
 
       {recordPage && (
         <>

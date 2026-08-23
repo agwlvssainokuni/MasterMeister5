@@ -151,6 +151,10 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
         var permissions =
                 accessControlService.resolveEffectivePermissionsForTable(
                         command.userId(), command.connectionId(), command.schemaName(), command.tableName(), columnNames);
+        var tablePermission =
+                accessControlService.resolveEffectivePermission(
+                        command.userId(), command.connectionId(), ResourceLevel.TABLE, command.schemaName(),
+                        command.tableName(), null);
 
         var tableCustomization =
                 tableCustomizationRepository.findByConnectionIdAndSchemaNameAndTableName(
@@ -291,7 +295,14 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                             "totalCount", effectiveTotalCount));
         }
 
-        return new RecordPage(visibleColumns, rows, command.page(), command.pageSize(), effectiveTotalCount);
+        return new RecordPage(
+                visibleColumns,
+                rows,
+                command.page(),
+                command.pageSize(),
+                effectiveTotalCount,
+                tablePermission.canCreate(),
+                tablePermission.canDelete());
     }
 
     private String renderCondition(FilterCondition condition, String paramName, MapSqlParameterSource paramSource) {

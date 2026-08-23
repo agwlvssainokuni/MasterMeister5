@@ -17,6 +17,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { ToastProvider } from "make-you-chic-ui";
 import { MasterDataScreen } from "../MasterDataScreen";
 import "../../../i18n/i18n";
 
@@ -51,6 +52,8 @@ const RECORD_PAGE = {
   page: 0,
   pageSize: 50,
   totalCount: 1,
+  canCreate: true,
+  canDelete: true,
 };
 
 function installFetch(routes: Array<{ url: string; method?: string; respond: () => Promise<unknown> }>) {
@@ -125,5 +128,60 @@ describe("MasterDataScreen", () => {
     expect(JSON.parse(applyCallBody as unknown as string)).toEqual({
       changes: [{ operation: "DELETE", primaryKeyValues: { id: 1 }, columnValues: {} }],
     });
+  });
+
+  it("hides the create and delete controls when the user lacks that permission", async () => {
+    installFetch([
+      {
+        url: "/tables/public/t1/records",
+        method: "POST",
+        respond: async () => ({ ok: true, json: async () => ({ ...RECORD_PAGE, canCreate: false, canDelete: false }) }),
+      },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+
+    render(<MasterDataScreen />);
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+    expect(screen.queryByTestId("master-data-create-button")).not.toBeInTheDocument();
+    expect(screen.queryByTestId(`master-data-row-${JSON.stringify([1])}-delete-button`)).not.toBeInTheDocument();
+  });
+
+  it("shows a toast when applying changes is rejected by the API", async () => {
+    installFetch([
+      {
+        url: "/apply",
+        method: "POST",
+        respond: async () => ({
+          ok: false,
+          json: async () => ({ errorCode: "MASTER_DATA_PERMISSION_DENIED", message: "権限がありません。" }),
+        }),
+      },
+      { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+
+    render(
+      <ToastProvider>
+        <MasterDataScreen />
+      </ToastProvider>,
+    );
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+
+    const deleteButton = screen.getByTestId(`master-data-row-${JSON.stringify([1])}-delete-button`);
+    await userEvent.click(deleteButton);
+    await userEvent.click(screen.getByTestId("master-data-apply-button"));
+
+    await waitFor(() => expect(screen.getByText("権限がありません。")).toBeInTheDocument());
   });
 });

@@ -46,6 +46,8 @@ export interface RecordPageDto {
   page: number;
   pageSize: number;
   totalCount: number;
+  canCreate: boolean;
+  canDelete: boolean;
 }
 
 export interface FilterConditionDto {
