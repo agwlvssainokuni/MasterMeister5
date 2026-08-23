@@ -24,6 +24,13 @@ import java.util.List;
  * vary by page/filter/sort — column definitions (visibility, editability,
  * widget) and the caller's resolved table-level aux permissions. Fetched via
  * its own endpoint, separate from both the table listing and record data.
+ *
+ * <p>{@code primaryKeyColumns} is deliberately independent of {@code
+ * columns}: a primary key column is always listed here for row
+ * identification (BR-1), even when it's excluded from {@code columns}
+ * because the caller lacks READ on it — column names aren't sensitive,
+ * only their values.
  */
-public record TableMetadata(List<ColumnDef> columns, boolean canCreate, boolean canDelete) {
+public record TableMetadata(
+        List<ColumnDef> columns, List<String> primaryKeyColumns, boolean canCreate, boolean canDelete) {
 }

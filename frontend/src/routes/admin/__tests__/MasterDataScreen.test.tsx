@@ -47,7 +47,7 @@ const COLUMNS = [
     selectOptionsJson: null,
   },
 ];
-const TABLE_METADATA = { columns: COLUMNS, canCreate: true, canDelete: true };
+const TABLE_METADATA = { columns: COLUMNS, primaryKeyColumns: ["id"], canCreate: true, canDelete: true };
 const RECORD_PAGE = {
   rows: [{ id: 1, name: "Alice" }],
   page: 0,
@@ -131,6 +131,57 @@ describe("MasterDataScreen", () => {
     });
   });
 
+  it("still identifies rows for delete when the primary key column itself has no read permission", async () => {
+    let applyCallBody: string | null = null;
+    installFetch([
+      {
+        url: "/apply",
+        method: "POST",
+        respond: async () => ({ ok: true, json: async () => ({ createdCount: 0, updatedCount: 0, deletedCount: 1 }) }),
+      },
+      { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      {
+        url: "/tables/public/t1/metadata",
+        respond: async () => ({
+          ok: true,
+          // "id" (the PK) is excluded from `columns` — no READ permission on it — but must
+          // still appear in `primaryKeyColumns` so the row stays identifiable for delete.
+          json: async () => ({
+            columns: COLUMNS.filter((c) => c.columnName !== "id"),
+            primaryKeyColumns: ["id"],
+            canCreate: true,
+            canDelete: true,
+          }),
+        }),
+      },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+    const original = globalThis.fetch as unknown as ReturnType<typeof vi.fn>;
+    globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).includes("/apply")) {
+        applyCallBody = String(init?.body);
+      }
+      return original(input, init);
+    }) as unknown as typeof fetch;
+
+    render(<MasterDataScreen />);
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+
+    const deleteButton = screen.getByTestId(`master-data-row-${JSON.stringify([1])}-delete-button`);
+    await userEvent.click(deleteButton);
+    await userEvent.click(screen.getByTestId("master-data-apply-button"));
+
+    await waitFor(() => expect(applyCallBody).not.toBeNull());
+    expect(JSON.parse(applyCallBody as unknown as string)).toEqual({
+      changes: [{ operation: "DELETE", primaryKeyValues: { id: 1 }, columnValues: {} }],
+    });
+  });
+
   it("hides the create and delete controls when the user lacks that permission", async () => {
     installFetch([
       {
@@ -140,7 +191,10 @@ describe("MasterDataScreen", () => {
       },
       {
         url: "/tables/public/t1/metadata",
-        respond: async () => ({ ok: true, json: async () => ({ columns: COLUMNS, canCreate: false, canDelete: false }) }),
+        respond: async () => ({
+          ok: true,
+          json: async () => ({ columns: COLUMNS, primaryKeyColumns: ["id"], canCreate: false, canDelete: false }),
+        }),
       },
       { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
       { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },

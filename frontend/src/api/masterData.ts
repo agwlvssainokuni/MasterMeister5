@@ -44,9 +44,14 @@ export interface ColumnDefDto {
  * Column definitions and resolved table-level aux permissions; fetched via
  * its own endpoint, separate from both the table listing and record data —
  * none of this varies by page/filter/sort.
+ *
+ * `primaryKeyColumns` is independent of `columns`: a primary key column is
+ * always listed here for row identification, even when it's excluded from
+ * `columns` because the caller lacks READ on it.
  */
 export interface TableMetadataDto {
   columns: ColumnDefDto[];
+  primaryKeyColumns: string[];
   canCreate: boolean;
   canDelete: boolean;
 }

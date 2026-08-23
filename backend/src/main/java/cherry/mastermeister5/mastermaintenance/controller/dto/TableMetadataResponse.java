@@ -19,11 +19,13 @@ package cherry.mastermeister5.mastermaintenance.controller.dto;
 import cherry.mastermeister5.mastermaintenance.service.TableMetadata;
 import java.util.List;
 
-public record TableMetadataResponse(List<ColumnDefResponse> columns, boolean canCreate, boolean canDelete) {
+public record TableMetadataResponse(
+        List<ColumnDefResponse> columns, List<String> primaryKeyColumns, boolean canCreate, boolean canDelete) {
 
     public static TableMetadataResponse from(TableMetadata metadata) {
         return new TableMetadataResponse(
                 metadata.columns().stream().map(ColumnDefResponse::from).toList(),
+                metadata.primaryKeyColumns(),
                 metadata.canCreate(),
                 metadata.canDelete());
     }

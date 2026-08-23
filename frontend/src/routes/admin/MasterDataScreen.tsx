@@ -23,7 +23,6 @@ import {
   getTableMetadata,
   listRecords,
   listTables,
-  type ColumnDefDto,
   type RecordChangeDto,
   type RecordPageDto,
   type TableMetadataDto,
@@ -32,10 +31,6 @@ import {
 import { ApiError } from "../../api/auth";
 
 type Row = Record<string, unknown>;
-
-function primaryKeyColumns(columns: ColumnDefDto[]): string[] {
-  return columns.filter((c) => c.primaryKey).map((c) => c.columnName);
-}
 
 function rowIdOf(row: Row, pkColumns: string[]): string {
   return JSON.stringify(pkColumns.map((c) => row[c]));
@@ -90,10 +85,7 @@ export function MasterDataScreen(): React.JSX.Element {
     [tables, selectedTableKey],
   );
 
-  const pkColumns = useMemo(
-    () => (tableMetadata ? primaryKeyColumns(tableMetadata.columns) : []),
-    [tableMetadata],
-  );
+  const pkColumns = useMemo(() => tableMetadata?.primaryKeyColumns ?? [], [tableMetadata]);
 
   const reloadRecords = useCallback(() => {
     if (!selectedConnectionId || !selectedTable) {

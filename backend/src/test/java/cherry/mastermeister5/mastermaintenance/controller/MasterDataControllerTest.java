@@ -104,14 +104,15 @@ class MasterDataControllerTest {
     @Test
     void getTableMetadataPassesTheAuthenticatedUserAsActor() throws Exception {
         given(masterMaintenanceService.resolveTableMetadata(1L, "public", "t1", 9L))
-                .willReturn(new TableMetadata(List.of(), true, false));
+                .willReturn(new TableMetadata(List.of(), List.of("id"), true, false));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/api/data/connections/1/tables/public/t1/metadata")
                                 .principal(userAuthentication))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.canCreate", org.hamcrest.Matchers.is(true)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.canDelete", org.hamcrest.Matchers.is(false)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.canDelete", org.hamcrest.Matchers.is(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.primaryKeyColumns[0]", org.hamcrest.Matchers.is("id")));
     }
 
     @Test

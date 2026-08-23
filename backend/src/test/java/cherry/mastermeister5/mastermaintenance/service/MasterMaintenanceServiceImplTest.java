@@ -305,6 +305,29 @@ class MasterMaintenanceServiceImplTest {
         assertThat(metadata.canDelete()).isFalse();
     }
 
+    /**
+     * Regression test: a primary key column with no READ permission is
+     * correctly excluded from {@code columns} (never displayed), but the
+     * row must still be identifiable for update/delete (BR-1) — found live
+     * when setting a PK column's permission to NONE silently broke delete.
+     */
+    @Test
+    void resolveTableMetadataListsThePrimaryKeyColumnEvenWithoutReadPermissionOnIt() {
+        mockTable("t1", List.of(column("id", true), column("name", false)), true);
+        when(accessControlService.resolveEffectivePermissionsForTable(any(), any(), any(), any(), anyList()))
+                .thenReturn(
+                        Map.of(
+                                "id", new EffectivePermission(PrimaryLevel.NONE, false, false),
+                                "name", new EffectivePermission(PrimaryLevel.READ, false, false)));
+        when(accessControlService.resolveEffectivePermission(any(), any(), any(), any(), any(), any()))
+                .thenReturn(new EffectivePermission(PrimaryLevel.NONE, false, false));
+
+        var metadata = service.resolveTableMetadata(1L, "public", "t1", 9L);
+
+        assertThat(metadata.columns()).extracting(ColumnDef::columnName).containsExactly("name");
+        assertThat(metadata.primaryKeyColumns()).containsExactly("id");
+    }
+
     // --- applyChanges ---
 
     @Test

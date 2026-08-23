@@ -261,10 +261,16 @@ class MasterMaintenanceServiceImpl implements MasterMaintenanceService {
                         userId, connectionId, schemaName, tableName, columnNames);
         var visibleColumns =
                 resolveVisibleColumns(connectionId, schemaName, tableName, dbColumns, permissions).visibleColumns();
+        // BR-1: primary key columns must stay identifiable for update/delete
+        // even when the caller has no READ permission on them (so they're
+        // excluded from visibleColumns above) — column *names* aren't
+        // sensitive, only their values, which this list never carries.
+        var primaryKeyColumns = dbColumns.stream().filter(DbColumn::isPrimaryKey).map(DbColumn::getColumnName).toList();
         var tablePermission =
                 accessControlService.resolveEffectivePermission(
                         userId, connectionId, ResourceLevel.TABLE, schemaName, tableName, null);
-        return new TableMetadata(visibleColumns, tablePermission.canCreate(), tablePermission.canDelete());
+        return new TableMetadata(
+                visibleColumns, primaryKeyColumns, tablePermission.canCreate(), tablePermission.canDelete());
     }
 
     private record VisibleColumnsResult(List<ColumnDef> visibleColumns, List<String> selectColumnNames) {
