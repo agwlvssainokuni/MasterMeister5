@@ -273,7 +273,10 @@ export function QueryScreen(): React.JSX.Element {
 
       <FormField label={t("admin.query.connection")}>
         <Select
-          options={connections.map((c) => ({ label: c.name, value: String(c.id) }))}
+          options={[
+            { label: t("common.selectPlaceholder"), value: "" },
+            ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+          ]}
           value={selectedConnectionId}
           onChange={(value) => {
             setSelectedConnectionId(value);
@@ -284,7 +287,10 @@ export function QueryScreen(): React.JSX.Element {
       </FormField>
       <FormField label={t("admin.query.schema")}>
         <Select
-          options={schemas.map((s) => ({ label: s.schemaName, value: s.schemaName }))}
+          options={[
+            { label: t("common.selectPlaceholder"), value: "" },
+            ...schemas.map((s) => ({ label: s.schemaName, value: s.schemaName })),
+          ]}
           value={selectedSchemaName}
           onChange={setSelectedSchemaName}
           data-testid="query-schema-select"

@@ -178,10 +178,12 @@ export function PermissionScreen(): React.JSX.Element {
     }
   }
 
-  const subjectOptions =
-    subjectType === "USER"
+  const subjectOptions = [
+    { label: t("common.selectPlaceholder"), value: "" },
+    ...(subjectType === "USER"
       ? users.map((u) => ({ label: `${u.name ?? ""} <${u.email}>`, value: String(u.id) }))
-      : groups.map((g) => ({ label: g.name, value: String(g.id) }));
+      : groups.map((g) => ({ label: g.name, value: String(g.id) }))),
+  ];
 
   const readyToEdit = selectedConnectionId !== "" && selectedSubjectId !== "";
 
@@ -190,7 +192,10 @@ export function PermissionScreen(): React.JSX.Element {
       <h1>{t("admin.permissions.title")}</h1>
 
       <Select
-        options={connections.map((c) => ({ label: c.name, value: String(c.id) }))}
+        options={[
+          { label: t("common.selectPlaceholder"), value: "" },
+          ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+        ]}
         value={selectedConnectionId}
         onChange={(value) => {
           setSelectedConnectionId(value);

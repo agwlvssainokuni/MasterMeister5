@@ -217,7 +217,10 @@ export function MasterDataScreen(): React.JSX.Element {
       <h1>{t("admin.masterData.title")}</h1>
 
       <Select
-        options={connections.map((c) => ({ label: c.name, value: String(c.id) }))}
+        options={[
+          { label: t("common.selectPlaceholder"), value: "" },
+          ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+        ]}
         value={selectedConnectionId}
         onChange={(value) => {
           setSelectedConnectionId(value);
@@ -226,10 +229,13 @@ export function MasterDataScreen(): React.JSX.Element {
         data-testid="master-data-connection-select"
       />
       <Select
-        options={tables.map((t) => ({
-          label: `${t.schemaName}.${t.tableName}`,
-          value: `${t.schemaName}.${t.tableName}`,
-        }))}
+        options={[
+          { label: t("common.selectPlaceholder"), value: "" },
+          ...tables.map((table) => ({
+            label: `${table.schemaName}.${table.tableName}`,
+            value: `${table.schemaName}.${table.tableName}`,
+          })),
+        ]}
         value={selectedTableKey}
         onChange={setSelectedTableKey}
         data-testid="master-data-table-select"

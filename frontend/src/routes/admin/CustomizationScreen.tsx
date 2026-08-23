@@ -100,7 +100,10 @@ export function CustomizationScreen(): React.JSX.Element {
       <h1>{t("admin.customizations.title")}</h1>
 
       <Select
-        options={connections.map((c) => ({ label: c.name, value: String(c.id) }))}
+        options={[
+          { label: t("common.selectPlaceholder"), value: "" },
+          ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+        ]}
         value={selectedConnectionId}
         onChange={setSelectedConnectionId}
         data-testid="customizations-connection-select"

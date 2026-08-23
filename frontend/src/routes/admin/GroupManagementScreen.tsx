@@ -138,7 +138,10 @@ export function GroupManagementScreen(): React.JSX.Element {
     reload();
   }
 
-  const userOptions = users.map((u) => ({ label: `${u.name ?? ""} <${u.email}>`, value: String(u.id) }));
+  const userOptions = [
+    { label: t("common.selectPlaceholder"), value: "" },
+    ...users.map((u) => ({ label: `${u.name ?? ""} <${u.email}>`, value: String(u.id) })),
+  ];
 
   const columns: TableColumn<GroupSummaryDto>[] = useMemo(
     () => [

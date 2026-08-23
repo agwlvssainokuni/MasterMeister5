@@ -40,7 +40,8 @@
     "fontSizeLg": "Large"
   },
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "selectPlaceholder": "Please select"
   },
   "auth": {
     "email": "Email Address",
