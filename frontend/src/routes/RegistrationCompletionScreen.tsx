@@ -17,8 +17,9 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import { Button, FormField, TextInput } from "make-you-chic-ui";
+import { Button, Card, FormField, TextInput } from "make-you-chic-ui";
 import { ApiError, register } from "../api/auth";
+import "./AuthScreen.css";
 
 /** frontend-components.md RegistrationCompletionScreen (US-1.6). */
 export function RegistrationCompletionScreen(): React.JSX.Element {
@@ -58,64 +59,68 @@ export function RegistrationCompletionScreen(): React.JSX.Element {
   if (completed) {
     return (
       <div className="mm5-auth-screen">
-        <h1>{t("auth.register.completedTitle")}</h1>
-        <p>{t("auth.register.completedMessage")}</p>
-        <Link to="/login" data-testid="registration-form-login-link">
-          {t("auth.login.title")}
-        </Link>
+        <Card className="mm5-auth-screen-card">
+          <h1>{t("auth.register.completedTitle")}</h1>
+          <p>{t("auth.register.completedMessage")}</p>
+          <Link to="/login" data-testid="registration-form-login-link">
+            {t("auth.login.title")}
+          </Link>
+        </Card>
       </div>
     );
   }
 
   return (
     <div className="mm5-auth-screen">
-      <h1>{t("auth.register.title")}</h1>
-      {tokenExpired ? (
-        <p role="alert">{t("errors.invitation_token_expired")}</p>
-      ) : (
-        <form onSubmit={handleSubmit} data-testid="registration-form">
-          <FormField label={t("auth.name")} required>
-            <TextInput
-              value={name}
-              onChange={setName}
+      <Card className="mm5-auth-screen-card">
+        <h1>{t("auth.register.title")}</h1>
+        {tokenExpired ? (
+          <p role="alert">{t("errors.invitation_token_expired")}</p>
+        ) : (
+          <form onSubmit={handleSubmit} data-testid="registration-form">
+            <FormField label={t("auth.name")} required>
+              <TextInput
+                value={name}
+                onChange={setName}
+                required
+                data-testid="registration-form-name-input"
+              />
+            </FormField>
+            <FormField label={t("auth.password")} required>
+              <TextInput
+                type="password"
+                value={password}
+                onChange={setPassword}
+                required
+                minLength={8}
+                data-testid="registration-form-password-input"
+              />
+            </FormField>
+            <FormField
+              label={t("auth.passwordConfirm")}
               required
-              data-testid="registration-form-name-input"
-            />
-          </FormField>
-          <FormField label={t("auth.password")} required>
-            <TextInput
-              type="password"
-              value={password}
-              onChange={setPassword}
-              required
-              minLength={8}
-              data-testid="registration-form-password-input"
-            />
-          </FormField>
-          <FormField
-            label={t("auth.passwordConfirm")}
-            required
-            error={passwordMismatch ? t("auth.passwordMismatch") : undefined}
-          >
-            <TextInput
-              type="password"
-              value={passwordConfirm}
-              onChange={setPasswordConfirm}
-              required
-              data-testid="registration-form-password-confirm-input"
-            />
-          </FormField>
-          {errorMessage && <p role="alert">{errorMessage}</p>}
-          <Button
-            type="submit"
-            loading={submitting}
-            disabled={passwordMismatch}
-            data-testid="registration-form-submit-button"
-          >
-            {t("auth.register.submit")}
-          </Button>
-        </form>
-      )}
+              error={passwordMismatch ? t("auth.passwordMismatch") : undefined}
+            >
+              <TextInput
+                type="password"
+                value={passwordConfirm}
+                onChange={setPasswordConfirm}
+                required
+                data-testid="registration-form-password-confirm-input"
+              />
+            </FormField>
+            {errorMessage && <p role="alert">{errorMessage}</p>}
+            <Button
+              type="submit"
+              loading={submitting}
+              disabled={passwordMismatch}
+              data-testid="registration-form-submit-button"
+            >
+              {t("auth.register.submit")}
+            </Button>
+          </form>
+        )}
+      </Card>
     </div>
   );
 }

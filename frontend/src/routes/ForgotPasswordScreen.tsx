@@ -16,8 +16,9 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, TextInput } from "make-you-chic-ui";
+import { Button, Card, FormField, TextInput } from "make-you-chic-ui";
 import { requestPasswordReset } from "../api/auth";
+import "./AuthScreen.css";
 
 /**
  * frontend-components.md ForgotPasswordScreen. BR-23: the completion message
@@ -45,29 +46,33 @@ export function ForgotPasswordScreen(): React.JSX.Element {
   if (submitted) {
     return (
       <div className="mm5-auth-screen">
-        <h1>{t("auth.forgotPassword.title")}</h1>
-        <p>{t("auth.forgotPassword.completedMessage")}</p>
+        <Card className="mm5-auth-screen-card">
+          <h1>{t("auth.forgotPassword.title")}</h1>
+          <p>{t("auth.forgotPassword.completedMessage")}</p>
+        </Card>
       </div>
     );
   }
 
   return (
     <div className="mm5-auth-screen">
-      <h1>{t("auth.forgotPassword.title")}</h1>
-      <form onSubmit={handleSubmit} data-testid="forgot-password-form">
-        <FormField label={t("auth.email")} required>
-          <TextInput
-            type="email"
-            value={email}
-            onChange={setEmail}
-            required
-            data-testid="forgot-password-form-email-input"
-          />
-        </FormField>
-        <Button type="submit" loading={submitting} data-testid="forgot-password-form-submit-button">
-          {t("auth.forgotPassword.submit")}
-        </Button>
-      </form>
+      <Card className="mm5-auth-screen-card">
+        <h1>{t("auth.forgotPassword.title")}</h1>
+        <form onSubmit={handleSubmit} data-testid="forgot-password-form">
+          <FormField label={t("auth.email")} required>
+            <TextInput
+              type="email"
+              value={email}
+              onChange={setEmail}
+              required
+              data-testid="forgot-password-form-email-input"
+            />
+          </FormField>
+          <Button type="submit" loading={submitting} data-testid="forgot-password-form-submit-button">
+            {t("auth.forgotPassword.submit")}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }

@@ -17,8 +17,9 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
-import { Button, FormField, TextInput } from "make-you-chic-ui";
+import { Button, Card, FormField, TextInput } from "make-you-chic-ui";
 import { ApiError, resetPassword } from "../api/auth";
+import "./AuthScreen.css";
 
 /** frontend-components.md ResetPasswordScreen (US-1.9). */
 export function ResetPasswordScreen(): React.JSX.Element {
@@ -51,51 +52,55 @@ export function ResetPasswordScreen(): React.JSX.Element {
   if (completed) {
     return (
       <div className="mm5-auth-screen">
-        <h1>{t("auth.resetPassword.completedTitle")}</h1>
-        <Link to="/login" data-testid="reset-password-form-login-link">
-          {t("auth.login.title")}
-        </Link>
+        <Card className="mm5-auth-screen-card">
+          <h1>{t("auth.resetPassword.completedTitle")}</h1>
+          <Link to="/login" data-testid="reset-password-form-login-link">
+            {t("auth.login.title")}
+          </Link>
+        </Card>
       </div>
     );
   }
 
   return (
     <div className="mm5-auth-screen">
-      <h1>{t("auth.resetPassword.title")}</h1>
-      <form onSubmit={handleSubmit} data-testid="reset-password-form">
-        <FormField label={t("auth.newPassword")} required>
-          <TextInput
-            type="password"
-            value={password}
-            onChange={setPassword}
+      <Card className="mm5-auth-screen-card">
+        <h1>{t("auth.resetPassword.title")}</h1>
+        <form onSubmit={handleSubmit} data-testid="reset-password-form">
+          <FormField label={t("auth.newPassword")} required>
+            <TextInput
+              type="password"
+              value={password}
+              onChange={setPassword}
+              required
+              minLength={8}
+              data-testid="reset-password-form-password-input"
+            />
+          </FormField>
+          <FormField
+            label={t("auth.passwordConfirm")}
             required
-            minLength={8}
-            data-testid="reset-password-form-password-input"
-          />
-        </FormField>
-        <FormField
-          label={t("auth.passwordConfirm")}
-          required
-          error={passwordMismatch ? t("auth.passwordMismatch") : undefined}
-        >
-          <TextInput
-            type="password"
-            value={passwordConfirm}
-            onChange={setPasswordConfirm}
-            required
-            data-testid="reset-password-form-password-confirm-input"
-          />
-        </FormField>
-        {errorMessage && <p role="alert">{errorMessage}</p>}
-        <Button
-          type="submit"
-          loading={submitting}
-          disabled={passwordMismatch}
-          data-testid="reset-password-form-submit-button"
-        >
-          {t("auth.resetPassword.submit")}
-        </Button>
-      </form>
+            error={passwordMismatch ? t("auth.passwordMismatch") : undefined}
+          >
+            <TextInput
+              type="password"
+              value={passwordConfirm}
+              onChange={setPasswordConfirm}
+              required
+              data-testid="reset-password-form-password-confirm-input"
+            />
+          </FormField>
+          {errorMessage && <p role="alert">{errorMessage}</p>}
+          <Button
+            type="submit"
+            loading={submitting}
+            disabled={passwordMismatch}
+            data-testid="reset-password-form-submit-button"
+          >
+            {t("auth.resetPassword.submit")}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }

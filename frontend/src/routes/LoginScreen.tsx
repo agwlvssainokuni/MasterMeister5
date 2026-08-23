@@ -17,9 +17,10 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, FormField, TextInput } from "make-you-chic-ui";
+import { Button, Card, FormField, TextInput } from "make-you-chic-ui";
 import { useAuth } from "../auth/AuthContext";
 import { ApiError } from "../api/auth";
+import "./AuthScreen.css";
 
 /** frontend-components.md LoginScreen. Rendered outside <AppLayout> (layout-route pattern). */
 export function LoginScreen(): React.JSX.Element {
@@ -48,34 +49,36 @@ export function LoginScreen(): React.JSX.Element {
 
   return (
     <div className="mm5-auth-screen">
-      <h1>{t("auth.login.title")}</h1>
-      <form onSubmit={handleSubmit} data-testid="login-form">
-        <FormField label={t("auth.email")} required>
-          <TextInput
-            type="email"
-            value={email}
-            onChange={setEmail}
-            required
-            data-testid="login-form-email-input"
-          />
-        </FormField>
-        <FormField label={t("auth.password")} required>
-          <TextInput
-            type="password"
-            value={password}
-            onChange={setPassword}
-            required
-            data-testid="login-form-password-input"
-          />
-        </FormField>
-        {errorMessage && <p role="alert">{errorMessage}</p>}
-        <Button type="submit" loading={submitting} data-testid="login-form-submit-button">
-          {t("auth.login.submit")}
-        </Button>
-      </form>
-      <Link to="/password/forgot" data-testid="login-form-forgot-password-link">
-        {t("auth.login.forgotPassword")}
-      </Link>
+      <Card className="mm5-auth-screen-card">
+        <h1>{t("auth.login.title")}</h1>
+        <form onSubmit={handleSubmit} data-testid="login-form">
+          <FormField label={t("auth.email")} required>
+            <TextInput
+              type="email"
+              value={email}
+              onChange={setEmail}
+              required
+              data-testid="login-form-email-input"
+            />
+          </FormField>
+          <FormField label={t("auth.password")} required>
+            <TextInput
+              type="password"
+              value={password}
+              onChange={setPassword}
+              required
+              data-testid="login-form-password-input"
+            />
+          </FormField>
+          {errorMessage && <p role="alert">{errorMessage}</p>}
+          <Button type="submit" loading={submitting} data-testid="login-form-submit-button">
+            {t("auth.login.submit")}
+          </Button>
+        </form>
+        <Link to="/password/forgot" data-testid="login-form-forgot-password-link">
+          {t("auth.login.forgotPassword")}
+        </Link>
+      </Card>
     </div>
   );
 }
