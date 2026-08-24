@@ -22,6 +22,15 @@
   margin-bottom: var(--space-4);
 }
 
+.mm5-master-data-where-field {
+  margin-bottom: var(--space-4);
+}
+
+.mm5-master-data-where-field .mycui-textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /*
  * make-you-chic-ui's Table swaps a cell's display text for a TextInput while
  * editing; the TextInput's own border/padding/font-size stack on top of the

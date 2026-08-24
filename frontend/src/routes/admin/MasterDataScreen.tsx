@@ -16,7 +16,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, FormField, Modal, Select, Table, TextInput, useToast, type SortState, type TableColumn } from "make-you-chic-ui";
+import { Button, FormField, Modal, Select, Table, Textarea, TextInput, useToast, type SortState, type TableColumn } from "make-you-chic-ui";
 import { listConnections, type ConnectionSummaryDto } from "../../api/connections";
 import {
   applyChanges,
@@ -255,20 +255,20 @@ export function MasterDataScreen(): React.JSX.Element {
           onChange={setSelectedTableKey}
           data-testid="master-data-table-select"
         />
-
-        {selectedTable && (
-          <FormField label={t("admin.masterData.rawWhereClause")}>
-            <TextInput
-              value={rawWhereClause}
-              onChange={(value) => {
-                setRawWhereClause(value);
-                setPage(1);
-              }}
-              data-testid="master-data-raw-where-input"
-            />
-          </FormField>
-        )}
       </div>
+
+      {selectedTable && (
+        <FormField label={t("admin.masterData.rawWhereClause")} className="mm5-master-data-where-field">
+          <Textarea
+            value={rawWhereClause}
+            onChange={(value) => {
+              setRawWhereClause(value);
+              setPage(1);
+            }}
+            data-testid="master-data-raw-where-input"
+          />
+        </FormField>
+      )}
 
       {recordPage && (
         <>
