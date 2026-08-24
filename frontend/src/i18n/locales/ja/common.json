@@ -211,6 +211,7 @@
       "rawWhereClause": "WHERE句（手入力）",
       "whereApplyButton": "実行",
       "applyButton": "反映",
+      "discardButton": "変更を破棄",
       "createButton": "新規作成",
       "deleteButton": "削除",
       "undoDeleteButton": "削除取消",

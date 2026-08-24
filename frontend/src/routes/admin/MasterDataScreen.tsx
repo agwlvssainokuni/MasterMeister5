@@ -150,6 +150,12 @@ export function MasterDataScreen(): React.JSX.Element {
 
   const hasPendingChanges = editsByRowId.size > 0 || deletedRowIds.size > 0 || newRows.length > 0;
 
+  function handleDiscardChanges() {
+    setEditsByRowId(new Map());
+    setDeletedRowIds(new Set());
+    setNewRows([]);
+  }
+
   async function handleApply() {
     if (!selectedConnectionId || !selectedTable || !recordPage) {
       return;
@@ -315,6 +321,14 @@ export function MasterDataScreen(): React.JSX.Element {
             data-testid="master-data-apply-button"
           >
             {t("admin.masterData.applyButton")}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={handleDiscardChanges}
+            disabled={!hasPendingChanges}
+            data-testid="master-data-discard-button"
+          >
+            {t("admin.masterData.discardButton")}
           </Button>
           {canCreate && (
             <Button onClick={() => setCreateOpen(true)} data-testid="master-data-create-button">

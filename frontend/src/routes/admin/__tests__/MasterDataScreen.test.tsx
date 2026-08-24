@@ -119,6 +119,39 @@ describe("MasterDataScreen", () => {
     expect(screen.queryByText("Alice")).not.toBeInTheDocument();
   });
 
+  it("reverts an unsaved cell edit and disables both buttons when changes are discarded", async () => {
+    installFetch([
+      { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+
+    render(<MasterDataScreen />);
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+
+    const cellTestId = `table-cell-${JSON.stringify([1])}-name`;
+    await userEvent.click(screen.getByTestId(cellTestId));
+    const editor = screen.getByTestId("table-cell-editor");
+    await userEvent.clear(editor);
+    await userEvent.type(editor, "Alicia");
+    await userEvent.tab();
+    expect(screen.getByText("Alicia")).toBeInTheDocument();
+    expect(screen.getByTestId("master-data-apply-button")).toBeEnabled();
+    expect(screen.getByTestId("master-data-discard-button")).toBeEnabled();
+
+    await userEvent.click(screen.getByTestId("master-data-discard-button"));
+
+    expect(screen.getByText("Alice")).toBeInTheDocument();
+    expect(screen.queryByText("Alicia")).not.toBeInTheDocument();
+    expect(screen.getByTestId("master-data-apply-button")).toBeDisabled();
+    expect(screen.getByTestId("master-data-discard-button")).toBeDisabled();
+  });
+
   it("submits an apply request when a delete is confirmed", async () => {
     let applyCallBody: string | null = null;
     installFetch([

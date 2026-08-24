@@ -211,6 +211,7 @@
       "rawWhereClause": "WHERE clause (manual)",
       "whereApplyButton": "Execute",
       "applyButton": "Apply",
+      "discardButton": "Discard Changes",
       "createButton": "Create",
       "deleteButton": "Delete",
       "undoDeleteButton": "Undo Delete",
