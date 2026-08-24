@@ -197,6 +197,20 @@ export function MasterDataScreen(): React.JSX.Element {
     [tableMetadata],
   );
 
+  // Overlay unsaved edits onto the fetched rows so the table shows the
+  // edited value immediately, rather than reverting to the server's stale
+  // value until "反映" is clicked and the page reloads.
+  const displayRows = useMemo(() => {
+    if (!recordPage) {
+      return [];
+    }
+    return recordPage.rows.map((row) => {
+      const rowId = rowIdOf(row, pkColumns);
+      const edits = editsByRowId.get(rowId);
+      return edits ? { ...row, ...edits } : row;
+    });
+  }, [recordPage, editsByRowId, pkColumns]);
+
   const tableColumns: TableColumn<Row>[] = useMemo(() => {
     if (!tableMetadata) {
       return [];
@@ -284,7 +298,7 @@ export function MasterDataScreen(): React.JSX.Element {
         <>
           <Table
             columns={tableColumns}
-            data={recordPage.rows}
+            data={displayRows}
             totalCount={recordPage.totalCount}
             getRowId={(row) => rowIdOf(row, pkColumns)}
             sortState={sortState}

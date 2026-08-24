@@ -93,6 +93,32 @@ describe("MasterDataScreen", () => {
     await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
   });
 
+  it("shows the edited value immediately after committing a cell edit, before applying", async () => {
+    installFetch([
+      { url: "/tables/public/t1/records", method: "POST", respond: async () => ({ ok: true, json: async () => RECORD_PAGE }) },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+
+    render(<MasterDataScreen />);
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+
+    const cellTestId = `table-cell-${JSON.stringify([1])}-name`;
+    await userEvent.click(screen.getByTestId(cellTestId));
+    const editor = screen.getByTestId("table-cell-editor");
+    await userEvent.clear(editor);
+    await userEvent.type(editor, "Alicia");
+    await userEvent.tab();
+
+    expect(screen.getByText("Alicia")).toBeInTheDocument();
+    expect(screen.queryByText("Alice")).not.toBeInTheDocument();
+  });
+
   it("submits an apply request when a delete is confirmed", async () => {
     let applyCallBody: string | null = null;
     installFetch([
