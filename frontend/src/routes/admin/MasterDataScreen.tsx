@@ -56,6 +56,7 @@ export function MasterDataScreen(): React.JSX.Element {
   const [selectedTableKey, setSelectedTableKey] = useState("");
 
   const [rawWhereClause, setRawWhereClause] = useState("");
+  const [appliedWhereClause, setAppliedWhereClause] = useState("");
   const [sortState, setSortState] = useState<SortState | null>(null);
   // 1-origin for display (make-you-chic-ui's Table pagination contract); converted to 0-origin only for the API call.
   const [page, setPage] = useState(1);
@@ -94,13 +95,13 @@ export function MasterDataScreen(): React.JSX.Element {
       return;
     }
     listRecords(Number(selectedConnectionId), selectedTable.schemaName, selectedTable.tableName, {
-      rawWhereClause: rawWhereClause || undefined,
+      rawWhereClause: appliedWhereClause || undefined,
       sortColumn: sortState?.direction ? sortState.key : undefined,
       sortDirection: sortState?.direction === "desc" ? "DESC" : sortState?.direction === "asc" ? "ASC" : undefined,
       page: page - 1,
       pageSize,
     }).then(setRecordPage);
-  }, [selectedConnectionId, selectedTable, rawWhereClause, sortState, page]);
+  }, [selectedConnectionId, selectedTable, appliedWhereClause, sortState, page]);
 
   useEffect(() => {
     reloadRecords();
@@ -115,6 +116,11 @@ export function MasterDataScreen(): React.JSX.Element {
       setTableMetadata,
     );
   }, [selectedConnectionId, selectedTable]);
+
+  function handleApplyWhereClause() {
+    setAppliedWhereClause(rawWhereClause);
+    setPage(1);
+  }
 
   function handleCellEdit(rowId: string, columnKey: string, value: unknown) {
     setEditsByRowId((prev) => {
@@ -261,12 +267,16 @@ export function MasterDataScreen(): React.JSX.Element {
         <FormField label={t("admin.masterData.rawWhereClause")} className="mm5-master-data-where-field">
           <Textarea
             value={rawWhereClause}
-            onChange={(value) => {
-              setRawWhereClause(value);
-              setPage(1);
-            }}
+            onChange={setRawWhereClause}
             data-testid="master-data-raw-where-input"
           />
+          <Button
+            onClick={handleApplyWhereClause}
+            className="mm5-master-data-where-apply-button"
+            data-testid="master-data-where-apply-button"
+          >
+            {t("admin.masterData.whereApplyButton")}
+          </Button>
         </FormField>
       )}
 

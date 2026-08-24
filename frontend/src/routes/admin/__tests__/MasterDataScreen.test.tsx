@@ -211,6 +211,46 @@ describe("MasterDataScreen", () => {
     expect(screen.queryByTestId(`master-data-row-${JSON.stringify([1])}-delete-button`)).not.toBeInTheDocument();
   });
 
+  it("only reloads records for the WHERE clause once the apply button is clicked", async () => {
+    const recordsCallBodies: string[] = [];
+    installFetch([
+      {
+        url: "/tables/public/t1/records",
+        method: "POST",
+        respond: async () => ({ ok: true, json: async () => RECORD_PAGE }),
+      },
+      { url: "/tables/public/t1/metadata", respond: async () => ({ ok: true, json: async () => TABLE_METADATA }) },
+      { url: "/tables", method: "POST", respond: async () => ({ ok: true, json: async () => TABLES }) },
+      { url: "/api/connections", respond: async () => ({ ok: true, json: async () => CONNECTIONS }) },
+    ]);
+    const original = globalThis.fetch as unknown as ReturnType<typeof vi.fn>;
+    globalThis.fetch = vi.fn().mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).includes("/records")) {
+        recordsCallBodies.push(String(init?.body));
+      }
+      return original(input, init);
+    }) as unknown as typeof fetch;
+
+    render(<MasterDataScreen />);
+    await waitFor(() => expect(screen.getByTestId("master-data-connection-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-connection-select"), "1");
+    await waitFor(() => expect(screen.getByTestId("master-data-table-select")).toBeInTheDocument());
+    await userEvent.selectOptions(screen.getByTestId("master-data-table-select"), "public.t1");
+    await waitFor(() => expect(screen.getByText("Alice")).toBeInTheDocument());
+
+    const callsAfterInitialLoad = recordsCallBodies.length;
+    await userEvent.type(screen.getByTestId("master-data-raw-where-input"), "id = 1");
+    expect(recordsCallBodies).toHaveLength(callsAfterInitialLoad);
+
+    await userEvent.click(screen.getByTestId("master-data-where-apply-button"));
+
+    await waitFor(() => expect(recordsCallBodies).toHaveLength(callsAfterInitialLoad + 1));
+    expect(JSON.parse(recordsCallBodies[recordsCallBodies.length - 1])).toMatchObject({
+      rawWhereClause: "id = 1",
+      page: 0,
+    });
+  });
+
   it("shows a toast when applying changes is rejected by the API", async () => {
     installFetch([
       {

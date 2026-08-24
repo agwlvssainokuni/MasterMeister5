@@ -31,6 +31,11 @@
   box-sizing: border-box;
 }
 
+.mm5-master-data-where-apply-button {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+}
+
 /*
  * make-you-chic-ui's Table swaps a cell's display text for a TextInput while
  * editing; the TextInput's own border/padding/font-size stack on top of the

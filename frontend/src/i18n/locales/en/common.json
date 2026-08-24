@@ -209,6 +209,7 @@
     "masterData": {
       "title": "Master Data",
       "rawWhereClause": "WHERE clause (manual)",
+      "whereApplyButton": "Execute",
       "applyButton": "Apply",
       "createButton": "Create",
       "deleteButton": "Delete",

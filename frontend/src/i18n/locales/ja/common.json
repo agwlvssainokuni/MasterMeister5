@@ -209,6 +209,7 @@
     "masterData": {
       "title": "データ表示",
       "rawWhereClause": "WHERE句（手入力）",
+      "whereApplyButton": "実行",
       "applyButton": "反映",
       "createButton": "新規作成",
       "deleteButton": "削除",
