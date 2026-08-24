@@ -230,43 +230,45 @@ export function MasterDataScreen(): React.JSX.Element {
     <div>
       <h1>{t("admin.masterData.title")}</h1>
 
-      <Select
-        options={[
-          { label: t("common.selectPlaceholder"), value: "" },
-          ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
-        ]}
-        value={selectedConnectionId}
-        onChange={(value) => {
-          setSelectedConnectionId(value);
-          setSelectedTableKey("");
-        }}
-        data-testid="master-data-connection-select"
-      />
-      <Select
-        options={[
-          { label: t("common.selectPlaceholder"), value: "" },
-          ...tables.map((table) => ({
-            label: `${table.schemaName}.${table.tableName}`,
-            value: `${table.schemaName}.${table.tableName}`,
-          })),
-        ]}
-        value={selectedTableKey}
-        onChange={setSelectedTableKey}
-        data-testid="master-data-table-select"
-      />
+      <div className="mm5-master-data-controls">
+        <Select
+          options={[
+            { label: t("common.selectPlaceholder"), value: "" },
+            ...connections.map((c) => ({ label: c.name, value: String(c.id) })),
+          ]}
+          value={selectedConnectionId}
+          onChange={(value) => {
+            setSelectedConnectionId(value);
+            setSelectedTableKey("");
+          }}
+          data-testid="master-data-connection-select"
+        />
+        <Select
+          options={[
+            { label: t("common.selectPlaceholder"), value: "" },
+            ...tables.map((table) => ({
+              label: `${table.schemaName}.${table.tableName}`,
+              value: `${table.schemaName}.${table.tableName}`,
+            })),
+          ]}
+          value={selectedTableKey}
+          onChange={setSelectedTableKey}
+          data-testid="master-data-table-select"
+        />
 
-      {selectedTable && (
-        <FormField label={t("admin.masterData.rawWhereClause")}>
-          <TextInput
-            value={rawWhereClause}
-            onChange={(value) => {
-              setRawWhereClause(value);
-              setPage(1);
-            }}
-            data-testid="master-data-raw-where-input"
-          />
-        </FormField>
-      )}
+        {selectedTable && (
+          <FormField label={t("admin.masterData.rawWhereClause")}>
+            <TextInput
+              value={rawWhereClause}
+              onChange={(value) => {
+                setRawWhereClause(value);
+                setPage(1);
+              }}
+              data-testid="master-data-raw-where-input"
+            />
+          </FormField>
+        )}
+      </div>
 
       {recordPage && (
         <>

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+.mm5-master-data-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 480px;
+  margin-bottom: var(--space-4);
+}
+
 /*
  * make-you-chic-ui's Table swaps a cell's display text for a TextInput while
  * editing; the TextInput's own border/padding/font-size stack on top of the
